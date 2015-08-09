@@ -1,0 +1,16 @@
+{
+  "name": "csv2json",
+  "version": "1.0.0",
+  "description": "",
+  "main": "csv2json.js",
+  "dependencies": {
+    "asyncjs": "0.0.9",
+    "csvtojson": "^0.3.21"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
