@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <title></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=Ko-KR"></script>
+  <script type="text/javascript">
+    function GetMap() {
+      var map = new Microsoft.Maps.Map(document.getElementById("mapDiv"), {
+        credentials: "Andq5Xlwoi8Um_dR6vSSL0QBQ4ktzXkweGorhME7lzAewPlOm1Og8XdcfiNL7vDd",
+        center: new Microsoft.Maps.Location(36.5, 127.8),
+        mapTypeId: Microsoft.Maps.MapTypeId.road,
+        showDashboard: false,
+        zoom: 7
+      });
+      // Retrieve the location of the map center
+      var center = map.getCenter();
+
+      // Add a pin to the center of the map
+      var pin = new Microsoft.Maps.Pushpin(center, {text: '1'});
+      map.entities.push(pin);
+
+      // Create a polygon
+      var vertices = new Array(new Microsoft.Maps.Location(36,127), new Microsoft.Maps.Location(36,128), new Microsoft.Maps.Location(37,128), new Microsoft.Maps.Location(37,127), new Microsoft.Maps.Location(36,127));
+      var polygoncolor = new Microsoft.Maps.Color(100,100,0,100);
+      var polygon = new Microsoft.Maps.Polygon(vertices,{fillColor: polygoncolor, strokeColor: polygoncolor});
+
+      // Add the polygon to the map
+      map.entities.push(polygon);
+
+      //Add handler for the map click event.
+      Microsoft.Maps.Events.addHandler(map, 'click', displayLatLong);
+      function displayLatLong(e) {
+        if (e.targetType == "map") {
+          var point = new Microsoft.Maps.Point(e.getX(), e.getY());
+          var loc = e.target.tryPixelToLocation(point);
+          document.getElementById("textBox").value= loc.latitude + ", " + loc.longitude;
+        }
+      }
+    }
+  </script>
+</head>
+<body onload="GetMap();">
+  <div id='mapDiv' style="position:relative; width:400px; height:400px;"></div>
+  <input id='textBox' type="text" style="position:relative;width:250px;"/>
+</body>
+</html>
