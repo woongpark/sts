@@ -1,0 +1,9 @@
+@media (min-width: 768px) {
+    .twoRow .navbar-collapse {
+        clear: left;
+    }
+}
+.twoRow .navbar-brand {
+  display: inline-block;
+  height: 70px;
+}
