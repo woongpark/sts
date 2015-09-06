@@ -1,4 +1,4 @@
-function getPolygon(linkinfo, direct) {
+function getPolygon(linkinfo, direct, speed) {
   var x1 = linkinfo.SLAT,
       y1 = linkinfo.SLON,
       x2 = linkinfo.ELAT,
@@ -8,15 +8,18 @@ function getPolygon(linkinfo, direct) {
 
   if(direct == "S") {
     diff = -0.01;
-    color = new Microsoft.Maps.Color(255,255,0,0);
   } else {
     diff = +0.01;
-    color = new Microsoft.Maps.Color(255,0,0,255);
   }
+
+  speed = Math.min(speed, 130);
+  speed = parseInt(speed / 130 * 255 + 0.5, 10);
+  color = new Microsoft.Maps.Color(255,255-speed,0,speed);
+
   // Create a polygon
   var vertices = new Array(
-    new Microsoft.Maps.Location(x1 + diff, y1 + diff),
-    new Microsoft.Maps.Location(x2 + diff, y2 + diff)
+    new Microsoft.Maps.Location(x1 + diff, y1 - diff),
+    new Microsoft.Maps.Location(x2 + diff, y2 - diff)
   );
   var polygon = new Microsoft.Maps.Polygon(vertices,{
     fillColor: new Microsoft.Maps.Color(0,0,0,0),
@@ -30,48 +33,12 @@ function getMap() {
     credentials: "Andq5Xlwoi8Um_dR6vSSL0QBQ4ktzXkweGorhME7lzAewPlOm1Og8XdcfiNL7vDd",
     center: new Microsoft.Maps.Location(37, 127.2),
     mapTypeId: Microsoft.Maps.MapTypeId.road,
-    showDashboard: false,
-    disablePanning: true,
-    disableZooming: true,
+    showDashboard: true,
+    disablePanning: false,
+    disableZooming: false,
     zoom: 8
   });
-  var datetime;
-  // Retrieve the location of the map center
-  var center = map.getCenter();
-
-  /*
-  // Add a pin to the center of the map
-  var pin = new Microsoft.Maps.Pushpin(center, {text: '1'});
-  map.entities.push(pin);
-  */
-
-  $.getJSON("/linkinfo", function(data) {
-    for(var i = 0; i < data.length; i++) {
-      map.entities.push(getPolygon(data[i], "S"));
-      map.entities.push(getPolygon(data[i], "U"));
-    }
-  });
-
-  $.getJSON( "/linkspeed_distict", function( data ) {
-    datetime = data;
-    var mySlider = $("#ex1").slider({
-      formatter: function(value) {
-        return "date : " + datetime[value].CDATE + "\n" +
-               "time : " + datetime[value].CTIME;
-      }
-    });
-    mySlider.slider('setAttribute', 'max', datetime.length-1);
-  });
-
-  //Add handler for the map click event.
-  Microsoft.Maps.Events.addHandler(map, 'click', displayLatLong);
-  function displayLatLong(e) {
-    if (e.targetType == "map") {
-      var point = new Microsoft.Maps.Point(e.getX(), e.getY());
-      var loc = e.target.tryPixelToLocation(point);
-      // document.getElementById("textBox").value= loc.latitude + ", " + loc.longitude;
-    }
-  }
+  return map;
 }
 
 function getChart1() {

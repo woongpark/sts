@@ -36,10 +36,95 @@
     <script src="scripts/sts.js"></script>
     <script type="text/javascript">
     $(function() {
-      getMap();
+      var map = getMap();
       getChart1();
       getChart2();
       getChart3();
+
+      var linkinfo, CDATE, CTIME;
+
+      $.getJSON("/linkinfo", function(data) {
+        linkinfo = data;
+      });
+      $.getJSON("/latest_time", function(data) {
+        CDATE = data[0].CDATE;
+        CTIME = data[0].CTIME;
+      });
+
+      CDATE = "20150818";
+      CTIME = "1300";
+      $.getJSON( "/linkspeed_latest", {
+        CDATE: CDATE,
+        CTIME: CTIME
+      }, function( datetime ) {
+        var mySlider = $("#ex1").slider({
+          max: datetime.length-1,
+          value: datetime.length-1,
+          formatter: function(value) {
+            return "date : " + datetime[value].PDATE + "\n" +
+                   "time : " + datetime[value].PTIME;
+          }
+        });
+        mySlider.on('slideStop', function(e) {
+          getLinkspeed_map(datetime[e.value].PDATE, datetime[e.value].PTIME);
+        });
+        getLinkspeed_map(datetime[datetime.length-1].PDATE, datetime[datetime.length-1].PTIME);
+      });
+
+      function getLinkspeed_map(PDATE, PTIME) {
+        $.getJSON( "/linkspeed_map", {
+          CDATE: CDATE,
+          CTIME: CTIME,
+          PDATE: PDATE,
+          PTIME: PTIME
+        }, function( data ) {
+          var id2speed = {};
+          $.each(data, function(idx, obj) {
+            id2speed[$.trim(obj.LINKID)+$.trim(obj.DIRECTION)] = obj.PSPEED;
+          });
+          for(var i = 0; i < linkinfo.length; i++) {
+            var polygon1 = getPolygon(linkinfo[i], "S", id2speed[linkinfo[i].LINKNO + "D"]),
+                polygon2 = getPolygon(linkinfo[i], "U", id2speed[linkinfo[i].LINKNO + "U"]);
+            polygon1.LINKNO = linkinfo[i].LINKNO;
+            polygon1.DIRECTION = "D";
+            polygon2.LINKNO = linkinfo[i].LINKNO;
+            polygon2.DIRECTION = "U";
+
+            Microsoft.Maps.Events.addHandler(polygon1, 'click', displayLatLong);
+            Microsoft.Maps.Events.addHandler(polygon2, 'click', displayLatLong);
+
+            map.entities.push(polygon1);
+            map.entities.push(polygon2);
+          }
+        });
+      }
+
+      /*
+      // Retrieve the location of the map center
+      var center = map.getCenter();
+
+      // Add a pin to the center of the map
+      var pin = new Microsoft.Maps.Pushpin(center, {text: '1'});
+      map.entities.push(pin);
+      */
+
+      //Add handler for the map click event.
+      // Microsoft.Maps.Events.addHandler(map, 'click', displayLatLong);
+      function displayLatLong(e) {
+        if (e.targetType == "polygon") {
+          $.getJSON( "/linkspeed_graph", {
+            CDATE: CDATE,
+            CTIME: CTIME,
+            LINKID: e.target.LINKNO,
+            DIRECTION: e.target.DIRECTION
+          }, function(data) {
+            debugger
+          });
+          // var point = new Microsoft.Maps.Point(e.getX(), e.getY());
+          // var loc = e.target.tryPixelToLocation(point);
+          // document.getElementById("textBox").value= loc.latitude + ", " + loc.longitude;
+        }
+      }
     });
     </script>
   </head>

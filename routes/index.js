@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* query */
-function query(res, queryStr) {
+function query(queryStr, callback) {
   var connection = new Connection(config);
   connection.on('connect', function(err) {
       if(err) {
@@ -41,7 +41,11 @@ function query(res, queryStr) {
             })
             return obj;
           });
-          res.json(result);
+          if(typeof callback == "function") {
+            callback(result);
+          } else {
+            callback.json(result);
+          }
         }
         connection.close();
       });
@@ -51,11 +55,28 @@ function query(res, queryStr) {
 }
 
 router.get('/linkinfo', function(req, res, next) {
-  query(res, "SELECT * FROM LINKINFO;");
+  query("SELECT * FROM LINKINFO;", res);
 });
 
-router.get('/linkspeed_distict', function(req, res, next) {
-  query(res, "SELECT DISTINCT CDATE, CTIME FROM LINKSPEED ORDER BY CDATE DESC, CTIME DESC;");
+router.get('/latest_time', function(req, res, next) {
+  query("SELECT DISTINCT TOP 1 CDATE, CTIME FROM LINKSPEED ORDER BY CDATE DESC, CTIME DESC;", res);
+});
+
+
+router.get('/linkspeed_latest', function(req, res, next) {
+  var str = "SELECT DISTINCT PDATE, PTIME FROM LINKSPEED WHERE CDATE='" + req.query.CDATE + "' AND CTIME='" + req.query.CTIME + "';";
+  query(str, res);
+});
+
+router.get('/linkspeed_map', function(req, res, next) {
+  var str = "SELECT LINKID, PSPEED, DIRECTION FROM LINKSPEED WHERE PDATE='" + req.query.PDATE + "' AND PTIME='" + req.query.PTIME + "';";
+  query(str, res);
+});
+
+router.get('/linkspeed_graph', function(req, res, next) {
+  var str = "SELECT PTIME, PSPEED FROM LINKSPEED WHERE CDATE='" + req.query.CDATE + "' AND CTIME='" + req.query.CTIME + "' AND LINKID='" + req.query.LINKID + "' AND DIRECTION='" + req.query.DIRECTION + "';";
+  console.log(str);
+  query(str, res);
 });
 
 module.exports = router;
