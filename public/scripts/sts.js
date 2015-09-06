@@ -23,7 +23,8 @@ function getPolygon(linkinfo, direct, speed) {
   );
   var polygon = new Microsoft.Maps.Polygon(vertices,{
     fillColor: new Microsoft.Maps.Color(0,0,0,0),
-    strokeColor: color
+    strokeColor: color,
+    strokeThickness: 4
   });
   return polygon;
 }
@@ -42,81 +43,42 @@ function getMap() {
 }
 
 function getChart1() {
-  $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=usdeur.json&callback=?', function (data) {
-    var year = new Date(data[data.length - 1][0]).getFullYear(); // Get year of last data point
-    // Create the chart
-    $('#chartDiv1').highcharts('StockChart', {
-      rangeSelector: {
-        selected: 1
-      },
+  $(function () {
+    $('#chartDiv1').highcharts({
       title: {
-        text: 'USD to EUR exchange rate'
+        text: 'Link Prediction',
+        x: -20 //center
+      },
+      subtitle: {
+        text: 'Speed and Collision Risk',
+        x: -20
       },
       yAxis: {
         title: {
-          text: 'Exchange rate'
+          text: "PSPEED"
         }
       },
+      legend: {
+        enabled: false
+      },
       series: [{
-        name: 'USD to EUR',
-        data: data,
-        id: 'dataseries',
-        tooltip: {
-          valueDecimals: 4
-        }
-      }, {
-        type: 'flags',
-        data: [{
-          x: Date.UTC(year, 1, 22),
-          title: 'A',
-          text: 'Shape: "squarepin"'
-        }, {
-          x: Date.UTC(year, 3, 28),
-          title: 'A',
-          text: 'Shape: "squarepin"'
-        }],
-        onSeries: 'dataseries',
-        shape: 'squarepin',
-        width: 16
-      }, {
-        type: 'flags',
-        data: [{
-          x: Date.UTC(year, 2, 1),
-          title: 'B',
-          text: 'Shape: "circlepin"'
-        }, {
-          x: Date.UTC(year, 3, 1),
-          title: 'B',
-          text: 'Shape: "circlepin"'
-        }],
-        shape: 'circlepin',
-        width: 16
-      }, {
-        type: 'flags',
-        data: [{
-          x: Date.UTC(year, 2, 10),
-          title: 'C',
-          text: 'Shape: "flag"'
-        }, {
-          x: Date.UTC(year, 3, 11),
-          title: 'C',
-          text: 'Shape: "flag"'
-        }],
-        color: Highcharts.getOptions().colors[0], // same as onSeries
-        fillColor: Highcharts.getOptions().colors[0],
-        onSeries: 'dataseries',
-        width: 16,
-        style: { // text style
-          color: 'white'
-        },
-        states: {
-          hover: {
-            fillColor: '#395C84' // darker
-          }
-        }
+        name: "PSPEED",
+        data: []
       }]
     });
   });
+}
+
+function setChart1(data) {
+  var chart = $('#chartDiv1').highcharts();
+  var categories = $.map(data, function(obj) {
+    return obj.PTIME;
+  });
+  var data = $.map(data, function(obj) {
+    return obj.PSPEED;
+  })
+  chart.xAxis[0].setCategories(categories);
+  chart.series[0].setData(data);
 }
 
 function getChart2() {

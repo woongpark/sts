@@ -13,3 +13,6 @@
 #ex1Slider .slider-selection {
 	background: #BABABA;
 }
+.MicrosoftMapDrawing path {
+  cursor: pointer !important;
+}

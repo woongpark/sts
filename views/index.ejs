@@ -35,24 +35,42 @@
 
     <script src="scripts/sts.js"></script>
     <script type="text/javascript">
+    var d1 = $.Deferred(),
+        d2 = $.Deferred(),
+        d3 = $.Deferred();
+
+    $.getJSON("/linkinfo", function(data) {
+      d1.resolve(data);
+    });
+
+    $.getJSON("/latest_time", function(data) {
+      d2.resolve(data);
+    });
+
     $(function() {
-      var map = getMap();
       getChart1();
       getChart2();
       getChart3();
+      d3.resolve();
+    });
 
-      var linkinfo, CDATE, CTIME;
-
-      $.getJSON("/linkinfo", function(data) {
-        linkinfo = data;
+    $.when( d1, d2, d3 ).done(function ( v1, v2 ) {
+      var linkinfo = v1,
+          CDATE = v2[0].CDATE,
+          CTIME = v2[0].CTIME,
+          map = getMap();
+      setSlider(linkinfo, map, CDATE, CTIME);
+      $.getJSON( "/linkspeed_graph", {
+        CDATE: CDATE,
+        CTIME: CTIME,
+        LINKID: "1001001",
+        DIRECTION: "U"
+      }, function(data) {
+        setChart1(data);
       });
-      $.getJSON("/latest_time", function(data) {
-        CDATE = data[0].CDATE;
-        CTIME = data[0].CTIME;
-      });
+    });
 
-      CDATE = "20150818";
-      CTIME = "1300";
+    function setSlider(linkinfo, map, CDATE, CTIME) {
       $.getJSON( "/linkspeed_latest", {
         CDATE: CDATE,
         CTIME: CTIME
@@ -66,66 +84,56 @@
           }
         });
         mySlider.on('slideStop', function(e) {
-          getLinkspeed_map(datetime[e.value].PDATE, datetime[e.value].PTIME);
+          getLinkspeed_map(linkinfo, map, CDATE, CTIME, datetime[e.value].PDATE, datetime[e.value].PTIME);
         });
-        getLinkspeed_map(datetime[datetime.length-1].PDATE, datetime[datetime.length-1].PTIME);
+        getLinkspeed_map(linkinfo, map, CDATE, CTIME, datetime[datetime.length-1].PDATE, datetime[datetime.length-1].PTIME);
       });
+    }
 
-      function getLinkspeed_map(PDATE, PTIME) {
-        $.getJSON( "/linkspeed_map", {
-          CDATE: CDATE,
-          CTIME: CTIME,
-          PDATE: PDATE,
-          PTIME: PTIME
-        }, function( data ) {
-          var id2speed = {};
-          $.each(data, function(idx, obj) {
-            id2speed[$.trim(obj.LINKID)+$.trim(obj.DIRECTION)] = obj.PSPEED;
-          });
-          for(var i = 0; i < linkinfo.length; i++) {
-            var polygon1 = getPolygon(linkinfo[i], "S", id2speed[linkinfo[i].LINKNO + "D"]),
-                polygon2 = getPolygon(linkinfo[i], "U", id2speed[linkinfo[i].LINKNO + "U"]);
-            polygon1.LINKNO = linkinfo[i].LINKNO;
-            polygon1.DIRECTION = "D";
-            polygon2.LINKNO = linkinfo[i].LINKNO;
-            polygon2.DIRECTION = "U";
+    function getLinkspeed_map(linkinfo, map, CDATE, CTIME, PDATE, PTIME) {
+      $.getJSON( "/linkspeed_map", {
+        CDATE: CDATE,
+        CTIME: CTIME,
+        PDATE: PDATE,
+        PTIME: PTIME
+      }, function( data ) {
+        var id2speed = {};
+        $.each(data, function(idx, obj) {
+          id2speed[$.trim(obj.LINKID)+$.trim(obj.DIRECTION)] = obj.PSPEED;
+        });
+        for(var i = 0; i < linkinfo.length; i++) {
+          var polygon1 = getPolygon(linkinfo[i], "S", id2speed[linkinfo[i].LINKNO + "D"]),
+              polygon2 = getPolygon(linkinfo[i], "U", id2speed[linkinfo[i].LINKNO + "U"]);
+          polygon1.LINKNO = linkinfo[i].LINKNO;
+          polygon1.DIRECTION = "D";
+          polygon1.CDATE = CDATE;
+          polygon1.CTIME = CTIME;
+          polygon2.LINKNO = linkinfo[i].LINKNO;
+          polygon2.DIRECTION = "U";
+          polygon2.CDATE = CDATE;
+          polygon2.CTIME = CTIME;
 
-            Microsoft.Maps.Events.addHandler(polygon1, 'click', displayLatLong);
-            Microsoft.Maps.Events.addHandler(polygon2, 'click', displayLatLong);
+          Microsoft.Maps.Events.addHandler(polygon1, 'click', onClickHandler);
+          Microsoft.Maps.Events.addHandler(polygon2, 'click', onClickHandler);
 
-            map.entities.push(polygon1);
-            map.entities.push(polygon2);
-          }
+          map.entities.push(polygon1);
+          map.entities.push(polygon2);
+        }
+      });
+    }
+
+    function onClickHandler(e) {
+      if (e.targetType == "polygon") {
+        $.getJSON( "/linkspeed_graph", {
+          CDATE: e.target.CDATE,
+          CTIME: e.target.CTIME,
+          LINKID: e.target.LINKNO,
+          DIRECTION: e.target.DIRECTION
+        }, function(data) {
+          setChart1(data);
         });
       }
-
-      /*
-      // Retrieve the location of the map center
-      var center = map.getCenter();
-
-      // Add a pin to the center of the map
-      var pin = new Microsoft.Maps.Pushpin(center, {text: '1'});
-      map.entities.push(pin);
-      */
-
-      //Add handler for the map click event.
-      // Microsoft.Maps.Events.addHandler(map, 'click', displayLatLong);
-      function displayLatLong(e) {
-        if (e.targetType == "polygon") {
-          $.getJSON( "/linkspeed_graph", {
-            CDATE: CDATE,
-            CTIME: CTIME,
-            LINKID: e.target.LINKNO,
-            DIRECTION: e.target.DIRECTION
-          }, function(data) {
-            debugger
-          });
-          // var point = new Microsoft.Maps.Point(e.getX(), e.getY());
-          // var loc = e.target.tryPixelToLocation(point);
-          // document.getElementById("textBox").value= loc.latitude + ", " + loc.longitude;
-        }
-      }
-    });
+    }
     </script>
   </head>
   <body>
