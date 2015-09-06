@@ -7,3 +7,9 @@
   display: inline-block;
   height: 70px;
 }
+#ex1Slider {
+  width: 100%;
+}
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}

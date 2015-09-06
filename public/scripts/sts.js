@@ -1,9 +1,3 @@
-function getLinkinfo(callback) {
-  $.getJSON( "/linkinfo", function( data ) {
-    callback(data);
-  });
-}
-
 function getPolygon(linkinfo, direct) {
   var x1 = linkinfo.SLAT,
       y1 = linkinfo.SLON,
@@ -41,6 +35,7 @@ function getMap() {
     disableZooming: true,
     zoom: 8
   });
+  var datetime;
   // Retrieve the location of the map center
   var center = map.getCenter();
 
@@ -50,20 +45,23 @@ function getMap() {
   map.entities.push(pin);
   */
 
-  $.getJSON("/linkinfo", function(results) {
-    var data = $.map(results, function(row) {
-      var obj = {};
-      $.each(row, function(idx, val) {
-        obj[val.metadata.colName] = val.value;
-      });
-      return obj;
-    });
+  $.getJSON("/linkinfo", function(data) {
     for(var i = 0; i < data.length; i++) {
       map.entities.push(getPolygon(data[i], "S"));
       map.entities.push(getPolygon(data[i], "U"));
     }
   });
 
+  $.getJSON( "/linkspeed_distict", function( data ) {
+    datetime = data;
+    var mySlider = $("#ex1").slider({
+      formatter: function(value) {
+        return "date : " + datetime[value].CDATE + "\n" +
+               "time : " + datetime[value].CTIME;
+      }
+    });
+    mySlider.slider('setAttribute', 'max', datetime.length-1);
+  });
 
   //Add handler for the map click event.
   Microsoft.Maps.Events.addHandler(map, 'click', displayLatLong);
@@ -71,7 +69,7 @@ function getMap() {
     if (e.targetType == "map") {
       var point = new Microsoft.Maps.Point(e.getX(), e.getY());
       var loc = e.target.tryPixelToLocation(point);
-      document.getElementById("textBox").value= loc.latitude + ", " + loc.longitude;
+      // document.getElementById("textBox").value= loc.latitude + ", " + loc.longitude;
     }
   }
 }

@@ -21,45 +21,41 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/linkinfo', function(req, res, next) {
+/* query */
+function query(res, queryStr) {
   var connection = new Connection(config);
-
   connection.on('connect', function(err) {
       if(err) {
         console.log(err);
         return;
       }
-      // If no error, then good to go...
-      linkinfo(connection, res);
+      var request = new Request(queryStr, function(err, rowCount, rows) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(rowCount + ' rows');
+          var result = rows.map(function(row) {
+            var obj = {};
+            row.forEach(function(val) {
+              obj[val.metadata.colName] = val.value;
+            })
+            return obj;
+          });
+          res.json(result);
+        }
+        connection.close();
+      });
+      connection.execSql(request);
     }
   );
+}
 
-  // connection.on('debug', function(text) {
-  //   console.log(text)
-  // });
+router.get('/linkinfo', function(req, res, next) {
+  query(res, "SELECT * FROM LINKINFO;");
 });
 
-function linkinfo(connection, res) {
-  var request = new Request("SELECT * FROM LINKINFO;", function(err, rowCount, rows) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(rowCount + ' rows');
-      debugger
-      res.json(rows);
-    }
-    connection.close();
-  });
-
-  // request.on('row', function(columns) {
-  //   var result = {};
-  //   columns.forEach(function(column) {
-  //     result[column.metadata.colName] = column.value;
-  //   });
-  //   console.log(result);
-  // });
-
-  connection.execSql(request);
-}
+router.get('/linkspeed_distict', function(req, res, next) {
+  query(res, "SELECT DISTINCT CDATE, CTIME FROM LINKSPEED ORDER BY CDATE DESC, CTIME DESC;");
+});
 
 module.exports = router;
