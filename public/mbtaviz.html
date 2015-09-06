@@ -148,8 +148,8 @@
             <p>Trains are on the right side of the track relative to the direction they are moving.</p>
             <p>
               See the
-              <a href="#" data-dest="marey-morning-rush" class="click-link scrollto">morning rush-hour</a>, 
-              <a href="#" data-dest="marey-midday-lull" class="click-link scrollto">midday lull</a>, 
+              <a href="#" data-dest="marey-morning-rush" class="click-link scrollto">morning rush-hour</a>,
+              <a href="#" data-dest="marey-midday-lull" class="click-link scrollto">midday lull</a>,
               <a href="#" data-dest="marey-evening-rush" class="click-link scrollto">afternoon rush-hour</a>, and the
               <a href="#" data-dest="marey-evening-lull" class="click-link scrollto">evening lull</a>.
             </p>
@@ -215,7 +215,7 @@
         <div class="turnstile-total"></div>
         <div class="turnstile key text-center"></div>
       </div>
-      
+
       <p>
         The table and map below breaks down February's turnstile entries and exits by station.
         Hover over a row in the table to highlight the corresponding circle on the map, or vice-versa.
@@ -295,9 +295,9 @@
       <p>When you look back at the Marey diagram, the slope of each line tells you how fast a train is going and the time it takes to get between stations.  When all of the start and stop times are lined up you can see a drastic variation in the time it takes to get between stops throughout the day.  If you have ever ridden the subway during rush hour then you have experienced what the steep lines in the Marey diagram feel like first-hand.</p>
       <p>What causes these delays?  It’s hard to know for sure, but it appears that number of people riding the subway is a factor.</p>
     </div>
-    
+
     <div class="interaction-all">
-      
+
       <div class="container text-center">
         <h4>One Week of Congestion and Delay</h4>
       </div>
@@ -312,10 +312,10 @@
         <div class="right clearfix">
         </div>
       </div>
-      
+
       <div class="container">
         <p>
-          This visualization shows congestion and delay on the red, blue, and orange lines for the first full week in February. The <a href="#" class="hover-link highlight" data-highlight=".horizon">gray bands</a> show the total number of entries into the all stations per minute over time for each day of the week.  The <a href="#" class="hover-link highlight" data-highlight=".delay-rect">colored bands</a> below indicate whether the trains are running <span class="legend-fast">faster</span> or <span class="legend-slow">slower</span> than normal. 
+          This visualization shows congestion and delay on the red, blue, and orange lines for the first full week in February. The <a href="#" class="hover-link highlight" data-highlight=".horizon">gray bands</a> show the total number of entries into the all stations per minute over time for each day of the week.  The <a href="#" class="hover-link highlight" data-highlight=".delay-rect">colored bands</a> below indicate whether the trains are running <span class="legend-fast">faster</span> or <span class="legend-slow">slower</span> than normal.
         </p>
         <p>
           The <a href="#" class="hover-link highlight" data-highlight=".breathing-glyph">map</a> shows the congestion and delay across the system at a time when you hover over the chart on the right.  The thickness of each line at a stop indicates number of entries per minute at that stop, and the color on the right-hand side of a track indicates delay in that direction using the same scale as the <a href="#" class="hover-link highlight" data-highlight=".delay-rect">colored bands</a>.
@@ -330,7 +330,7 @@
           <a href="#" class="hover-link highlight" data-highlight=".day-3">Wednesday</a>
           and people stayed home, especially when you compare how light
           <a href="#" class="hover-link set-time" data-day="3" data-time="5:24 pm">Wednesday evening's rush hour</a>
-          was compared to 
+          was compared to
           <a href="#" class="hover-link set-time" data-day="4" data-time="5:24 pm">Thursday evening's rush hour</a>.
         </p>
       </div>
@@ -347,7 +347,7 @@
         Your Commute
       </h3>
       <p>
-        How do all of these factors affect your commute? 
+        How do all of these factors affect your commute?
         Click and drag on the
         <a href="#" data-highlight=".map" class="hover-link pick-two-highlight">map</a>
         from a starting station to an ending station to see a detailed breakdown of how long that trip takes at different points during a typical workday.
@@ -357,12 +357,12 @@
         <a href="#" data-highlight=".circle.bottom" class="hover-link pick-two-highlight">points on bottom</a>
         show all of the times between when when trains leave the start station going to the destination station.
         The time between trains is the longest you would possibly need to wait if you arrived just as the previous train was leaving.
-        The 
+        The
         <a href="#" data-highlight=".top.range" class="hover-link pick-two-highlight">blue band</a>
         excludes the shortest and longest 10% of all transit times, leaving behind the most-likely 80% range and the
         <a href="#" data-highlight=".bottom.range" class="hover-link pick-two-highlight">orange band</a>
         does the same for wait times between trains.
-        The 
+        The
         <a href="#" data-highlight=".p50" class="hover-link pick-two-highlight">dark lines</a>
         show the middle point where 50% of the time wait/transit times are higher and 50% of the time they are lower.
       </p>
@@ -449,7 +449,7 @@
         <a href="http://www.mbta.com/rider_tools/developers/" target="_blank">Developer Relations Program</a>.
       </p>
       <p>
-        Much of the inspiration for this report comes from Bret Victor's 
+        Much of the inspiration for this report comes from Bret Victor's
         <a href="http://worrydream.com/LadderOfAbstraction/" target="_blank">Ladder of Abstraction</a>
         and the works of
         <a href="http://www.edwardtufte.com/tufte/" target="_blank">Edward Tufte</a>
@@ -485,11 +485,11 @@
   </div>
 
   <!-- 3rd Party Dependencies -->
-  <script src="bower_components/es6-shim/es6-shim.min.js"></script>
-  <script src="bower_components/underscore/underscore.min.js"></script>
+  <script src="bower_components/es6-shim/es6-shim.js"></script>
+  <script src="bower_components/underscore/underscore.js"></script>
   <script src="bower_components/moment/min/moment.min.js"></script>
-  <script src="bower_components/d3/d3.min.js"></script>
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/d3/d3.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
 
   <!-- D3 Plugins -->
   <script src="scripts/horizon.js"></script>
@@ -505,9 +505,9 @@
   <script src="scripts/the-people.js"></script>
   <script src="scripts/congestion-and-delay.js"></script>
   <script src="scripts/your-commute.js"></script>
-  
+
     <script src="//oss.maxcdn.com/signet/0.4.4/signet.min.js"></script>
-  
+
 <!--<![endif]-->
 </body>
 </html>
