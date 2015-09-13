@@ -50,7 +50,10 @@ function getIcon(TYPE, LAT, LON) {
   // Create a icon
   var loc = new Microsoft.Maps.Location(LAT, LON);
   var str = "/images/"+ TYPE.trim() + '.png';//타입별로 이미지를 선택하도록 고처야함
-  var pushpinOptions = {icon: str, width: 50, height: 50};
+  // var pushpinOptions = {icon: str, width: 50, height: 50};
+  var pushpinOptions = {
+    htmlContent: "<img class='map-icon' src='" + str + "'></img>"
+  };
   var pushpin= new Microsoft.Maps.Pushpin(loc, pushpinOptions);
 
   return pushpin;
