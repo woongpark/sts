@@ -1,6 +1,5 @@
 (function() {
   $(function() {
-    debugger
     var pathname = location.pathname,
         a = $(".nav a[href=\"" + pathname + "\"]");
     a.closest("li").addClass("active");
