@@ -80,7 +80,7 @@
       }, function(data) {
         for(var i =0; i< data.length;i++){
           var eIcon = getIcon(data[i].EVENTTYPE, data[i].LAT, data[i].LON);
-          //event_list.push(eIcon);
+          event_list.push(eIcon);
         }
         debugger
       });
@@ -231,7 +231,7 @@
         wearther_list = [];
         for(var i =0; i< data.length;i++){
           var wIcon = getIcon(data[i].WEATHERTYPE, data[i].LAT, data[i].LON);
-          //wearther_list.push(wIcon);
+          wearther_list.push(wIcon);
         }
         resetLink();
       });
