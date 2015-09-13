@@ -1,0 +1,334 @@
+{
+  "SEOUL|Kyungbu": [
+    0,
+    0
+  ],
+  "SHINGALJC|Kyungbu": [
+    1,
+    0
+  ],
+  "SUWON|Kyungbu": [
+    2,
+    0
+  ],
+  "GIHEUNG|Kyungbu": [
+    3,
+    0
+  ],
+  "GIHEUNGDONGTAN|Kyungbu": [
+    4,
+    0
+  ],
+  "DONGTAN|Kyungbu": [
+    5,
+    0
+  ],
+  "OSAN|Kyungbu": [
+    6,
+    0
+  ],
+  "ANSUNGJC|Kyungbu": [
+    8,
+    0
+  ],
+  "BUKCHEONAN|Kyungbu": [
+    9,
+    0
+  ],
+  "CHEONAN|Kyungbu": [
+    10,
+    0
+  ],
+  "CHEONANJC|Kyungbu": [
+    11,
+    0
+  ],
+  "MOKCHEON|Kyungbu": [
+    12,
+    0
+  ],
+  "CHEONGJU|Kyungbu": [
+    13,
+    0
+  ],
+  "NAMIJC|Kyungbu": [
+    14,
+    0
+  ],
+  "SEOSEOUL|Seohaean": [
+    15,
+    0
+  ],
+  "ANSAN|Seohaean": [
+    16,
+    0
+  ],
+  "PALGOKJC|Seohaean": [
+    17,
+    0
+  ],
+  "MAESONG|Seohaean": [
+    18,
+    0
+  ],
+  "BIBONG|Seohaean": [
+    19,
+    0
+  ],
+  "BALAN|Seohaean": [
+    20,
+    0
+  ],
+  "SEOPYONGTAEKJC|Seohaean": [
+    21,
+    0
+  ],
+  "SEOPYONGTAEK|Seohaean": [
+    22,
+    0
+  ],
+  "SONGAK|Seohaean": [
+    23,
+    0
+  ],
+  "DANGJIN|Seohaean": [
+    24,
+    0
+  ],
+  "DANGJINJC|Seohaean": [
+    25,
+    0
+  ],
+  "CHEONANJC|CheonanNonsan": [
+    26,
+    0
+  ],
+  "NAMCHEONAN|CheonanNonsan": [
+    27,
+    0
+  ],
+  "PUNGSE|CheonanNonsan": [
+    28,
+    0
+  ],
+  "JUNGAN|CheonanNonsan": [
+    29,
+    0
+  ],
+  "GONGJUJC|CheonanNonsan": [
+    30,
+    0
+  ],
+  "DANGJINJC|DanjikYoungduk": [
+    31,
+    0
+  ],
+  "MYEONCHEON|DanjikYoungduk": [
+    32,
+    0
+  ],
+  "GODEOK|DanjikYoungduk": [
+    33,
+    0
+  ],
+  "YESANSUDUKSA|DanjikYoungduk": [
+    34,
+    0
+  ],
+  "SINYANG|DanjikYoungduk": [
+    35,
+    0
+  ],
+  "YOOGU|DanjikYoungduk": [
+    36,
+    0
+  ],
+  "MAGOKSA|DanjikYoungduk": [
+    37,
+    0
+  ],
+  "SEOGONGJUJC|DanjikYoungduk": [
+    38,
+    0
+  ],
+  "GONGJUJC|DanjikYoungduk": [
+    39,
+    0
+  ],
+  "GONGJU|DanjikYoungduk": [
+    40,
+    0
+  ],
+  "SEOSEJONG|DanjikYoungduk": [
+    41,
+    0
+  ],
+  "NAMSEJONG|DanjikYoungduk": [
+    42,
+    0
+  ],
+  "YUSEONG|DanjikYoungduk": [
+    43,
+    0
+  ],
+  "DONGSEOUL|Joongbu": [
+    44,
+    0
+  ],
+  "SANGOK|Joongbu": [
+    45,
+    0
+  ],
+  "GYEONGGIGWANGJU|Joongbu": [
+    46,
+    0
+  ],
+  "GONJIAM|Joongbu": [
+    47,
+    0
+  ],
+  "SEOICHEON|Joongbu": [
+    48,
+    0
+  ],
+  "MAJANG|Joongbu": [
+    49,
+    0
+  ],
+  "HOBUBJC|Joongbu": [
+    50,
+    0
+  ],
+  "ILJUK|Joongbu": [
+    51,
+    0
+  ],
+  "DAESO|Joongbu": [
+    52,
+    0
+  ],
+  "DAESOJC|Joongbu": [
+    53,
+    0
+  ],
+  "JINCHEON|Joongbu": [
+    54,
+    0
+  ],
+  "JEUNGPYEONG|Joongbu": [
+    55,
+    0
+  ],
+  "OCHANG|Joongbu": [
+    56,
+    0
+  ],
+  "SEOCHEONGJU|Joongbu": [
+    57,
+    0
+  ],
+  "NAMIJC|Joongbu": [
+    58,
+    0
+  ],
+  "CHEONGWONJC|Joongbu": [
+    59,
+    0
+  ],
+  "CHEONGWON|Joongbu": [
+    60,
+    0
+  ],
+  "SINTANJIN|Joongbu": [
+    61,
+    0
+  ],
+  "HOIDUKJC|Joongbu": [
+    62,
+    0
+  ],
+  "SEOPYONGTAEKJC|PyungtaekJecheon": [
+    63,
+    0
+  ],
+  "CHEONGBUK|PyungtaekJecheon": [
+    64,
+    0
+  ],
+  "SONGTANG|PyungtaekJecheon": [
+    65,
+    0
+  ],
+  "ANSUNGJC|PyungtaekJecheon": [
+    66,
+    0
+  ],
+  "SEOANSUNG|PyungtaekJecheon": [
+    67,
+    0
+  ],
+  "NAMANSUNG|PyungtaekJecheon": [
+    68,
+    0
+  ],
+  "DAESOJC|PyungtaekJecheon": [
+    69,
+    0
+  ],
+  "ANSAN|Youngdong": [
+    70,
+    0
+  ],
+  "DUNDAE|Youngdong": [
+    71,
+    0
+  ],
+  "GUNPO|Youngdong": [
+    72,
+    0
+  ],
+  "DONGGUNPO|Youngdong": [
+    73,
+    0
+  ],
+  "BUGOK|Youngdong": [
+    74,
+    0
+  ],
+  "BUKSUWON|Youngdong": [
+    75,
+    0
+  ],
+  "DONGSUWON|Youngdong": [
+    76,
+    0
+  ],
+  "GWANGYO|Youngdong": [
+    77,
+    0
+  ],
+  "SHINGALJC|Youngdong": [
+    78,
+    0
+  ],
+  "MASUNG|Youngdong": [
+    79,
+    0
+  ],
+  "YONGIN|Youngdong": [
+    80,
+    0
+  ],
+  "YANGJI|Youngdong": [
+    81,
+    0
+  ],
+  "DUKPYEONG|Youngdong": [
+    82,
+    0
+  ],
+  "HOBUBJC|Youngdong": [
+    83,
+    0
+  ]
+}

@@ -19,4 +19,18 @@
 .map-icon {
   width: 30px;
   height: 30px;
+.graphic .connect {
+  stroke-width: 0.5;
+  stroke: gray;
+}
+.graphic .station {
+  fill: gray;
+  stroke: gray;
+  background: gray;
+  r: 1px;
+}
+.graphic circle.train {
+}
+.summary li {
+  font-size: 18px;
 }

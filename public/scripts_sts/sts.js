@@ -294,7 +294,6 @@ function setChart2(data){
     array[idx] = arr;
   });
   var bValue = getBoxVaule(array);
-//  debugger
   // chart.xAxis[0].setCategories(categories);
   chart.series[0].setData(bValue);
 }
@@ -359,7 +358,6 @@ function setChart3(data){
     array[idx] = arr;
   });
   var bValue = getBoxVaule(array);
-//  debugger
   // chart.xAxis[0].setCategories(categories);
   chart.series[0].setData(bValue);
 }

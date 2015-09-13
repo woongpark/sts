@@ -33,7 +33,7 @@
     <!-- common css -->
     <link rel="stylesheet" href="styles/style.css">
 
-    <script src="scripts/sts.js"></script>
+    <script src="scripts_sts/sts.js"></script>
     <script type="text/javascript">
     var def1 = $.Deferred(),
         def2 = $.Deferred(),
@@ -82,7 +82,6 @@
           var eIcon = getIcon(data[i].EVENTTYPE, data[i].LAT, data[i].LON);
           event_list.push(eIcon);
         }
-        debugger
       });
       $.getJSON( "/linkspeed_graph", {
         CDATE: CDATE,
