@@ -1,3 +1,11 @@
+(function() {
+  $(function() {
+    var pathname = location.pathname,
+        a = $(".nav a[href=\"" + pathname + "\"]");
+    a.closest("li").addClass("active");
+  });
+})();
+
 function getPolygon(linkinfo, direct, speed) {
   var x1 = linkinfo.SLAT,
       y1 = linkinfo.SLON,
