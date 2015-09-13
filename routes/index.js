@@ -62,6 +62,13 @@ router.get('/latest_time', function(req, res, next) {
   query("SELECT DISTINCT TOP 1 CDATE, CTIME FROM LINKSPEED ORDER BY CDATE DESC, CTIME DESC;", res);
 });
 
+router.get('/event_test', function(req, res, next) {
+  query("SELECT EVENTTYPE, LAT, LON FROM EVENTS;", res);
+});
+
+router.get('/weather_test', function(req, res, next) {
+  query("SELECT WEATHERTYPE, LAT, LON FROM WEATHER;", res);
+});
 
 router.get('/linkspeed_latest', function(req, res, next) {
   var str = "SELECT DISTINCT PDATE, PTIME FROM LINKSPEED WHERE CDATE='" + req.query.CDATE + "' AND CTIME='" + req.query.CTIME + "';";
@@ -72,11 +79,46 @@ router.get('/linkspeed_map', function(req, res, next) {
   var str = "SELECT LINKID, PSPEED, DIRECTION FROM LINKSPEED WHERE PDATE='" + req.query.PDATE + "' AND PTIME='" + req.query.PTIME + "';";
   query(str, res);
 });
+router.get('/linkrisk_map', function(req, res, next) {
+  var str = "SELECT LINKID, COLLISIONRISKMEAN, DIRECTION FROM LINKCOLLISIONRISK WHERE PDATE='" + req.query.PDATE + "' AND PTIME='" + req.query.PTIME + "';";
+  query(str, res);
+});
 
 router.get('/linkspeed_graph', function(req, res, next) {
   var str = "SELECT PTIME, PSPEED FROM LINKSPEED WHERE CDATE='" + req.query.CDATE + "' AND CTIME='" + req.query.CTIME + "' AND LINKID='" + req.query.LINKID + "' AND DIRECTION='" + req.query.DIRECTION + "';";
   console.log(str);
   query(str, res);
+});
+
+router.get('/linkrisk_graph', function(req, res, next) {
+  if(req.query.LINE!=1000 || req.query.LINE!=2000 || req.query.LINE!=3000){
+    var str = "SELECT PTIME, COLLISIONRISKMEAN FROM LINKCOLLISIONRISK WHERE CDATE='" + req.query.CDATE + "' AND CTIME='" + req.query.CTIME + "' AND LINKID='" + req.query.LINKID + "' AND DIRECTION='" + req.query.DIRECTION + "';";
+    console.log(str);
+    query(str, res);
+  }
+  else {
+    res.json({error: "lineNull"});
+  }
+});
+
+router.get('/herr_graph', function(req, res, next) {
+  if(req.query.LINE==1000 && req.query.LINE==2000 && req.query.LINE==3000){
+    var str = "SELECT CTIME, PSPEED, ASPEED FROM LINKSPEED WHERE CDATE='" + req.query.CDATE + "' AND LINKID='" + req.query.LINKID + "' AND DIRECTION='" + req.query.DIRECTION + "';";
+    console.log(str);
+    query(str, res);
+  }
+  else {
+    res.json({error: "lineNull"});
+  }
+});
+router.get('/aerr_graph', function(req, res, next) {
+  if(req.query.LINE!=1000 || req.query.LINE!=2000 || req.query.LINE!=3000){
+    var str = "SELECT CTIME, PSPEED, ASPEED FROM LINKSPEED WHERE CDATE='" + req.query.CDATE + "' AND LINKID='" + req.query.LINKID + "' AND DIRECTION='" + req.query.DIRECTION + "';";
+    console.log(str);
+    query(str, res);
+  }
+  else {
+    res.json({error: "lineNull"});  }
 });
 
 module.exports = router;
