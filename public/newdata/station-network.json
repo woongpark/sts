@@ -1,0 +1,1072 @@
+{
+  "nodes": [
+    {
+      "id": "DONGSEOUL",
+      "name": "동서울"
+    },
+    {
+      "id": "SANGOK",
+      "name": "산곡"
+    },
+    {
+      "id": "GYEONGGIGWANGJU",
+      "name": "경기광주"
+    },
+    {
+      "id": "GONJIAM",
+      "name": "곤지암"
+    },
+    {
+      "id": "SEOICHEON",
+      "name": "서이천"
+    },
+    {
+      "id": "MAJANG",
+      "name": "마장"
+    },
+    {
+      "id": "HOBUBJC",
+      "name": "호법jc"
+    },
+    {
+      "id": "ILJUK",
+      "name": "일죽"
+    },
+    {
+      "id": "DAESO",
+      "name": "대소"
+    },
+    {
+      "id": "DAESOJC",
+      "name": "대소jc"
+    },
+    {
+      "id": "JINCHEON",
+      "name": "진천"
+    },
+    {
+      "id": "JEUNGPYEONG",
+      "name": "증평"
+    },
+    {
+      "id": "OCHANG",
+      "name": "오창"
+    },
+    {
+      "id": "SEOCHEONGJU",
+      "name": "서청주"
+    },
+    {
+      "id": "NAMIJC",
+      "name": "남이jc"
+    },
+    {
+      "id": "CHEONGWONJC",
+      "name": "청원jc"
+    },
+    {
+      "id": "CHEONGWON",
+      "name": "청원"
+    },
+    {
+      "id": "SINTANJIN",
+      "name": "신탄진"
+    },
+    {
+      "id": "HOIDUKJC",
+      "name": "회덕jc"
+    },
+    {
+      "id": "ANSAN",
+      "name": "안산jc"
+    },
+    {
+      "id": "DUNDAE",
+      "name": "둔대"
+    },
+    {
+      "id": "GUNPO",
+      "name": "군포"
+    },
+    {
+      "id": "DONGGUNPO",
+      "name": "동군포"
+    },
+    {
+      "id": "BUGOK",
+      "name": "부곡"
+    },
+    {
+      "id": "BUKSUWON",
+      "name": "북수원"
+    },
+    {
+      "id": "DONGSUWON",
+      "name": "동수원"
+    },
+    {
+      "id": "GWANGYO",
+      "name": "광교"
+    },
+    {
+      "id": "SHINGALJC",
+      "name": "신갈jc"
+    },
+    {
+      "id": "MASUNG",
+      "name": "마성"
+    },
+    {
+      "id": "YONGIN",
+      "name": "용인"
+    },
+    {
+      "id": "YANGJI",
+      "name": "양지"
+    },
+    {
+      "id": "DUKPYEONG",
+      "name": "덕평"
+    },
+    {
+      "id": "SEOSEOUL",
+      "name": "서서울"
+    },
+    {
+      "id": "PALGOKJC",
+      "name": "팔곡jc"
+    },
+    {
+      "id": "MAESONG",
+      "name": "매송"
+    },
+    {
+      "id": "BIBONG",
+      "name": "비봉"
+    },
+    {
+      "id": "BALAN",
+      "name": "발안"
+    },
+    {
+      "id": "SEOPYONGTAEKJC",
+      "name": "서평택jc"
+    },
+    {
+      "id": "SEOPYONGTAEK",
+      "name": "서평택"
+    },
+    {
+      "id": "SONGAK",
+      "name": "송악"
+    },
+    {
+      "id": "DANGJIN",
+      "name": "당진"
+    },
+    {
+      "id": "DANGJINJC",
+      "name": "당진jc"
+    },
+    {
+      "id": "SEOUL",
+      "name": "서울"
+    },
+    {
+      "id": "SUWON",
+      "name": "수원"
+    },
+    {
+      "id": "GIHEUNG",
+      "name": "기흥"
+    },
+    {
+      "id": "GIHEUNGDONGTAN",
+      "name": "기흥(동탄)"
+    },
+    {
+      "id": "DONGTAN",
+      "name": "동탄jc"
+    },
+    {
+      "id": "OSAN",
+      "name": "오산"
+    },
+    {
+      "id": "ANSUNGJC",
+      "name": "안성jc"
+    },
+    {
+      "id": "ANSUNGJC",
+      "name": "안성jc"
+    },
+    {
+      "id": "BUKCHEONAN",
+      "name": "북천안"
+    },
+    {
+      "id": "CHEONAN",
+      "name": "천안"
+    },
+    {
+      "id": "CHEONANJC",
+      "name": "천안jc"
+    },
+    {
+      "id": "MOKCHEON",
+      "name": "목천"
+    },
+    {
+      "id": "CHEONGJU",
+      "name": "청주"
+    },
+    {
+      "id": "CHEONGBUK",
+      "name": "청북"
+    },
+    {
+      "id": "SONGTANG",
+      "name": "송탄"
+    },
+    {
+      "id": "SEOANSUNG",
+      "name": "서안성"
+    },
+    {
+      "id": "NAMANSUNG",
+      "name": "남안성"
+    },
+    {
+      "id": "NAMCHEONAN",
+      "name": "남천안"
+    },
+    {
+      "id": "PUNGSE",
+      "name": "풍세"
+    },
+    {
+      "id": "JUNGAN",
+      "name": "정안"
+    },
+    {
+      "id": "GONGJUJC",
+      "name": "공주jc"
+    },
+    {
+      "id": "MYEONCHEON",
+      "name": "면천"
+    },
+    {
+      "id": "GODEOK",
+      "name": "고덕"
+    },
+    {
+      "id": "YESANSUDUKSA",
+      "name": "예산수덕사"
+    },
+    {
+      "id": "SINYANG",
+      "name": "신양"
+    },
+    {
+      "id": "YOOGU",
+      "name": "유구"
+    },
+    {
+      "id": "MAGOKSA",
+      "name": "마곡사"
+    },
+    {
+      "id": "SEOGONGJUJC",
+      "name": "서공주jc"
+    },
+    {
+      "id": "GONGJU",
+      "name": "공주"
+    },
+    {
+      "id": "SEOSEJONG",
+      "name": "서세종"
+    },
+    {
+      "id": "NAMSEJONG",
+      "name": "남세종"
+    },
+    {
+      "id": "YUSEONG",
+      "name": "유성jc"
+    }
+  ],
+  "links": [
+    {
+      "source": 42,
+      "target": 27,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 27,
+      "target": 43,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 43,
+      "target": 44,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 44,
+      "target": 45,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 45,
+      "target": 46,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 46,
+      "target": 47,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 47,
+      "target": 48,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 48,
+      "target": 49,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 49,
+      "target": 50,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 50,
+      "target": 51,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 51,
+      "target": 52,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 52,
+      "target": 53,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 53,
+      "target": 54,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 54,
+      "target": 14,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 32,
+      "target": 19,
+      "line": "Seohaean"
+    },
+    {
+      "source": 19,
+      "target": 33,
+      "line": "Seohaean"
+    },
+    {
+      "source": 33,
+      "target": 34,
+      "line": "Seohaean"
+    },
+    {
+      "source": 34,
+      "target": 35,
+      "line": "Seohaean"
+    },
+    {
+      "source": 35,
+      "target": 36,
+      "line": "Seohaean"
+    },
+    {
+      "source": 36,
+      "target": 37,
+      "line": "Seohaean"
+    },
+    {
+      "source": 37,
+      "target": 38,
+      "line": "Seohaean"
+    },
+    {
+      "source": 38,
+      "target": 39,
+      "line": "Seohaean"
+    },
+    {
+      "source": 39,
+      "target": 40,
+      "line": "Seohaean"
+    },
+    {
+      "source": 40,
+      "target": 41,
+      "line": "Seohaean"
+    },
+    {
+      "source": 52,
+      "target": 59,
+      "line": "CheonanNonsan"
+    },
+    {
+      "source": 59,
+      "target": 60,
+      "line": "CheonanNonsan"
+    },
+    {
+      "source": 60,
+      "target": 61,
+      "line": "CheonanNonsan"
+    },
+    {
+      "source": 61,
+      "target": 62,
+      "line": "CheonanNonsan"
+    },
+    {
+      "source": 41,
+      "target": 63,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 63,
+      "target": 64,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 64,
+      "target": 65,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 65,
+      "target": 66,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 66,
+      "target": 67,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 67,
+      "target": 68,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 68,
+      "target": 69,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 69,
+      "target": 62,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 62,
+      "target": 70,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 70,
+      "target": 71,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 71,
+      "target": 72,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 72,
+      "target": 73,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "line": "Joongbu"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "line": "Joongbu"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "line": "Joongbu"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "line": "Joongbu"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "line": "Joongbu"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "line": "Joongbu"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "line": "Joongbu"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "line": "Joongbu"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "line": "Joongbu"
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "line": "Joongbu"
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "line": "Joongbu"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "line": "Joongbu"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "line": "Joongbu"
+    },
+    {
+      "source": 13,
+      "target": 14,
+      "line": "Joongbu"
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "line": "Joongbu"
+    },
+    {
+      "source": 15,
+      "target": 16,
+      "line": "Joongbu"
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "line": "Joongbu"
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "line": "Joongbu"
+    },
+    {
+      "source": 37,
+      "target": 55,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 55,
+      "target": 56,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 56,
+      "target": 48,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 48,
+      "target": 57,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 57,
+      "target": 58,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 58,
+      "target": 9,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 19,
+      "target": 20,
+      "line": "Youngdong"
+    },
+    {
+      "source": 20,
+      "target": 21,
+      "line": "Youngdong"
+    },
+    {
+      "source": 21,
+      "target": 22,
+      "line": "Youngdong"
+    },
+    {
+      "source": 22,
+      "target": 23,
+      "line": "Youngdong"
+    },
+    {
+      "source": 23,
+      "target": 24,
+      "line": "Youngdong"
+    },
+    {
+      "source": 24,
+      "target": 25,
+      "line": "Youngdong"
+    },
+    {
+      "source": 25,
+      "target": 26,
+      "line": "Youngdong"
+    },
+    {
+      "source": 26,
+      "target": 27,
+      "line": "Youngdong"
+    },
+    {
+      "source": 27,
+      "target": 28,
+      "line": "Youngdong"
+    },
+    {
+      "source": 28,
+      "target": 29,
+      "line": "Youngdong"
+    },
+    {
+      "source": 29,
+      "target": 30,
+      "line": "Youngdong"
+    },
+    {
+      "source": 30,
+      "target": 31,
+      "line": "Youngdong"
+    },
+    {
+      "source": 31,
+      "target": 6,
+      "line": "Youngdong"
+    },
+    {
+      "source": 27,
+      "target": 42,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 43,
+      "target": 27,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 44,
+      "target": 43,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 45,
+      "target": 44,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 46,
+      "target": 45,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 47,
+      "target": 46,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 48,
+      "target": 47,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 49,
+      "target": 48,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 50,
+      "target": 49,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 51,
+      "target": 50,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 52,
+      "target": 51,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 53,
+      "target": 52,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 54,
+      "target": 53,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 14,
+      "target": 54,
+      "line": "Kyungbu"
+    },
+    {
+      "source": 19,
+      "target": 32,
+      "line": "Seohaean"
+    },
+    {
+      "source": 33,
+      "target": 19,
+      "line": "Seohaean"
+    },
+    {
+      "source": 34,
+      "target": 33,
+      "line": "Seohaean"
+    },
+    {
+      "source": 35,
+      "target": 34,
+      "line": "Seohaean"
+    },
+    {
+      "source": 36,
+      "target": 35,
+      "line": "Seohaean"
+    },
+    {
+      "source": 37,
+      "target": 36,
+      "line": "Seohaean"
+    },
+    {
+      "source": 38,
+      "target": 37,
+      "line": "Seohaean"
+    },
+    {
+      "source": 39,
+      "target": 38,
+      "line": "Seohaean"
+    },
+    {
+      "source": 40,
+      "target": 39,
+      "line": "Seohaean"
+    },
+    {
+      "source": 41,
+      "target": 40,
+      "line": "Seohaean"
+    },
+    {
+      "source": 59,
+      "target": 52,
+      "line": "CheonanNonsan"
+    },
+    {
+      "source": 60,
+      "target": 59,
+      "line": "CheonanNonsan"
+    },
+    {
+      "source": 61,
+      "target": 60,
+      "line": "CheonanNonsan"
+    },
+    {
+      "source": 62,
+      "target": 61,
+      "line": "CheonanNonsan"
+    },
+    {
+      "source": 63,
+      "target": 41,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 64,
+      "target": 63,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 65,
+      "target": 64,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 66,
+      "target": 65,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 67,
+      "target": 66,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 68,
+      "target": 67,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 69,
+      "target": 68,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 62,
+      "target": 69,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 70,
+      "target": 62,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 71,
+      "target": 70,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 72,
+      "target": 71,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 73,
+      "target": 72,
+      "line": "DanjikYoungduk"
+    },
+    {
+      "source": 1,
+      "target": 0,
+      "line": "Joongbu"
+    },
+    {
+      "source": 2,
+      "target": 1,
+      "line": "Joongbu"
+    },
+    {
+      "source": 3,
+      "target": 2,
+      "line": "Joongbu"
+    },
+    {
+      "source": 4,
+      "target": 3,
+      "line": "Joongbu"
+    },
+    {
+      "source": 5,
+      "target": 4,
+      "line": "Joongbu"
+    },
+    {
+      "source": 6,
+      "target": 5,
+      "line": "Joongbu"
+    },
+    {
+      "source": 7,
+      "target": 6,
+      "line": "Joongbu"
+    },
+    {
+      "source": 8,
+      "target": 7,
+      "line": "Joongbu"
+    },
+    {
+      "source": 9,
+      "target": 8,
+      "line": "Joongbu"
+    },
+    {
+      "source": 10,
+      "target": 9,
+      "line": "Joongbu"
+    },
+    {
+      "source": 11,
+      "target": 10,
+      "line": "Joongbu"
+    },
+    {
+      "source": 12,
+      "target": 11,
+      "line": "Joongbu"
+    },
+    {
+      "source": 13,
+      "target": 12,
+      "line": "Joongbu"
+    },
+    {
+      "source": 14,
+      "target": 13,
+      "line": "Joongbu"
+    },
+    {
+      "source": 15,
+      "target": 14,
+      "line": "Joongbu"
+    },
+    {
+      "source": 16,
+      "target": 15,
+      "line": "Joongbu"
+    },
+    {
+      "source": 17,
+      "target": 16,
+      "line": "Joongbu"
+    },
+    {
+      "source": 18,
+      "target": 17,
+      "line": "Joongbu"
+    },
+    {
+      "source": 55,
+      "target": 37,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 56,
+      "target": 55,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 48,
+      "target": 56,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 57,
+      "target": 48,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 58,
+      "target": 57,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 9,
+      "target": 58,
+      "line": "PyungtaekJecheon"
+    },
+    {
+      "source": 20,
+      "target": 19,
+      "line": "Youngdong"
+    },
+    {
+      "source": 21,
+      "target": 20,
+      "line": "Youngdong"
+    },
+    {
+      "source": 22,
+      "target": 21,
+      "line": "Youngdong"
+    },
+    {
+      "source": 23,
+      "target": 22,
+      "line": "Youngdong"
+    },
+    {
+      "source": 24,
+      "target": 23,
+      "line": "Youngdong"
+    },
+    {
+      "source": 25,
+      "target": 24,
+      "line": "Youngdong"
+    },
+    {
+      "source": 26,
+      "target": 25,
+      "line": "Youngdong"
+    },
+    {
+      "source": 27,
+      "target": 26,
+      "line": "Youngdong"
+    },
+    {
+      "source": 28,
+      "target": 27,
+      "line": "Youngdong"
+    },
+    {
+      "source": 29,
+      "target": 28,
+      "line": "Youngdong"
+    },
+    {
+      "source": 30,
+      "target": 29,
+      "line": "Youngdong"
+    },
+    {
+      "source": 31,
+      "target": 30,
+      "line": "Youngdong"
+    },
+    {
+      "source": 6,
+      "target": 31,
+      "line": "Youngdong"
+    }
+  ]
+}

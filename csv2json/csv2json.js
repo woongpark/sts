@@ -9,6 +9,8 @@ var csvFiles = [
   "links"
 ];
 
+var outputPath = "../public/newdata/";
+
 function csv2json(name, callback) {
   var csvFileName="./input/" + name + ".csv";
   var fileStream=fs.createReadStream(csvFileName);
@@ -26,7 +28,7 @@ function csv2json(name, callback) {
 
 function json2File(name, json) {
   var text = JSON.stringify(json, null, 2);
-  fs.writeFile("./output/" + name + ".json", text, function(err) {
+  fs.writeFile(outputPath + name + ".json", text, function(err) {
       if(err) {
         console.log(err);
       } else {
@@ -35,8 +37,8 @@ function json2File(name, json) {
   });
 }
 
-if(!fs.existsSync("output")) {
-  fs.mkdirSync("output");
+if(!fs.existsSync(outputPath)) {
+  fs.mkdirSync(outputPath);
 }
 async.map(csvFiles, csv2json, function(err, result) {
   var nodes = result[0],
@@ -60,8 +62,8 @@ var restructers = {
     }
     for(var i = 0; i < link_json.length; i++) {
       links.push({
-        source: link_json[i].source,
-        target: link_json[i].target,
+        source: link_json[i].source - 1,
+        target: link_json[i].target - 1,
         line: lineMatch[link_json[i].linecode]
       });
     }
