@@ -9,12 +9,115 @@
     <%- include("nav") -%>
     <div class="container">
       <div class="row">
-        <div class="col-md-12">
-          <h1>Route Prediction</h1>
-          <p class="text-center">
-            Under Constuction
-          </p>
+        <div class="col-md-4">
+          <div id='mapDiv' style="position:relative; width:100%; height:400px;"></div>
+          <ul class="breadcrumb">
+            <li>
+              <label class="control-label">Start</label>
+              <div class="btn-group">
+                <a class="btn dropdown-toggle" data-toggle="dropdown">
+                  National Assembly
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a tabindex="-1" href="#">National Assembly</a></li>
+                  <li><a tabindex="-1" href="#">Olympic Park</a></li>
+                  <li><a tabindex="-1" href="#">KAIST</a></li>
+                </ul>
+              </div>
+              <label class="control-label">End</label>
+              <div class="btn-group">
+                <a class="btn dropdown-toggle" data-toggle="dropdown">
+                  KAIST
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a tabindex="-1" href="#">KAIST</a></li>
+                  <li><a tabindex="-1" href="#">Olympic Park</a></li>
+                  <li><a tabindex="-1" href="#">National Assembly</a></li>
+                </ul>
+                <button type="submit" class="btn">Search</button>
+              </div>
+            </li>
+          </ul>
         </div>
+        <div class="col-md-8">
+          <ul class="breadcrumb">
+            <li>
+              From  <label class="control-label">National Assembly</label> to <label class="control-label">KAIST</label>
+            </li>
+          </ul>
+          <div class="row">
+            <center><h4>Delay and Safety Comparison</h4></center>
+            <div class="col-md-3">
+              <div class="input-group bootstrap-timepicker timepicker">
+                  <input id="timepicker1" type="text" class="form-control input-small">
+                  <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+              </div>
+              <center><p>Departure Time</p></center>
+            </div>
+            <div class="col-md-9">
+              <div class="row">
+                <ul class="breadcrumb" style="background:red">
+                  <p align="right" style="color:white">Route 1</p>
+                </ul>
+                <div class="col-md-2">
+                  <div class="bootstrap-timepicker">
+                      <input id="timesetter1" type="text" style="width:100%"class="input-small">
+                      <i class="icon-time"></i>
+                  </div>
+                  <p id="tra_time1">120분</p>
+                </div>
+                <div class="col-md-5">
+                  <div id="route1_chart1" style="width:100%; height:180px;"></div>
+                </div>
+                <div class="col-md-5">
+                  <div id="route2_chart1" style="width:100%; height: 180px;"></div>
+                </div>
+              </div>
+              <div class="row">
+                <ul class="breadcrumb" style="background:blue">
+                  <p align="right" style="color:white">Route 2</p>
+                </ul>
+                <div class="col-md-2">
+                  <div class="bootstrap-timepicker">
+                      <input id="timesetter2" type="text" style="width:100%"class="input-small">
+                      <i class="icon-time"></i>
+                  </div>
+                  <p id="tra_time2">120분</p>
+                  Arrival Time
+                </div>
+                <div class="col-md-5">
+                  <div id="route1_chart2" style="width:200px; height:180px;"></div>
+                  <center>Traffic Delay</center>
+                </div>
+                <div class="col-md-5">
+                  <div id="route2_chart2" style="width:100%; height: 180px;"></div>
+                  <center>Collision Risk</center>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <center><h4>Time Series Comparison</h4></center>
+            <div class="col-md-6">
+              <div id="chart3_time" style="height: 300px; width: 100%"></div>
+            </div>
+            <div class="col-md-6">
+              <div id="chart3_risk" style="height: 300px; width: 100%"></div>
+            </div>
+          </div>
+          <div class="row">
+            <center><h4>Origin-Destination Demand</h4></center>
+            <div class="col-md-6">
+              <div id="chart4_ori" style="height: 300px; width: 100%"></div>
+            </div>
+            <div class="col-md-6">
+              <div id="chart4_dest" style="height: 300px; width: 100%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
