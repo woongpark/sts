@@ -4,9 +4,19 @@ var def1 = $.Deferred(),
 
 var map;
 
+var origin = "National Assembly",
+    destination = "KAIST";
 
-  def1.resolve();
-  def2.resolve();
+var route1_list = [],
+    route2_list = [],
+    count = 0;
+
+
+
+
+  $.getJSON("/latest_time_rou", function(data) {
+    def2.resolve(data);
+  });
 
 
 $(function() {
@@ -32,9 +42,46 @@ $(function() {
   def3.resolve();
 });
 
-$.when( def1, def2, def3 ).done(function () {
+$.when( def2, def3 ).done(function (v) {
+  var CDATE = v[0].CDATE,
+      CTIME = v[0].CTIME;
   map = getMap();
+  setRouteLinks(origin,destination);
 });
+
+function setRouteLinks(or,de){
+  $.getJSON( "/getLinkIDRoute", {
+    ORIGIN: or,
+    DESTI: de
+  }, function( data1 ) {
+    route1_list = [];
+    route2_list = [];
+    for(var i =0; i< data1.length;i++){
+      (function(data1_i){
+        $.getJSON( "/getLinkInfoRoute", {
+          LINKID: data1_i.LINKID
+        }, function( data2 ) {
+          if(data2.length!=0){
+            var routetype = $.trim(data1_i.ROUTETYPE);
+            var polygon_route = getPolygon_route(data2[0].SLAT, data2[0].SLON, data2[0].ELAT, data2[0].ELON, routetype);
+            polygon_route.ORIGIN = or;
+            polygon_route.DESTINATION = de;
+            Microsoft.Maps.Events.addHandler(polygon_route, 'click', onClickHandler);
+            if(routetype == '1'){
+              route1_list.push(polygon_route);
+            } else{
+              route2_list.push(polygon_route);
+            }
+          }
+          count++;
+          if(count == data1.length){
+            resetLink();
+          }
+        });
+      })(data1[i]);
+    }
+  });
+}
 
 function getChart1_route1(){
   var chart;
@@ -643,4 +690,20 @@ function getChart4_destination(){
       }
 
   });
+}
+
+function resetLink(){
+  map.entities.clear();
+  map.entities.push(getLocationPin("KAIST", 36.369491, 127.363714));
+  map.entities.push(getLocationPin("Olympic Park", 37.520300, 127.121569));
+  map.entities.push(getLocationPin("National Assembly", 37.531792, 126.914015));
+  for(var i=0;i<route1_list.length;i++){
+    map.entities.push(route1_list[i]);
+  }
+  for(var i=0;i<route2_list.length;i++){
+    map.entities.push(route2_list[i]);
+  }
+}
+
+function onClickHandler(e) {
 }

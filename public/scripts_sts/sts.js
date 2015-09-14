@@ -54,6 +54,43 @@ function getPolygon_risk(linkinfo, direct, risk) {
   return polygon;
 }
 
+function getPolygon_route(SLAT, SLON, ELAT, ELON, rindex) {
+  var color;
+
+  if(rindex =='1'){
+    color = new Microsoft.Maps.Color(255,255,0,0);
+  } else{
+    color = new Microsoft.Maps.Color(255,0,0,255);
+  }
+
+  // Create a polygon
+  var vertices = new Array(
+    new Microsoft.Maps.Location(SLAT, SLON),
+    new Microsoft.Maps.Location(ELAT, ELON)
+  );
+  var polygon = new Microsoft.Maps.Polygon(vertices,{
+    fillColor: new Microsoft.Maps.Color(0,0,0,0),
+    strokeColor: color,
+    strokeThickness: 4
+  });
+  return polygon;
+}
+
+function getLocationPin(TEXT, LAT, LON) {
+  // Create a icon
+  var loc = new Microsoft.Maps.Location(LAT, LON);
+  //var str = "/images/"+ TYPE.trim() + '.png';//타입별로 이미지를 선택하도록 고처야함
+  // var pushpinOptions = {icon: str, width: 50, height: 50};
+  var pinInfobox = new Microsoft.Maps.Infobox(loc, {title: TEXT, visible: true});
+  var pushpinOptions = {
+    //htmlContent: "<img class='map-icon' src='" + str + "'></img>"
+    infobox: pinInfobox
+  };
+  var pushpin= new Microsoft.Maps.Pushpin(loc, pushpinOptions);
+
+  return pushpin;
+}
+
 function getIcon(TYPE, LAT, LON) {
   // Create a icon
   var loc = new Microsoft.Maps.Location(LAT, LON);
