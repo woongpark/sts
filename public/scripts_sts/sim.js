@@ -1,3 +1,9 @@
+var google_chart_loaded = $.Deferred();
+google.load("visualization", "1.1", {packages:["timeline"]});
+google.setOnLoadCallback(function() {
+  google_chart_loaded.resolve();
+});
+
 $(function() {
   "use strict";
 
@@ -181,21 +187,21 @@ $(function() {
       chart.redraw();
     });
   }
-});
 
-google.load("visualization", "1.1", {packages:["timeline"]});
-google.setOnLoadCallback(drawChart);
-
-function drawChart() {
-  var container = $('#traveltime .chart-area');
-  var chart = new google.visualization.Timeline(container.get(0));
-  var dataTable = new google.visualization.DataTable();
-  dataTable.addColumn({ type: 'string', id: 'Routes' });
-  dataTable.addColumn({ type: 'string', id: 'dummy bar label' });
-  dataTable.addColumn({ type: 'string', role: 'tooltip' });
-  dataTable.addColumn({ type: 'date', id: 'Start' });
-  dataTable.addColumn({ type: 'date', id: 'End' });
+  var sim_cti = $.Deferred();
   $.getJSON("/sim_cti", function(result) {
+    sim_cti.resolve(result);
+  });
+  /* google charts */
+  $.when( sim_cti, google_chart_loaded ).done(function ( result ) {
+    var container = $('#traveltime .chart-area');
+    var chart = new google.visualization.Timeline(container.get(0));
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: 'string', id: 'Routes' });
+    dataTable.addColumn({ type: 'string', id: 'dummy bar label' });
+    dataTable.addColumn({ type: 'string', role: 'tooltip' });
+    dataTable.addColumn({ type: 'date', id: 'Start' });
+    dataTable.addColumn({ type: 'date', id: 'End' });
     var rowLabels = [];
     var rows = result.data.map(function(arr) {
       var hour = +arr[0].slice(0,2),
@@ -222,4 +228,4 @@ function drawChart() {
       $("<div class='row-label'>").text(str).appendTo("#traveltime .label-area");
     });
   });
-}
+});
