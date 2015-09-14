@@ -182,3 +182,44 @@ $(function() {
     });
   }
 });
+
+google.load("visualization", "1.1", {packages:["timeline"]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  var container = $('#traveltime .chart-area');
+  var chart = new google.visualization.Timeline(container.get(0));
+  var dataTable = new google.visualization.DataTable();
+  dataTable.addColumn({ type: 'string', id: 'Routes' });
+  dataTable.addColumn({ type: 'string', id: 'dummy bar label' });
+  dataTable.addColumn({ type: 'string', role: 'tooltip' });
+  dataTable.addColumn({ type: 'date', id: 'Start' });
+  dataTable.addColumn({ type: 'date', id: 'End' });
+  $.getJSON("/sim_cti", function(result) {
+    var rowLabels = [];
+    var rows = result.data.map(function(arr) {
+      var hour = +arr[0].slice(0,2),
+          min = +arr[0].slice(2);
+      if(!rowLabels[+arr[5]-1]) {
+        rowLabels[+arr[5]-1] = arr[1];
+      }
+      return [
+        arr[1],
+        arr[2] + "(" + arr[3] + "%)",
+        arr[2] + "(" + arr[3] + "%)",
+        new Date(2015, 0, 1, hour, min),
+        new Date(2015, 0, 1, hour, min + 5)
+      ];
+    });
+    dataTable.addRows(rows);
+    chart.draw(dataTable, {
+      timeline: {
+        showRowLabels: false,
+        colorByRowLabel: true
+      }
+    });
+    rowLabels.forEach(function(str) {
+      $("<div class='row-label'>").text(str).appendTo("#traveltime .label-area");
+    });
+  });
+}
