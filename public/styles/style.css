@@ -43,7 +43,7 @@
 .timeline .label-area {
   position: absolute;
   width: 200px;
-  height: 300px;
+  height: 100%;
   z-index: 100;
   background-color: white;
 }
@@ -60,11 +60,18 @@
   position: absolute;
   left: 200px;
   right: 0;
-  height: 300px;
+  height: 100%;
   overflow-x: scroll;
 }
 .timeline .chart-area {
   position:relative;
   width: 6000px;
-  height: 300px;
+  height: 100%;
+}
+#VSL.timeline {
+  height: 550px;
+}
+#VSL.timeline .label-area .row-label {
+  height: 71px;
+  line-height: 71px;
 }

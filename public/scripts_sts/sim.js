@@ -1,11 +1,28 @@
-var google_chart_loaded = $.Deferred();
-google.load("visualization", "1.1", {packages:["timeline"]});
-google.setOnLoadCallback(function() {
-  google_chart_loaded.resolve();
-});
-
 $(function() {
   "use strict";
+
+  $.getJSON("/sim_summary", function(summary) {
+    var hours = summary[0].HORIZON.trim() + " hours";
+    var ctime = summary[0].CTIME.trim();
+    var number = summary[0].NUMBER.trim();
+    ctime = ctime.slice(0, 2) + ":" + ctime.slice(2) + " PM";
+    if(number.length > 3) {
+      number = number.slice(0, -3) + "," + number.slice(-3);
+    }
+    $(".summary .horizon").text(hours);
+    $(".summary .ctime").text(ctime);
+    $(".summary .number").text(number);
+  });
+  $.getJSON("/sim_event", function(summary) {
+    summary.forEach(function(ev) {
+      var text = "";
+      $.each(ev, function(name, value) {
+        text += "<label>" + name + "</label>";
+        text += "<span>" + value + "</span>";
+      });
+      $(".event.summary").append("<li>").html(text);
+    });
+  });
 
   $('#VHT').highcharts({
     chart: { type: 'column' },
@@ -96,28 +113,6 @@ $(function() {
     }]
   });
 
-  $.getJSON("/sim_summary", function(summary) {
-    var hours = summary[0].HORIZON.trim() + " hours";
-    var ctime = summary[0].CTIME.trim();
-    var number = summary[0].NUMBER.trim();
-    ctime = ctime.slice(0, 2) + ":" + ctime.slice(2) + " PM";
-    if(number.length > 3) {
-      number = number.slice(0, -3) + "," + number.slice(-3);
-    }
-    $(".summary .horizon").text(hours);
-    $(".summary .ctime").text(ctime);
-    $(".summary .number").text(number);
-  });
-  $.getJSON("/sim_event", function(summary) {
-    summary.forEach(function(ev) {
-      var text = "";
-      $.each(ev, function(name, value) {
-        text += "<label>" + name + "</label>";
-        text += "<span>" + value + "</span>";
-      });
-      $(".event.summary").append("<li>").html(text);
-    });
-  });
   $.getJSON( "/sim_vht_ptimes", function( result ) {
     var ptimes = $.map(result.data, function(arr) {
       return arr[0];
@@ -130,11 +125,11 @@ $(function() {
       }
     });
     mySlider.on('slideStop', function(e) {
-        setVHTchart(ptimes[e.value]);
+        setChartByPTIME(ptimes[e.value]);
     });
-    setVHTchart(ptimes[ptimes.length-1]);
+    setChartByPTIME(ptimes[ptimes.length-1]);
   });
-  function setVHTchart(ptime) {
+  function setChartByPTIME(ptime) {
     $.getJSON("/sim_vht", {
       PTIME: ptime
     }, function(result) {
@@ -186,14 +181,47 @@ $(function() {
       }
       chart.redraw();
     });
+    $.getJSON("/sim_vsl", {
+      PTIME: ptime
+    }, function(result) {
+      var container = $('#VSL .chart-area');
+      var chart = new google.visualization.Timeline(container.get(0));
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn({ type: 'string', id: 'Routes' });
+      dataTable.addColumn({ type: 'string', id: 'dummy bar label' });
+      dataTable.addColumn({ type: 'string', role: 'tooltip' });
+      dataTable.addColumn({ type: 'number', id: 'Start' });
+      dataTable.addColumn({ type: 'number', id: 'End' });
+      var rowLabels = [];
+      var rows = result.data.map(function(arr) {
+        if(!rowLabels[+arr[7]-1]) {
+          rowLabels[+arr[7]-1] = arr[2];
+        }
+        return [
+          arr[2],
+          arr[5],
+          Math.min(+arr[3], +arr[4]) + "~" + Math.max(+arr[3], +arr[4]),
+          Math.min(+arr[3], +arr[4]),
+          Math.max(+arr[3], +arr[4])
+        ];
+      });
+      dataTable.addRows(rows);
+      chart.clearChart();
+      chart.draw(dataTable, {
+        timeline: {
+          showRowLabels: false,
+          colorByRowLabel: true
+        }
+      });
+      if($("#VSL .row-label").length == 0) {
+        rowLabels.forEach(function(str) {
+          $("<div class='row-label'>").text(str).appendTo("#VSL .label-area");
+        });
+      }
+    });
   }
 
-  var sim_cti = $.Deferred();
   $.getJSON("/sim_cti", function(result) {
-    sim_cti.resolve(result);
-  });
-  /* google charts */
-  $.when( sim_cti, google_chart_loaded ).done(function ( result ) {
     var container = $('#traveltime .chart-area');
     var chart = new google.visualization.Timeline(container.get(0));
     var dataTable = new google.visualization.DataTable();
