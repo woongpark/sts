@@ -219,6 +219,10 @@ router.get('/collsionGraph_route', function(req, res, next) {
   query(str, res);
 });
 
+router.get('/goToSpeed_route', function(req, res, next) {
+  var str = "SELECT SPEED FROM ROUTETOGOSPEED WHERE CDATE='" + req.query.CDATE + "' AND CTIME='" + req.query.CTIME + "' AND PDATE='" + req.query.PDATE+ "' AND PTIME='" + req.query.PTIME + "' AND ORIGIN='" + req.query.ORIGIN+ "' AND DESTINATION='" + req.query.DESTINATION + "' AND ROUTETYPE='" + req.query.TYPE + "' AND LINKID='" + req.query.LINKID + "';";
+  query(str, res);
+});
 
 
 router.get('/sim_speed', function(req, res, next) {

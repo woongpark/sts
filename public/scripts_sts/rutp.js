@@ -46,6 +46,7 @@ $.when( def2, def3 ).done(function (v) {
   CDATE = v[0].CDATE;
   CTIME = v[0].CTIME;
   map = getMap();
+  Microsoft.Maps.Events.addHandler(map, 'click', onClickHandler);
   setRouteLinks(origin,destination);
 });
 
@@ -65,6 +66,7 @@ function setRouteLinks(or,de){
             var routetype = $.trim(data1_i.ROUTETYPE);
             var polygon_route = getPolygon_route(data2[0].SLAT, data2[0].SLON, data2[0].ELAT, data2[0].ELON, routetype);
             polygon_route.ROUTETYPE = routetype;
+            polygon_route.LINKID = data1_i.LINKID;
             Microsoft.Maps.Events.addHandler(polygon_route, 'click', onClickHandler);
             if(routetype == '1'){
               route1_list.push(polygon_route);
@@ -954,6 +956,7 @@ function resetLink(){
 function onClickHandler(e) {
   if (e.targetType == "polygon") {
     if(e.target.ROUTETYPE==1){
+      debugger
       for(var i=0;i<route1_list.length;i++){
         route1_list[i]._strokeColor.r=0;
         route1_list[i]._strokeColor.g=255;
@@ -975,6 +978,55 @@ function onClickHandler(e) {
         route2_list[i]._strokeColor.g=255;
         route2_list[i]._strokeColor.b=0;
       }
+    }
+    var orNum;
+    var deNum;
+    if(origin == "KAIST"){
+      orNum = 1;
+    }else if(origin == "National Assembly"){
+      orNum = 2;
+    } else{
+      orNum = 3;
+    }
+    if(destination == "KAIST"){
+      deNum = 1;
+    }else if(destination == "National Assembly"){
+      deNum = 2;
+    } else{
+      deNum = 3;
+    }
+    var pdate = document.getElementById("sel_ptime").value.split(',')[0];
+    var ptime = document.getElementById("sel_ptime").value.split(',')[1];
+    var latmin = (e.target._locations[0].latitude+e.target._locations[1].latitude)/2;
+    var lonmin = (e.target._locations[0].longitude+e.target._locations[1].longitude)/2
+    $.getJSON( "/goToSpeed_route", {
+      CDATE: CDATE,
+      CTIME: CTIME,
+      PDATE: pdate,
+      PTIME: ptime,
+      ORIGIN: orNum,
+      DESTINATION: deNum,
+      TYPE:e.target.ROUTETYPE,
+      LINKID:e.target.LINKID
+    }, function( data ) {
+        var infoboxOptions = {width:150,
+                            height: 50,
+                            title: "SPEED : " + data[0].SPEED,
+                            };
+      var myInfobox = new Microsoft.Maps.Infobox(new Microsoft.Maps.Location(latmin,lonmin), infoboxOptions);
+      map.entities.push(myInfobox);
+    });
+
+  } else{
+    for(var i=0;i<route1_list.length;i++){
+      route1_list[i]._strokeColor.r=255;
+      route1_list[i]._strokeColor.g=0;
+      route1_list[i]._strokeColor.b=0;
+    }
+    for(var i=0;i<route2_list.length;i++){
+      route2_list[i]._strokeColor.r=0;
+      route2_list[i]._strokeColor.g=0;
+      route2_list[i]._strokeColor.b=255;
     }
   }
   resetLink();
