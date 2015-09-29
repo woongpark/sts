@@ -1,6 +1,29 @@
 $(function() {
   "use strict";
 
+  $.getJSON("/sim_summary", function(summary) {
+    var hours = summary[0].HORIZON.trim() + " hours";
+    var ctime = summary[0].CTIME.trim();
+    var number = summary[0].NUMBER.trim();
+    ctime = ctime.slice(0, 2) + ":" + ctime.slice(2) + " PM";
+    if(number.length > 3) {
+      number = number.slice(0, -3) + "," + number.slice(-3);
+    }
+    $(".summary .horizon").text(hours);
+    $(".summary .ctime").text(ctime);
+    $(".summary .number").text(number);
+  });
+  $.getJSON("/sim_event", function(summary) {
+    summary.forEach(function(ev) {
+      var text = "";
+      $.each(ev, function(name, value) {
+        text += "<label>" + name + "</label>";
+        text += "<span>" + value + "</span>";
+      });
+      $(".event.summary").append("<li>").html(text);
+    });
+  });
+
   $('#VHT').highcharts({
     chart: { type: 'column' },
     title: { text: 'Vehicle Hour Traveled (VHT)' },
@@ -90,28 +113,6 @@ $(function() {
     }]
   });
 
-  $.getJSON("/sim_summary", function(summary) {
-    var hours = summary[0].HORIZON.trim() + " hours";
-    var ctime = summary[0].CTIME.trim();
-    var number = summary[0].NUMBER.trim();
-    ctime = ctime.slice(0, 2) + ":" + ctime.slice(2) + " PM";
-    if(number.length > 3) {
-      number = number.slice(0, -3) + "," + number.slice(-3);
-    }
-    $(".summary .horizon").text(hours);
-    $(".summary .ctime").text(ctime);
-    $(".summary .number").text(number);
-  });
-  $.getJSON("/sim_event", function(summary) {
-    summary.forEach(function(ev) {
-      var text = "";
-      $.each(ev, function(name, value) {
-        text += "<label>" + name + "</label>";
-        text += "<span>" + value + "</span>";
-      });
-      $(".event.summary").append("<li>").html(text);
-    });
-  });
   $.getJSON( "/sim_vht_ptimes", function( result ) {
     var ptimes = $.map(result.data, function(arr) {
       return arr[0];
@@ -124,11 +125,11 @@ $(function() {
       }
     });
     mySlider.on('slideStop', function(e) {
-        setVHTchart(ptimes[e.value]);
+        setChartByPTIME(ptimes[e.value]);
     });
-    setVHTchart(ptimes[ptimes.length-1]);
+    setChartByPTIME(ptimes[ptimes.length-1]);
   });
-  function setVHTchart(ptime) {
+  function setChartByPTIME(ptime) {
     $.getJSON("/sim_vht", {
       PTIME: ptime
     }, function(result) {
@@ -180,5 +181,79 @@ $(function() {
       }
       chart.redraw();
     });
+    $.getJSON("/sim_vsl", {
+      PTIME: ptime
+    }, function(result) {
+      var container = $('#VSL .chart-area');
+      var chart = new google.visualization.Timeline(container.get(0));
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn({ type: 'string', id: 'Routes' });
+      dataTable.addColumn({ type: 'string', id: 'dummy bar label' });
+      dataTable.addColumn({ type: 'string', role: 'tooltip' });
+      dataTable.addColumn({ type: 'number', id: 'Start' });
+      dataTable.addColumn({ type: 'number', id: 'End' });
+      var rowLabels = [];
+      var rows = result.data.map(function(arr) {
+        if(!rowLabels[+arr[7]-1]) {
+          rowLabels[+arr[7]-1] = arr[2];
+        }
+        return [
+          arr[2],
+          arr[5],
+          Math.min(+arr[3], +arr[4]) + "~" + Math.max(+arr[3], +arr[4]),
+          Math.min(+arr[3], +arr[4]),
+          Math.max(+arr[3], +arr[4])
+        ];
+      });
+      dataTable.addRows(rows);
+      chart.clearChart();
+      chart.draw(dataTable, {
+        timeline: {
+          showRowLabels: false,
+          colorByRowLabel: true
+        }
+      });
+      if($("#VSL .row-label").length == 0) {
+        rowLabels.forEach(function(str) {
+          $("<div class='row-label'>").text(str).appendTo("#VSL .label-area");
+        });
+      }
+    });
   }
+
+  $.getJSON("/sim_cti", function(result) {
+    var container = $('#traveltime .chart-area');
+    var chart = new google.visualization.Timeline(container.get(0));
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: 'string', id: 'Routes' });
+    dataTable.addColumn({ type: 'string', id: 'dummy bar label' });
+    dataTable.addColumn({ type: 'string', role: 'tooltip' });
+    dataTable.addColumn({ type: 'date', id: 'Start' });
+    dataTable.addColumn({ type: 'date', id: 'End' });
+    var rowLabels = [];
+    var rows = result.data.map(function(arr) {
+      var hour = +arr[0].slice(0,2),
+          min = +arr[0].slice(2);
+      if(!rowLabels[+arr[5]-1]) {
+        rowLabels[+arr[5]-1] = arr[1];
+      }
+      return [
+        arr[1],
+        arr[2] + "(" + arr[3] + "%)",
+        arr[2] + "(" + arr[3] + "%)",
+        new Date(2015, 0, 1, hour, min),
+        new Date(2015, 0, 1, hour, min + 5)
+      ];
+    });
+    dataTable.addRows(rows);
+    chart.draw(dataTable, {
+      timeline: {
+        showRowLabels: false,
+        colorByRowLabel: true
+      }
+    });
+    rowLabels.forEach(function(str) {
+      $("<div class='row-label'>").text(str).appendTo("#traveltime .label-area");
+    });
+  });
 });
