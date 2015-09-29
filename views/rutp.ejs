@@ -38,11 +38,12 @@
           <div class="row">
             <center><h4>Delay and Safety Comparison</h4></center>
             <div class="col-md-3">
-              <div class="input-group bootstrap-timepicker timepicker">
-                  <input id="timepicker1" type="text" class="form-control input-small">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-              </div>
-              <center><p>Departure Time</p></center>
+              <select id="sel_ptime" onchange="selPtime()">
+                <option value="KAIST">KAIST</option>
+                <option value="National Assembly">National Assembly</option>
+                <option value="Olympic Park">Olympic Park</option>
+              </select>
+              <div style="vertical-align:bottom;">Departure Time</div>
             </div>
             <div class="col-md-9">
               <div class="row">
@@ -50,37 +51,41 @@
                   <p align="right" style="color:white">Route 1</p>
                 </ul>
                 <div class="col-md-2">
-                  <div class="bootstrap-timepicker">
-                      <input id="timesetter1" type="text" style="width:100%"class="input-small">
-                      <i class="icon-time"></i>
-                  </div>
+                  <b><font size="3"><p id="depart_time1">120분</p></font></b>
                   <p id="tra_time1">120분</p>
                 </div>
                 <div class="col-md-5">
                   <div id="route1_chart1" style="width:100%; height:180px;"></div>
                 </div>
                 <div class="col-md-5">
-                  <div id="route2_chart1" style="width:100%; height: 180px;"></div>
+                  <div id="route1_chart2" style="width:100%; height: 180px;" onclick="setVisible_route1()"></div>
                 </div>
+                <div id="route1_chart3" style="width:100%; height: 180px; display:none;"></div>
               </div>
               <div class="row">
                 <ul class="breadcrumb" style="background:blue">
                   <p align="right" style="color:white">Route 2</p>
                 </ul>
                 <div class="col-md-2">
-                  <div class="bootstrap-timepicker">
-                      <input id="timesetter2" type="text" style="width:100%"class="input-small">
-                      <i class="icon-time"></i>
-                  </div>
+                  <b><font size="3"><p id="depart_time2">120분</p></font></b>
                   <p id="tra_time2">120분</p>
-                  Arrival Time
                 </div>
                 <div class="col-md-5">
-                  <div id="route1_chart2" style="width:200px; height:180px;"></div>
+                  <div id="route2_chart1" style="width:200px; height:180px;"></div>
+                </div>
+                <div class="col-md-5">
+                  <div id="route2_chart2" style="width:100%; height: 180px;" onclick="setVisible_route2()"></div>
+                </div>
+                <div id="route2_chart3" style="width:100%; height: 180px; display:none;"></div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <center>Arrival Time</center>
+                </div>
+                <div class="col-md-5">
                   <center>Traffic Delay</center>
                 </div>
                 <div class="col-md-5">
-                  <div id="route2_chart2" style="width:100%; height: 180px;"></div>
                   <center>Collision Risk</center>
                 </div>
               </div>

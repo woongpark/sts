@@ -97,6 +97,9 @@ function getChart1() {
         text: 'Speed',
         x: -20
       },
+      xAxis: {
+        tickInterval: 12
+      },
       yAxis: {
         title: {
           text: "PSPEED",
@@ -108,11 +111,13 @@ function getChart1() {
       },
       series: [{
         name: "PSPEED",
-        data: [],
-        tooltip: {
-            headerFormat: 'No : {point.key}<br/>'
-        }
-      }]
+        data: []
+      }],
+      tooltip: {
+          formatter: function(){
+            return 'PTIME : ' + this.x + '<br/>PSPEED : '+this.y;
+          }
+      }
     });
   });
 }
@@ -128,11 +133,7 @@ function setChart1(data) {
   //chart.xAxis[0].setCategories(categories);
   chart.series[0].setData(data);
   chart.xAxis[0].update({
-    labels: {
-      formatter: function() {
-        return categories[this.value];
-      }
-    }
+    categories: categories
   }, true);
 }
 
@@ -147,6 +148,9 @@ function getChart1_risk() {
         text: 'Collision Risk',
         x: -20
       },
+      xAxis: {
+        tickInterval: 12
+      },
       yAxis: {
         title: {
           text: "Collision Risk",
@@ -160,10 +164,7 @@ function getChart1_risk() {
       series: [{
         name: "Collision Risk",
         data: [],
-        id: "cRisk",
-        tooltip: {
-            headerFormat: 'No : {point.key}<br/>'
-        }
+        id: "cRisk"
       },{
           type: 'flags',
           data: [],
@@ -194,7 +195,13 @@ function getChart1_risk() {
                     fillColor: '#FFFF00' // darker
                 }
             }
-          }]
+          }],
+          tooltip: {
+              formatter: function(){
+                return 'PTIME : ' + this.x + '<br/>Collision Risk : '+this.y;
+              }
+          }
+
     });
   });
 }
@@ -240,11 +247,7 @@ function setChart1_risk(data) {
   chart.series[1].setData(moredager);
   chart.series[2].setData(dager);
   chart.xAxis[0].update({
-    labels: {
-      formatter: function() {
-        return categories[this.value];
-      }
-    }
+    categories: categories
   }, true);
 }
 
@@ -308,7 +311,7 @@ function setChart2(data){
     array[idx] = arr;
   });
   var bValue = getBoxVaule(array);
-  // chart.xAxis[0].setCategories(categories);
+  chart.xAxis[0].setCategories(categories);
   chart.series[0].setData(bValue);
 }
 
@@ -372,7 +375,7 @@ function setChart3(data){
     array[idx] = arr;
   });
   var bValue = getBoxVaule(array);
-  // chart.xAxis[0].setCategories(categories);
+  chart.xAxis[0].setCategories(categories);
   chart.series[0].setData(bValue);
 }
 
@@ -415,6 +418,7 @@ function setSlider(linkinfo, CDATE, CTIME) {
       }
     });
     mySlider.on('slideStop', function(e) {
+      debugger
         getLinkspeed_map(linkinfo, CDATE, CTIME, datetime[e.value].PDATE, datetime[e.value].PTIME);
     });
     getLinkspeed_map(linkinfo, CDATE, CTIME, datetime[datetime.length-1].PDATE, datetime[datetime.length-1].PTIME);
