@@ -219,6 +219,16 @@ router.get('/collsionGraph_route', function(req, res, next) {
   query(str, res);
 });
 
+router.get('/getOriginDemand', function(req, res, next) {
+  var str = "SELECT TO_TCS_NAME, PCOUNT FROM ODDEMAND WHERE CDATE='" + req.query.CDATE + "' AND CTIME='" + req.query.CTIME  + "' AND PDATE='" + req.query.PDATE+ "' AND PTIME='" + req.query.PTIME+ "' AND FROM_TCS_CODE='" + req.query.FROM_TCS_CODE + "';";
+  query(str, res);
+});
+
+router.get('/getDestinationDemand', function(req, res, next) {
+  var str = "SELECT FROM_TCS_NAME, PCOUNT FROM ODDEMAND WHERE CDATE='" + req.query.CDATE + "' AND CTIME='" + req.query.CTIME  + "' AND PDATE='" + req.query.PDATE+ "' AND PTIME='" + req.query.PTIME+ "' AND TO_TCS_CODE='" + req.query.TO_TCS_CODE + "';";
+  query(str, res);
+});
+
 router.get('/goToSpeed_route', function(req, res, next) {
   var str = "SELECT SPEED FROM ROUTETOGOSPEED WHERE CDATE='" + req.query.CDATE + "' AND CTIME='" + req.query.CTIME + "' AND PDATE='" + req.query.PDATE+ "' AND PTIME='" + req.query.PTIME + "' AND ORIGIN='" + req.query.ORIGIN+ "' AND DESTINATION='" + req.query.DESTINATION + "' AND ROUTETYPE='" + req.query.TYPE + "' AND LINKID='" + req.query.LINKID + "';";
   query(str, res);
