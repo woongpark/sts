@@ -24,6 +24,11 @@ var chart1_route2,
 var chart3_route1,
     chart3_route2;
 
+var origin_headers = ["a", "b", "c", "d", "e", "f", "g"],
+    origin_data = [8,9,14,11,5,10,12],
+    destination_headers = ["a", "b", "c", "d", "e", "f", "g"],
+    destination_data = [8,9,14,11,5,10,12];
+
 $.getJSON("/latest_time_rou", function(data) {
   def2.resolve(data);
 });
@@ -176,6 +181,8 @@ function selPtime(){
     setChart3_route(pdate, ptime, "2");
     setChart3_time();
     setChart3_risk();
+    setChart4_destination(pdate, ptime);
+    setChart4_origin(pdate, ptime);
   });
 }
 
@@ -814,8 +821,7 @@ function getBoxVaule(array){
 }
 
 function getChart4_origin(){
-    var headers = ["a", "b", "c", "d", "e", "f", "g"];
-    var data = [8,9,14,11,5,10,12];
+
     $('#chart4_ori').highcharts({
 
         chart: {
@@ -832,14 +838,14 @@ function getChart4_origin(){
         },
 
         xAxis: {
-            tickInterval: 360/data.length,
+            tickInterval: 360/origin_data.length,
             min: 0,
             max: 360,
             labels: {
                 formatter: function () {
-                    var interval = (360/data.length);
+                    var interval = (360/origin_data.length);
                     var idx = parseInt(this.value / interval + 0.5, 10);
-                    return headers[idx];
+                    return origin_headers[idx];
                 }
             }
         },
@@ -851,7 +857,7 @@ function getChart4_origin(){
         plotOptions: {
             series: {
                 pointStart: 0,
-                pointInterval: 360/data.length
+                pointInterval: 360/origin_data.length
             },
             column: {
                 pointPadding: 0,
@@ -862,23 +868,54 @@ function getChart4_origin(){
         series: [{
             type: 'column',
             name: 'Column',
-            data: data
+            data: origin_data
         }],
 
         tooltip: {
             formatter: function() {
-                var interval = (360/data.length);
+                var interval = (360/origin_data.length);
                 var idx = parseInt(this.x / interval + 0.5, 10);
-                return headers[idx] + " : " + this.y;
+                return origin_headers[idx] + " : " + this.y;
             }
         }
 
     });
 }
 
+function setChart4_origin(pdate, ptime){
+  var from_tc;
+  if(origin=="KAIST"){
+    from_tc = 115;
+  }else{
+    from_tc = 101;
+  }
+  $.getJSON( "/getOriginDemand", {
+    /*
+    CDATE: CDATE,
+    CTIME: CTIME,
+    PDATE: pdate,
+    PTIME: ptime,*/ //이렇게 해야하나 데이터가 없어서 ptime 강제로 선택
+    CDATE: 20130816,
+    CTIME: 1434,
+    PDATE: 20130816,
+    PTIME: 20,
+    FROM_TCS_CODE: from_tc
+  }, function( data ) {
+    data.sort(function(a,b){
+      var a1 = parseInt(a.PCOUNT);
+      var b1 = parseInt(b.PCOUNT);
+      if(a1<b1) return 1;
+      else return -1;
+    });
+    for(var i =0; i<30;i++){
+      origin_headers[i] = data[i].TO_TCS_NAME;
+      origin_data[i] =parseInt(data[i].PCOUNT);
+    }
+    getChart4_origin();
+  });
+}
+
 function getChart4_destination(){
-  var headers = ["a", "b", "c", "d", "e", "f", "g"];
-  var data = [8,9,14,11,5,10,12];
   $('#chart4_dest').highcharts({
 
       chart: {
@@ -895,14 +932,14 @@ function getChart4_destination(){
       },
 
       xAxis: {
-          tickInterval: 360/data.length,
+          tickInterval: 360/destination_data.length,
           min: 0,
           max: 360,
           labels: {
               formatter: function () {
-                  var interval = (360/data.length);
+                  var interval = (360/destination_data.length);
                   var idx = parseInt(this.value / interval + 0.5, 10);
-                  return headers[idx];
+                  return destination_headers[idx];
               }
           }
       },
@@ -914,7 +951,7 @@ function getChart4_destination(){
       plotOptions: {
           series: {
               pointStart: 0,
-              pointInterval: 360/data.length
+              pointInterval: 360/destination_data.length
           },
           column: {
               pointPadding: 0,
@@ -925,18 +962,52 @@ function getChart4_destination(){
       series: [{
           type: 'column',
           name: 'Column',
-          data: data
+          data: destination_data
       }],
 
       tooltip: {
           formatter: function() {
-              var interval = (360/data.length);
+              var interval = (360/destination_data.length);
               var idx = parseInt(this.x / interval + 0.5, 10);
-              return headers[idx] + " : " + this.y;
+              return destination_headers[idx] + " : " + this.y;
           }
       }
 
   });
+}
+
+function setChart4_destination(pdate, ptime){
+  var to_tc;
+  if(origin=="KAIST"){
+    to_tc = 101;
+  }else{
+    to_tc = 115;
+  }
+  $.getJSON( "/getDestinationDemand", {
+    /*
+    CDATE: CDATE,
+    CTIME: CTIME,
+    PDATE: pdate,
+    PTIME: ptime,*/ //이렇게 해야하나 데이터가 없어서 ptime 강제로 선택
+    CDATE: 20130816,
+    CTIME: 1434,
+    PDATE: 20130816,
+    PTIME: 20,
+    TO_TCS_CODE: to_tc
+  }, function( data ) {
+    data.sort(function(a,b){
+      var a1 = parseInt(a.PCOUNT);
+      var b1 = parseInt(b.PCOUNT);
+      if(a1<b1) return 1;
+      else return -1;
+    });
+    for(var i =0; i<30;i++){
+      destination_headers[i] = data[i].FROM_TCS_NAME;
+      destination_data[i] =parseInt(data[i].PCOUNT);
+    }
+    getChart4_destination();
+  });
+
 }
 
 function resetLink(){
