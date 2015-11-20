@@ -269,4 +269,14 @@ router.get('/sim_crt', function(req, res, next) {
   queryArray(str, res);
 });
 
+router.get('/sim_cti', function(req, res, next) {
+  var str = "SELECT * FROM CONTROLTRAVELINFO ORDER BY DISPLAYORDER ASC;";
+  queryArray(str, res);
+});
+
+router.get('/sim_vsl', function(req, res, next) {
+  var str = "SELECT * FROM CONTROLVSL WHERE PTIME='" + req.query.PTIME + "' ORDER BY DISPLAYORDER ASC;";
+  queryArray(str, res);
+});
+
 module.exports = router;
