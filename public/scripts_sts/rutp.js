@@ -867,7 +867,7 @@ function getChart4_origin(){
 
         series: [{
             type: 'column',
-            name: 'Column',
+            name: 'PCOUNT',
             data: origin_data
         }],
 
@@ -961,7 +961,7 @@ function getChart4_destination(){
 
       series: [{
           type: 'column',
-          name: 'Column',
+          name: 'PCOUNT',
           data: destination_data
       }],
 
