@@ -61,7 +61,8 @@ VIZ.fileSizes = {
   "data/upick2-weekday-rollup-place-wlsta.json": 651743,
   "data/upick2-weekday-rollup-place-wondl.json": 570994,
   "newdata/station-network.json": 16797,
-  "newdata/spider.json": 3273
+  "newdata/spider.json": 3273,
+  "newdata/marey-header.json": 3776
 };
 VIZ.fileHashes = {
   "data/average-actual-delays.json": "f71ded52",
@@ -125,5 +126,6 @@ VIZ.fileHashes = {
   "data/upick2-weekday-rollup-place-wlsta.json": "68bbbadd",
   "data/upick2-weekday-rollup-place-wondl.json": "e9a25bee",
   "newdata/station-network.json": "",
-  "newdata/spider.json": ""
+  "newdata/spider.json": "",
+  "newdata/marey-header.json": ""
 };

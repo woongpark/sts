@@ -15,14 +15,15 @@
     // nodes and links that comprise the subway system network
     'json!newdata/station-network.json',
     // hard-coded positions for each station on the map glyph
-    'json!newdata/spider.json',
+    'json!newdata/spider.json'
   ], true).done(function (network, spider) {
     // pre-process the data
     var idToNode = {}, idToLine = {}, trips, positions, ptimes = [];
-    network.nodes.forEach(function (data) {
-      data.x = spider[data.id][0];
-      data.y = spider[data.id][1];
-      idToNode[data.id] = data;
+    network.nodes.forEach(function (node, idx) {
+      node.idx = idx + 1;
+      node.x = spider[node.id][0];
+      node.y = spider[node.id][1];
+      idToNode[node.id] = node;
     });
     network.links.forEach(function (link) {
       link.source = network.nodes[link.source] || {};
@@ -40,21 +41,7 @@
       drawMap(svg, $('.graphic').width(), $('.graphic').width());
     });
 
-/*
-    // return the center location for a train given the two stations it is between and
-    // how far along that segment it is
-    function placeWithOffset(from, to, ratio) {
-      var fromPos = [from.pos[0], from.pos[1]];
-      var toPos = [to.pos[0], to.pos[1]];
-      var midpoint = d3.interpolate(fromPos, toPos)(ratio);
-      var angle = Math.atan2(toPos[1] - fromPos[1], toPos[0] - fromPos[0]) + Math.PI / 2;
-      return [midpoint[0] + Math.cos(angle) * radius, midpoint[1] + Math.sin(angle) * radius];
-    }
-  */
-
     var radius = 2;
-    // var minUnixSeconds = moment('2015/01/01 13:00 +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000;
-    // var maxUnixSeconds = moment('2015/01/01 19:00 +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000;
     var minTime = 0;
     var maxTime = 0;
 
@@ -62,19 +49,7 @@
     var PER_SECOND = 10;
 
     // Now load the marey data and start the animation
-/*
-    VIZ.requiresData([
-      'json!data/marey-trips.json'
-    ]).done(function (data) {
-      trips = data;
-      // and start rendering it - 1 minute = 1 second
-      renderTrainsAtTime(lastTime, true);
-      (function animate() {
-        renderTrainsAtTime(lastTime > maxUnixSeconds ? minUnixSeconds : (lastTime + 60 / PER_SECOND));
-        setTimeout(animate, 1000 / PER_SECOND);
-      }());
-    });
-*/
+
     $.getJSON("/sim_speed", function(speedData) {
       trips = [];
       for(var i = 0; i < speedData.data.length; i++) {
@@ -88,29 +63,19 @@
         trips[idx].push(speedData.data[i]);
       }
 
-      positions = trips[0].map(function (d, idx) {
-        var linkno = d[2];
-        var from = network.nodes.filter(function(node) {
-              return node.id == network.links[linkno].source.id;
-            })[0];
-        var to = network.nodes.filter(function(node) {
-              return node.id == network.links[linkno].target.id;
-            })[0];
-        var angle = Math.atan2(to.pos[1] - from.pos[1], to.pos[0] - from.pos[0]);
-
+      positions = network.links.map(function (link, idx) {
         return {
           idx: idx,
-          linkno: linkno,
-          line: network.links[linkno].line,
-          from: from,
-          to: to,
-          cx: from.pos[0],
-          cy: from.pos[1],
-          angle: angle,
-          direct: 1
+          line: link.line,
+          from: link.source,
+          to: link.target,
+          cx: link.source.x,
+          cy: link.source.y,
+          angle: Math.atan2(
+            link.target.pos[1] - link.source.pos[1],
+            link.target.pos[0] - link.source.pos[0]
+          )
         };
-      }).filter(function(d) {
-        return d.from != d.to;
       });
 
       maxTime = ptimes.length * PER_SECOND;
@@ -136,7 +101,7 @@
       var trains = svg.select('.map-container').selectAll('.train').data(positions, function (d) { return d.idx; });
       if (now) {
         positions.forEach(function(d) {
-          var speed = speedHash[d.linkno];
+          var speed = speedHash[d.from.idx];
           d.cx = d.from.pos[0];
           d.cy = d.from.pos[1];
           d.fill = d3.rgb(255-speed*2, 0, speed*2);
@@ -147,12 +112,12 @@
               .attr('fill', function (d) { return d.fill; });
       } else {
         positions.forEach(function(d) {
-          var speed = speedHash[d.linkno];
+          var speed = speedHash[d.from.idx];
           var moveX = Math.cos(d.angle) * (speed / 50);
           var moveY = Math.sin(d.angle) * (speed / 50);
 
-          d.cx += moveX * d.direct;
-          d.cy += moveY * d.direct;
+          d.cx += moveX;
+          d.cy += moveY;
           d.fill = d3.rgb(255-speed*2, 0, speed*2);
           var min_x = Math.min(d.from.pos[0], d.to.pos[0]),
               max_x = Math.max(d.from.pos[0], d.to.pos[0]),
@@ -160,7 +125,32 @@
               max_y = Math.max(d.from.pos[1], d.to.pos[1]);
           if( !(min_x <= d.cx && d.cx <= max_x &&
                 min_y <= d.cy && d.cy <= max_y) ) {
-            d.direct *= -1;
+            var i;
+            for(i = 0; i < network.links.length; i++) {
+              if( network.links[i].line == d.line &&
+                  network.links[i].source.id == d.to.id &&
+                  network.links[i].target.id != d.from.id ) {
+                d.from = d.to;
+                d.to = network.links[i].target;
+                break;
+              }
+            }
+            if(i == network.links.length) {
+              for(i = 0; i < network.links.length; i++) {
+                if( network.links[i].line == d.line &&
+                    network.links[i].source.id == d.to.id &&
+                    network.links[i].target.id == d.from.id ) {
+                  d.from = network.links[i].source;
+                  d.to = network.links[i].target;
+                  break;
+                }
+              }
+            }
+            var speed = speedHash[d.from.idx];
+            d.cx = d.from.pos[0];
+            d.cy = d.from.pos[1];
+            d.angle = Math.atan2(d.to.pos[1] - d.from.pos[1], d.to.pos[0] - d.from.pos[0]);
+            d.fill = d3.rgb(255-speed*2, 0, speed*2);
           }
         });
         trains.transition().duration(duration).ease('linear')
