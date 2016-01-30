@@ -30,14 +30,12 @@
     "DANGJINJC"
   ],
   [
-    "CHEONANJC",
     "NAMCHEONAN",
     "PUNGSE",
     "JUNGAN",
     "GONGJUJC"
   ],
   [
-    "DANGJINJC",
     "MYEONCHEON",
     "GODEOK",
     "YESANSUDUKSA",
@@ -45,7 +43,6 @@
     "YOOGU",
     "MAGOKSA",
     "SEOGONGJUJC",
-    "GONGJUJC",
     "GONGJU",
     "SEOSEJONG",
     "NAMSEJONG",
@@ -66,23 +63,18 @@
     "JEUNGPYEONG",
     "OCHANG",
     "SEOCHEONGJU",
-    "NAMIJC",
     "CHEONGWONJC",
     "CHEONGWON",
     "SINTANJIN",
     "HOIDUKJC"
   ],
   [
-    "SEOPYONGTAEKJC",
     "CHEONGBUK",
     "SONGTANG",
-    "ANSUNGJC",
     "SEOANSUNG",
-    "NAMANSUNG",
-    "DAESOJC"
+    "NAMANSUNG"
   ],
   [
-    "ANSAN",
     "DUNDAE",
     "GUNPO",
     "DONGGUNPO",
@@ -90,11 +82,9 @@
     "BUKSUWON",
     "DONGSUWON",
     "GWANGYO",
-    "SHINGALJC",
     "MASUNG",
     "YONGIN",
     "YANGJI",
-    "DUKPYEONG",
-    "HOBUBJC"
+    "DUKPYEONG"
   ]
 ]

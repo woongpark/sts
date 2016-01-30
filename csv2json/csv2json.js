@@ -42,7 +42,16 @@ if(!fs.existsSync(outputPath)) {
 }
 async.map(csvFiles, csv2json, function(err, result) {
   var nodes = result[0],
-      links = result[1];
+      links = result[1],
+      check = {};
+  nodes = nodes.filter(function(obj) {
+    if(!check[obj.num]) {
+      check[obj.num] = true;
+      return true;
+    } else {
+      return false;
+    }
+  });
   for(var name in restructers) {
     json2File(name, restructers[name](nodes, links));
   }
