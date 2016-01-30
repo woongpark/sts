@@ -74,7 +74,8 @@
           angle: Math.atan2(
             link.target.pos[1] - link.source.pos[1],
             link.target.pos[0] - link.source.pos[0]
-          )
+          ),
+          speedFactor: Math.random()
         };
       });
 
@@ -101,7 +102,7 @@
       var trains = svg.select('.map-container').selectAll('.train').data(positions, function (d) { return d.idx; });
       if (now) {
         positions.forEach(function(d) {
-          var speed = speedHash[d.from.idx];
+          var speed = speedHash[d.from.idx] * (1 + d.speedFactor);
           d.cx = d.from.pos[0];
           d.cy = d.from.pos[1];
           d.fill = d3.rgb(255-speed*2, 0, speed*2);
@@ -112,9 +113,9 @@
               .attr('fill', function (d) { return d.fill; });
       } else {
         positions.forEach(function(d) {
-          var speed = speedHash[d.from.idx];
-          var moveX = Math.cos(d.angle) * (speed / 50);
-          var moveY = Math.sin(d.angle) * (speed / 50);
+          var speed = speedHash[d.from.idx] * (1 + d.speedFactor);
+          var moveX = Math.cos(d.angle) * (speed / 50 + 1);
+          var moveY = Math.sin(d.angle) * (speed / 50 + 1);
 
           d.cx += moveX;
           d.cy += moveY;
@@ -129,7 +130,8 @@
             for(i = 0; i < network.links.length; i++) {
               if( network.links[i].line == d.line &&
                   network.links[i].source.id == d.to.id &&
-                  network.links[i].target.id != d.from.id ) {
+                  network.links[i].target.id != d.from.id &&
+                  network.links[i].target.id != d.to.id) {
                 d.from = d.to;
                 d.to = network.links[i].target;
                 break;
@@ -146,10 +148,11 @@
                 }
               }
             }
-            var speed = speedHash[d.from.idx];
-            d.cx = d.from.pos[0];
-            d.cy = d.from.pos[1];
             d.angle = Math.atan2(d.to.pos[1] - d.from.pos[1], d.to.pos[0] - d.from.pos[0]);
+            moveX = Math.cos(d.angle) * (speed / 50 + 1);
+            moveY = Math.sin(d.angle) * (speed / 50 + 1);
+            d.cx = moveX + d.from.pos[0];
+            d.cy = moveY + d.from.pos[1];
             d.fill = d3.rgb(255-speed*2, 0, speed*2);
           }
         });
