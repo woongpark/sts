@@ -33,6 +33,18 @@ router.get('/sim', function(req, res, next) {
   res.render('sim', { title: 'Simulation and Control' });
 });
 
+router.get('/trajectory', function(req, res, next) {
+  res.render('trajectory', { title: 'Simulation and Control' });
+});
+
+router.get('/network', function(req, res, next) {
+  res.render('network', { title: 'Simulation and Control' });
+});
+
+router.get('/toll', function(req, res, next) {
+  res.render('toll', { title: 'Simulation and Control' });
+});
+
 /* query */
 function query(queryStr, callback) {
   var connection = new Connection(config);
