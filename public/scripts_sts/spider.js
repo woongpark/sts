@@ -161,8 +161,23 @@
   }
 
   function dragged(d) {
+    var min = Infinity,
+        marker = svg.select("#layer1"),
+        box = marker.node().getBBox();
     d.x = d3.event.x;
     d.y = d3.event.y;
+    var stations = svg.selectAll('.station').each(function() {
+      var p = d3.select(this),
+          cx = +p.attr("cx") - 2,
+          cy = +p.attr("cy") - box.height / 2;
+      var dist_cube = (d.x - cx) * (d.x - cx) + (d.y - cy) * (d.y - cy);
+      if(dist_cube < 100 && dist_cube < min) {
+        min = dist_cube;
+        d.x = cx;
+        d.y = cy;
+      }
+    });
+
     d3.select(this).attr("transform", function(d) { return "translate(" + d.x + " " + d.y + ")"; })
   }
 
