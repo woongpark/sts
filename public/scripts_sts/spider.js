@@ -138,32 +138,64 @@
     .on("drag", dragged)
     .on("dragend", dragended);
 
-  var container = svg.append("g");
+  var markers = [];
+  var templates = [{
+    type: "type1",
+    url: "images/squat-marker-green.svg",
+    x: 0,
+    y: 0
+  }, {
+    type: "type2",
+    url: "images/squat-marker-red.svg",
+    x: 0,
+    y: 50
+  }, {
+    type: "type3",
+    url: "images/squat-marker-yellow.svg",
+    x: 0,
+    y: 100
+  }];
 
-  d3.xml("images/squat-marker-green.svg", "image/svg+xml", function(error, xml) {
-    if (error) throw error;
-
-    var svgNode = xml.getElementsByTagName("svg")[0];
-    container.node().appendChild(svgNode);
-    container
-    .data([{x:0, y:0}])
-    .attr("transform", function(d) { return "translate(" + d.x + " " + d.y + ")"; })
-    .call(drag)
-      .select("svg")
-      .attr("width", 25)
-      .attr("height", 39);
-
+  templates.forEach(function(template) {
+    createMarker(template.type);
   });
+
+  function createMarker(type) {
+    var marker = templates.filter(function(temp) {
+      return temp.type === type;
+    })[0];
+    marker = JSON.parse(JSON.stringify(marker));
+    markers.push(marker);
+    d3.xml(marker.url, "image/svg+xml", function(error, xml) {
+      if (error) throw error;
+
+      var container = svg.append("g").data([marker]);
+      var svgNode = xml.getElementsByTagName("svg")[0];
+      container.node().appendChild(svgNode);
+      container
+        .attr("transform", function(d) { return "translate(" + d.x + " " + d.y + ")"; })
+        .call(drag)
+        .select("svg")
+          .attr("width", 25)
+          .attr("height", 39);
+    });
+  }
 
   function dragstarted(d) {
     d3.event.sourceEvent.stopPropagation();
-    d3.select(this).classed("dragging", true);
+    if(!d.fixed) {
+      d3.select(this).classed("dragging", true);
+    }
   }
 
   function dragged(d) {
+    if(d.fixed) {
+      return;
+    }
     var min = Infinity,
         marker = svg.select("#layer1"),
-        box = marker.node().getBBox();
+        box = marker.node().getBBox(),
+        snap = false;
     d.x = d3.event.x;
     d.y = d3.event.y;
     var stations = svg.selectAll('.station').each(function() {
@@ -175,13 +207,18 @@
         min = dist_cube;
         d.x = cx;
         d.y = cy;
+        snap = true;
       }
     });
-
+    d.snap = snap;
     d3.select(this).attr("transform", function(d) { return "translate(" + d.x + " " + d.y + ")"; })
   }
 
   function dragended(d) {
     d3.select(this).classed("dragging", false);
+    if(d.snap && !d.fixed) {
+      d.fixed = true;
+      createMarker(d.type);
+    }
   }
 }());
