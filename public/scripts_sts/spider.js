@@ -138,50 +138,154 @@
     .on("drag", dragged)
     .on("dragend", dragended);
 
-  var container = svg.append("g");
+  var markers = [];
+  var templates = [{
+    type: "accident",
+    title: "Accident",
+    url: "images/squat-marker-red.svg",
+    x: 0,
+    y: 0
+  }, {
+    type: "roadwork",
+    title: "Road Work",
+    url: "images/squat-marker-yellow.svg",
+    x: 0,
+    y: 50
+  }, {
+    type: "weather",
+    title: "Weather",
+    url: "images/squat-marker-green.svg",
+    x: 0,
+    y: 100
+  }];
 
-  d3.xml("images/squat-marker-green.svg", "image/svg+xml", function(error, xml) {
-    if (error) throw error;
-
-    var svgNode = xml.getElementsByTagName("svg")[0];
-    container.node().appendChild(svgNode);
-    container
-    .data([{x:0, y:0}])
-    .attr("transform", function(d) { return "translate(" + d.x + " " + d.y + ")"; })
-    .call(drag)
-      .select("svg")
-      .attr("width", 25)
-      .attr("height", 39);
-
+  templates.forEach(function(template) {
+    createMarker(template.type);
   });
+
+  for(var i = 13; i <= 18; i++) {
+    for(var j = 0; j <= 55; j+=5) {
+      var t = i + ":" + (j < 10 ? "0" : "") + j;
+      $(".sim-input [name='start_time'], .sim-input [name='end_time']")
+          .append("<option>" + t + "</option>");
+    }
+  }
+
+  function createMarker(type) {
+    var marker = templates.filter(function(temp) {
+      return temp.type === type;
+    })[0];
+    marker = JSON.parse(JSON.stringify(marker));
+    markers.push(marker);
+    d3.xml(marker.url, "image/svg+xml", function(error, xml) {
+      if (error) throw error;
+
+      var container = svg.append("g").data([marker]);
+      var svgNode = xml.getElementsByTagName("svg")[0];
+      container.node().appendChild(svgNode);
+      container
+        .attr("transform", function(d) { return "translate(" + d.x + " " + d.y + ")"; })
+        .on("click", clicked)
+        .call(drag)
+        .select("svg")
+          .attr("width", 25)
+          .attr("height", 39);
+    });
+  }
 
   function dragstarted(d) {
     d3.event.sourceEvent.stopPropagation();
-    d3.select(this).classed("dragging", true);
+    if(!d.fixed) {
+      d3.select(this).classed("dragging", true);
+    }
   }
 
   function dragged(d) {
+    if(d.fixed) {
+      return;
+    }
     var min = Infinity,
         marker = svg.select("#layer1"),
-        box = marker.node().getBBox();
+        box = marker.node().getBBox(),
+        snap = false;
     d.x = d3.event.x;
     d.y = d3.event.y;
-    var stations = svg.selectAll('.station').each(function() {
-      var p = d3.select(this),
-          cx = +p.attr("cx") - 2,
-          cy = +p.attr("cy") - box.height / 2;
-      var dist_cube = (d.x - cx) * (d.x - cx) + (d.y - cy) * (d.y - cy);
+    var connections = svg.selectAll('.connect').each(function() {
+      var line = d3.select(this),
+          cx = (+line.attr("x1") + +line.attr("x2")) / 2 - 2,
+          cy = (+line.attr("y1") + +line.attr("y2")) / 2 - box.height / 2,
+          dist_cube = (d.x - cx) * (d.x - cx) + (d.y - cy) * (d.y - cy);
       if(dist_cube < 100 && dist_cube < min) {
         min = dist_cube;
         d.x = cx;
         d.y = cy;
+        d.data = line.data()[0];
+        snap = true;
       }
     });
-
+    d.snap = snap;
     d3.select(this).attr("transform", function(d) { return "translate(" + d.x + " " + d.y + ")"; })
   }
 
   function dragended(d) {
     d3.select(this).classed("dragging", false);
+    if(d.snap && !d.fixed) {
+      d.fixed = true;
+      createMarker(d.type);
+    }
+  }
+
+  function clicked(d) {
+    if(d.fixed) {
+      popupSimInput(d);
+    }
+  }
+
+  function popupSimInput(d) {
+    var min = Math.min(d.data.smile, d.data.emile),
+        max = Math.max(d.data.smile, d.data.emile),
+        $form = $(".sim-input");
+    $form.data("data", d).removeClass().addClass("sim-input " + d.type).show();
+    $form.find("h1").text(d.title);
+    $form.find(".line").text(d.data.color + " (" + d.data.line + ")");
+    $form.find(".milepost").text(min + " KM ~ " + max + " KM");
+    $form.find(".location").val(d.location || "")
+        .attr("placeholder", "Between " + min + " ~ " + max + " (default 0)");
+    $form.find("[name='direction']")
+        .filter("[value='" + (d.direction||"UP") + "']").prop('checked', true);
+    $form.find("[name='start_time']").val(d.start_time || "13:00");
+    $form.find("[name='end_time']").val(d.end_time || "13:00");
+    $form.find("[name='blocked_lane']").val(d.blocked_lane || "1");
+    // TODO: Road Work와 Weather입력
+  }
+
+  $(".sim-input .insert").click(function(e) {
+    e.preventDefault();
+    var $form = $(".sim-input"),
+        d = $form.data("data");
+    d.location = $form.find(".location").val();
+    d.direction = $form.find("input[type=radio]:checked").val();
+    d.start_time = $form.find("[name='start_time']").val();
+    d.end_time = $form.find("[name='end_time']").val();
+    d.blocked_lane = $form.find("[name='blocked_lane']").val();
+    $form.hide();
+  });
+  $(".sim-input .delete").click(function(e) {
+    e.preventDefault();
+    removeMarker();
+    $(".sim-input").hide();
+  });
+
+  function removeMarker() {
+    var d = $(".sim-input").data("data");
+    for(var i = 0; i < markers.length; i++) {
+      if(d === markers[i]) {
+        markers.splice(i, 1);
+        break;
+      }
+    }
+    svg.selectAll("g").filter(function(obj) {
+      return obj === d;
+    }).remove();
   }
 }());

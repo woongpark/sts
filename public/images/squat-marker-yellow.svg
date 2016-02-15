@@ -23,7 +23,7 @@
       id="defs4"
     >
     <radialGradient
-        id="radialGradient3785"
+        id="radialGradientYellow"
         gradientUnits="userSpaceOnUse"
         cy="2.3351"
         cx="12.5"
@@ -97,7 +97,7 @@
         id="path3769"
         sodipodi:rx="9.4642859"
         sodipodi:ry="9.4642859"
-        style="fill:url(#radialGradient3785)"
+        style="fill:url(#radialGradientYellow)"
         sodipodi:type="arc"
         d="m21.964 11.5c0 5.227-4.2373 9.4643-9.4643 9.4643s-9.4643-4.2373-9.4643-9.4643 4.2373-9.4643 9.4643-9.4643 9.4643 4.2373 9.4643 9.4643z"
         transform="matrix(1.1041 0 0 1.1041 -1.3018 1013.2)"
