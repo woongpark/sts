@@ -73,7 +73,11 @@ var restructers = {
       links.push({
         source: link_json[i].source - 1,
         target: link_json[i].target - 1,
-        line: lineMatch[link_json[i].linecode]
+        line: lineMatch[link_json[i].linecode],
+        color: link_json[i].linecolor,
+        direct: link_json[i].direction,
+        smile: link_json[i].smilepost,
+        emile: link_json[i].emilepost
       });
     }
     return {
