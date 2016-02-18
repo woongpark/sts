@@ -140,18 +140,21 @@
 
   var markers = [];
   var templates = [{
+    eventtype: 1,
     type: "accident",
     title: "Accident",
     url: "images/squat-marker-red.svg",
     x: 0,
     y: 0
   }, {
+    eventtype: 2,
     type: "roadwork",
     title: "Road Work",
     url: "images/squat-marker-yellow.svg",
     x: 0,
     y: 50
   }, {
+    eventtype: 3,
     type: "weather",
     title: "Weather",
     url: "images/squat-marker-green.svg",
@@ -232,13 +235,12 @@
     if(d.snap && !d.fixed) {
       d.fixed = true;
       createMarker(d.type);
+      popupSimInput(d);
     }
   }
 
   function clicked(d) {
-    if(d.fixed) {
-      popupSimInput(d);
-    }
+    popupSimInput(d);
   }
 
   function popupSimInput(d) {
@@ -287,5 +289,30 @@
     svg.selectAll("g").filter(function(obj) {
       return obj === d;
     }).remove();
+  }
+
+  $("#sim-run").click(function() {
+    var data = getSimInfo();
+  });
+
+  function getSimInfo() {
+    var sim_no = moment().format("YYYYMMDDhhmm");
+    var data = markers.filter(function(datum) {
+      return !!datum.data;
+    }).map(function(datum, index) {
+      return {
+        SIMULATIONNO: sim_no,
+        EVENTNO: index + 1,
+        EVENTTYPE: datum.eventtype,
+        LINKID: datum.data.linkid,
+        LOCATION: +(datum.location || 0),
+        DERECTION: datum.direction,
+        STARTTIME: datum.start_time,
+        ENDTIME: datum.end_time,
+        SEVERITY: datum.blocked_lane
+      };
+    });
+
+    console.log(data);
   }
 }());

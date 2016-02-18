@@ -71,6 +71,7 @@ var restructers = {
     }
     for(var i = 0; i < link_json.length; i++) {
       links.push({
+        linkid: link_json[i].linkid,
         source: link_json[i].source - 1,
         target: link_json[i].target - 1,
         line: lineMatch[link_json[i].linecode],
