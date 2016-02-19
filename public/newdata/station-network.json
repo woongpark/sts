@@ -299,6 +299,7 @@
   ],
   "links": [
     {
+      "linkid": 1,
       "source": 42,
       "target": 27,
       "line": "Kyungbu",
@@ -308,6 +309,7 @@
       "emile": 395
     },
     {
+      "linkid": 2,
       "source": 27,
       "target": 43,
       "line": "Kyungbu",
@@ -317,6 +319,7 @@
       "emile": 392.4
     },
     {
+      "linkid": 3,
       "source": 43,
       "target": 44,
       "line": "Kyungbu",
@@ -326,6 +329,7 @@
       "emile": 387.2
     },
     {
+      "linkid": 4,
       "source": 44,
       "target": 45,
       "line": "Kyungbu",
@@ -335,6 +339,7 @@
       "emile": 386.5
     },
     {
+      "linkid": 5,
       "source": 45,
       "target": 46,
       "line": "Kyungbu",
@@ -344,6 +349,7 @@
       "emile": 380
     },
     {
+      "linkid": 6,
       "source": 46,
       "target": 47,
       "line": "Kyungbu",
@@ -353,6 +359,7 @@
       "emile": 378.2
     },
     {
+      "linkid": 7,
       "source": 47,
       "target": 48,
       "line": "Kyungbu",
@@ -362,6 +369,7 @@
       "emile": 364.9
     },
     {
+      "linkid": 8,
       "source": 48,
       "target": 49,
       "line": "Kyungbu",
@@ -371,6 +379,7 @@
       "emile": 360.1
     },
     {
+      "linkid": 9,
       "source": 49,
       "target": 50,
       "line": "Kyungbu",
@@ -380,6 +389,7 @@
       "emile": 350
     },
     {
+      "linkid": 10,
       "source": 50,
       "target": 51,
       "line": "Kyungbu",
@@ -389,6 +399,7 @@
       "emile": 340.1
     },
     {
+      "linkid": 11,
       "source": 51,
       "target": 52,
       "line": "Kyungbu",
@@ -398,6 +409,7 @@
       "emile": 333.4
     },
     {
+      "linkid": 12,
       "source": 52,
       "target": 53,
       "line": "Kyungbu",
@@ -407,6 +419,7 @@
       "emile": 329.9
     },
     {
+      "linkid": 13,
       "source": 53,
       "target": 54,
       "line": "Kyungbu",
@@ -416,6 +429,7 @@
       "emile": 305.1
     },
     {
+      "linkid": 14,
       "source": 54,
       "target": 14,
       "line": "Kyungbu",
@@ -425,6 +439,7 @@
       "emile": 300.5
     },
     {
+      "linkid": 15,
       "source": 32,
       "target": 19,
       "line": "Seohaean",
@@ -434,6 +449,7 @@
       "emile": 326.1
     },
     {
+      "linkid": 16,
       "source": 19,
       "target": 33,
       "line": "Seohaean",
@@ -443,6 +459,7 @@
       "emile": 321
     },
     {
+      "linkid": 17,
       "source": 33,
       "target": 34,
       "line": "Seohaean",
@@ -452,6 +469,7 @@
       "emile": 317.2
     },
     {
+      "linkid": 18,
       "source": 34,
       "target": 35,
       "line": "Seohaean",
@@ -461,6 +479,7 @@
       "emile": 313.2
     },
     {
+      "linkid": 19,
       "source": 35,
       "target": 36,
       "line": "Seohaean",
@@ -470,6 +489,7 @@
       "emile": 299.5
     },
     {
+      "linkid": 20,
       "source": 36,
       "target": 37,
       "line": "Seohaean",
@@ -479,6 +499,7 @@
       "emile": 291.7
     },
     {
+      "linkid": 21,
       "source": 37,
       "target": 38,
       "line": "Seohaean",
@@ -488,6 +509,7 @@
       "emile": 285
     },
     {
+      "linkid": 22,
       "source": 38,
       "target": 39,
       "line": "Seohaean",
@@ -497,6 +519,7 @@
       "emile": 272.5
     },
     {
+      "linkid": 23,
       "source": 39,
       "target": 40,
       "line": "Seohaean",
@@ -506,6 +529,7 @@
       "emile": 264.5
     },
     {
+      "linkid": 24,
       "source": 40,
       "target": 41,
       "line": "Seohaean",
@@ -515,6 +539,7 @@
       "emile": 255.1
     },
     {
+      "linkid": 25,
       "source": 52,
       "target": 59,
       "line": "CheonanNonsan",
@@ -524,6 +549,7 @@
       "emile": 273.8
     },
     {
+      "linkid": 26,
       "source": 59,
       "target": 60,
       "line": "CheonanNonsan",
@@ -533,6 +559,7 @@
       "emile": 271.8
     },
     {
+      "linkid": 27,
       "source": 60,
       "target": 61,
       "line": "CheonanNonsan",
@@ -542,6 +569,7 @@
       "emile": 267.4
     },
     {
+      "linkid": 28,
       "source": 61,
       "target": 62,
       "line": "CheonanNonsan",
@@ -551,6 +579,7 @@
       "emile": 241.3
     },
     {
+      "linkid": 29,
       "source": 41,
       "target": 63,
       "line": "DanjikYoungduk",
@@ -560,6 +589,7 @@
       "emile": 4
     },
     {
+      "linkid": 30,
       "source": 63,
       "target": 64,
       "line": "DanjikYoungduk",
@@ -569,6 +599,7 @@
       "emile": 12.7
     },
     {
+      "linkid": 31,
       "source": 64,
       "target": 65,
       "line": "DanjikYoungduk",
@@ -578,6 +609,7 @@
       "emile": 24.4
     },
     {
+      "linkid": 32,
       "source": 65,
       "target": 66,
       "line": "DanjikYoungduk",
@@ -587,6 +619,7 @@
       "emile": 36.9
     },
     {
+      "linkid": 33,
       "source": 66,
       "target": 67,
       "line": "DanjikYoungduk",
@@ -596,6 +629,7 @@
       "emile": 47.7
     },
     {
+      "linkid": 34,
       "source": 67,
       "target": 68,
       "line": "DanjikYoungduk",
@@ -605,6 +639,7 @@
       "emile": 56.6
     },
     {
+      "linkid": 35,
       "source": 68,
       "target": 69,
       "line": "DanjikYoungduk",
@@ -614,6 +649,7 @@
       "emile": 60.4
     },
     {
+      "linkid": 36,
       "source": 69,
       "target": 62,
       "line": "DanjikYoungduk",
@@ -623,6 +659,7 @@
       "emile": 63
     },
     {
+      "linkid": 37,
       "source": 62,
       "target": 70,
       "line": "DanjikYoungduk",
@@ -632,6 +669,7 @@
       "emile": 65.9
     },
     {
+      "linkid": 38,
       "source": 70,
       "target": 71,
       "line": "DanjikYoungduk",
@@ -641,6 +679,7 @@
       "emile": 75
     },
     {
+      "linkid": 39,
       "source": 71,
       "target": 72,
       "line": "DanjikYoungduk",
@@ -650,6 +689,7 @@
       "emile": 80
     },
     {
+      "linkid": 40,
       "source": 72,
       "target": 73,
       "line": "DanjikYoungduk",
@@ -659,6 +699,7 @@
       "emile": 91.9
     },
     {
+      "linkid": 41,
       "source": 0,
       "target": 1,
       "line": "Joongbu",
@@ -668,6 +709,7 @@
       "emile": 357
     },
     {
+      "linkid": 42,
       "source": 1,
       "target": 2,
       "line": "Joongbu",
@@ -677,6 +719,7 @@
       "emile": 352
     },
     {
+      "linkid": 43,
       "source": 2,
       "target": 3,
       "line": "Joongbu",
@@ -686,6 +729,7 @@
       "emile": 339.9
     },
     {
+      "linkid": 44,
       "source": 3,
       "target": 4,
       "line": "Joongbu",
@@ -695,6 +739,7 @@
       "emile": 329.2
     },
     {
+      "linkid": 45,
       "source": 4,
       "target": 5,
       "line": "Joongbu",
@@ -704,6 +749,7 @@
       "emile": 325.9
     },
     {
+      "linkid": 46,
       "source": 5,
       "target": 6,
       "line": "Joongbu",
@@ -713,6 +759,7 @@
       "emile": 323.5
     },
     {
+      "linkid": 47,
       "source": 6,
       "target": 7,
       "line": "Joongbu",
@@ -722,6 +769,7 @@
       "emile": 306.8
     },
     {
+      "linkid": 48,
       "source": 7,
       "target": 8,
       "line": "Joongbu",
@@ -731,6 +779,7 @@
       "emile": 290
     },
     {
+      "linkid": 49,
       "source": 8,
       "target": 9,
       "line": "Joongbu",
@@ -740,6 +789,7 @@
       "emile": 289
     },
     {
+      "linkid": 50,
       "source": 9,
       "target": 10,
       "line": "Joongbu",
@@ -749,6 +799,7 @@
       "emile": 281.2
     },
     {
+      "linkid": 51,
       "source": 10,
       "target": 11,
       "line": "Joongbu",
@@ -758,6 +809,7 @@
       "emile": 269.3
     },
     {
+      "linkid": 52,
       "source": 11,
       "target": 12,
       "line": "Joongbu",
@@ -767,6 +819,7 @@
       "emile": 260.9
     },
     {
+      "linkid": 53,
       "source": 12,
       "target": 13,
       "line": "Joongbu",
@@ -776,6 +829,7 @@
       "emile": 253.4
     },
     {
+      "linkid": 54,
       "source": 13,
       "target": 14,
       "line": "Joongbu",
@@ -785,6 +839,7 @@
       "emile": 247.4
     },
     {
+      "linkid": 55,
       "source": 14,
       "target": 15,
       "line": "Joongbu",
@@ -794,6 +849,7 @@
       "emile": 240
     },
     {
+      "linkid": 56,
       "source": 15,
       "target": 16,
       "line": "Joongbu",
@@ -803,6 +859,7 @@
       "emile": 239.9
     },
     {
+      "linkid": 57,
       "source": 16,
       "target": 17,
       "line": "Joongbu",
@@ -812,6 +869,7 @@
       "emile": 228.8
     },
     {
+      "linkid": 58,
       "source": 17,
       "target": 18,
       "line": "Joongbu",
@@ -821,60 +879,67 @@
       "emile": 224.8
     },
     {
+      "linkid": 59,
       "source": 37,
       "target": 55,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "D",
       "smile": 0,
       "emile": 2.8
     },
     {
+      "linkid": 60,
       "source": 55,
       "target": 56,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "D",
       "smile": 2.8,
       "emile": 20.8
     },
     {
+      "linkid": 61,
       "source": 56,
       "target": 48,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "D",
       "smile": 20.8,
       "emile": 23.7
     },
     {
+      "linkid": 62,
       "source": 48,
       "target": 57,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "D",
       "smile": 23.7,
       "emile": 25.7
     },
     {
+      "linkid": 63,
       "source": 57,
       "target": 58,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "D",
       "smile": 25.7,
       "emile": 36.6
     },
     {
+      "linkid": 64,
       "source": 58,
       "target": 9,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "D",
       "smile": 36.6,
       "emile": 57.8
     },
     {
+      "linkid": 65,
       "source": 19,
       "target": 20,
       "line": "Youngdong",
@@ -884,6 +949,7 @@
       "emile": 22.7
     },
     {
+      "linkid": 66,
       "source": 20,
       "target": 21,
       "line": "Youngdong",
@@ -893,6 +959,7 @@
       "emile": 24.4
     },
     {
+      "linkid": 67,
       "source": 21,
       "target": 22,
       "line": "Youngdong",
@@ -902,6 +969,7 @@
       "emile": 25.8
     },
     {
+      "linkid": 68,
       "source": 22,
       "target": 23,
       "line": "Youngdong",
@@ -911,6 +979,7 @@
       "emile": 28
     },
     {
+      "linkid": 69,
       "source": 23,
       "target": 24,
       "line": "Youngdong",
@@ -920,6 +989,7 @@
       "emile": 30.8
     },
     {
+      "linkid": 70,
       "source": 24,
       "target": 25,
       "line": "Youngdong",
@@ -929,6 +999,7 @@
       "emile": 36.9
     },
     {
+      "linkid": 71,
       "source": 25,
       "target": 26,
       "line": "Youngdong",
@@ -938,6 +1009,7 @@
       "emile": 38
     },
     {
+      "linkid": 72,
       "source": 26,
       "target": 27,
       "line": "Youngdong",
@@ -947,6 +1019,7 @@
       "emile": 41.8
     },
     {
+      "linkid": 73,
       "source": 27,
       "target": 28,
       "line": "Youngdong",
@@ -956,6 +1029,7 @@
       "emile": 48.4
     },
     {
+      "linkid": 74,
       "source": 28,
       "target": 29,
       "line": "Youngdong",
@@ -965,6 +1039,7 @@
       "emile": 52.5
     },
     {
+      "linkid": 75,
       "source": 29,
       "target": 30,
       "line": "Youngdong",
@@ -974,6 +1049,7 @@
       "emile": 60.5
     },
     {
+      "linkid": 76,
       "source": 30,
       "target": 31,
       "line": "Youngdong",
@@ -983,6 +1059,7 @@
       "emile": 71
     },
     {
+      "linkid": 77,
       "source": 31,
       "target": 6,
       "line": "Youngdong",
@@ -992,6 +1069,7 @@
       "emile": 73.3
     },
     {
+      "linkid": 78,
       "source": 27,
       "target": 42,
       "line": "Kyungbu",
@@ -1001,6 +1079,7 @@
       "emile": 403.3
     },
     {
+      "linkid": 79,
       "source": 43,
       "target": 27,
       "line": "Kyungbu",
@@ -1010,6 +1089,7 @@
       "emile": 395
     },
     {
+      "linkid": 80,
       "source": 44,
       "target": 43,
       "line": "Kyungbu",
@@ -1019,6 +1099,7 @@
       "emile": 392.4
     },
     {
+      "linkid": 81,
       "source": 45,
       "target": 44,
       "line": "Kyungbu",
@@ -1028,6 +1109,7 @@
       "emile": 387.2
     },
     {
+      "linkid": 82,
       "source": 46,
       "target": 45,
       "line": "Kyungbu",
@@ -1037,6 +1119,7 @@
       "emile": 386.5
     },
     {
+      "linkid": 83,
       "source": 47,
       "target": 46,
       "line": "Kyungbu",
@@ -1046,6 +1129,7 @@
       "emile": 380
     },
     {
+      "linkid": 84,
       "source": 48,
       "target": 47,
       "line": "Kyungbu",
@@ -1055,6 +1139,7 @@
       "emile": 378.2
     },
     {
+      "linkid": 85,
       "source": 49,
       "target": 48,
       "line": "Kyungbu",
@@ -1064,6 +1149,7 @@
       "emile": 364.9
     },
     {
+      "linkid": 86,
       "source": 50,
       "target": 49,
       "line": "Kyungbu",
@@ -1073,6 +1159,7 @@
       "emile": 360.1
     },
     {
+      "linkid": 87,
       "source": 51,
       "target": 50,
       "line": "Kyungbu",
@@ -1082,6 +1169,7 @@
       "emile": 350
     },
     {
+      "linkid": 88,
       "source": 52,
       "target": 51,
       "line": "Kyungbu",
@@ -1091,6 +1179,7 @@
       "emile": 340.1
     },
     {
+      "linkid": 89,
       "source": 53,
       "target": 52,
       "line": "Kyungbu",
@@ -1100,6 +1189,7 @@
       "emile": 333.4
     },
     {
+      "linkid": 90,
       "source": 54,
       "target": 53,
       "line": "Kyungbu",
@@ -1109,6 +1199,7 @@
       "emile": 329.9
     },
     {
+      "linkid": 91,
       "source": 14,
       "target": 54,
       "line": "Kyungbu",
@@ -1118,6 +1209,7 @@
       "emile": 305.1
     },
     {
+      "linkid": 92,
       "source": 19,
       "target": 32,
       "line": "Seohaean",
@@ -1127,6 +1219,7 @@
       "emile": 327.5
     },
     {
+      "linkid": 93,
       "source": 33,
       "target": 19,
       "line": "Seohaean",
@@ -1136,6 +1229,7 @@
       "emile": 326.1
     },
     {
+      "linkid": 94,
       "source": 34,
       "target": 33,
       "line": "Seohaean",
@@ -1145,6 +1239,7 @@
       "emile": 321
     },
     {
+      "linkid": 95,
       "source": 35,
       "target": 34,
       "line": "Seohaean",
@@ -1154,6 +1249,7 @@
       "emile": 317.2
     },
     {
+      "linkid": 96,
       "source": 36,
       "target": 35,
       "line": "Seohaean",
@@ -1163,6 +1259,7 @@
       "emile": 313.2
     },
     {
+      "linkid": 97,
       "source": 37,
       "target": 36,
       "line": "Seohaean",
@@ -1172,6 +1269,7 @@
       "emile": 299.5
     },
     {
+      "linkid": 98,
       "source": 38,
       "target": 37,
       "line": "Seohaean",
@@ -1181,6 +1279,7 @@
       "emile": 291.7
     },
     {
+      "linkid": 99,
       "source": 39,
       "target": 38,
       "line": "Seohaean",
@@ -1190,6 +1289,7 @@
       "emile": 285
     },
     {
+      "linkid": 100,
       "source": 40,
       "target": 39,
       "line": "Seohaean",
@@ -1199,6 +1299,7 @@
       "emile": 272.5
     },
     {
+      "linkid": 101,
       "source": 41,
       "target": 40,
       "line": "Seohaean",
@@ -1208,6 +1309,7 @@
       "emile": 264.5
     },
     {
+      "linkid": 102,
       "source": 59,
       "target": 52,
       "line": "CheonanNonsan",
@@ -1217,6 +1319,7 @@
       "emile": 276.3
     },
     {
+      "linkid": 103,
       "source": 60,
       "target": 59,
       "line": "CheonanNonsan",
@@ -1226,6 +1329,7 @@
       "emile": 273.8
     },
     {
+      "linkid": 104,
       "source": 61,
       "target": 60,
       "line": "CheonanNonsan",
@@ -1235,6 +1339,7 @@
       "emile": 271.8
     },
     {
+      "linkid": 105,
       "source": 62,
       "target": 61,
       "line": "CheonanNonsan",
@@ -1244,6 +1349,7 @@
       "emile": 267.4
     },
     {
+      "linkid": 106,
       "source": 63,
       "target": 41,
       "line": "DanjikYoungduk",
@@ -1253,6 +1359,7 @@
       "emile": 0
     },
     {
+      "linkid": 107,
       "source": 64,
       "target": 63,
       "line": "DanjikYoungduk",
@@ -1262,6 +1369,7 @@
       "emile": 4
     },
     {
+      "linkid": 108,
       "source": 65,
       "target": 64,
       "line": "DanjikYoungduk",
@@ -1271,6 +1379,7 @@
       "emile": 12.7
     },
     {
+      "linkid": 109,
       "source": 66,
       "target": 65,
       "line": "DanjikYoungduk",
@@ -1280,6 +1389,7 @@
       "emile": 24.4
     },
     {
+      "linkid": 110,
       "source": 67,
       "target": 66,
       "line": "DanjikYoungduk",
@@ -1289,6 +1399,7 @@
       "emile": 36.9
     },
     {
+      "linkid": 111,
       "source": 68,
       "target": 67,
       "line": "DanjikYoungduk",
@@ -1298,6 +1409,7 @@
       "emile": 47.7
     },
     {
+      "linkid": 112,
       "source": 69,
       "target": 68,
       "line": "DanjikYoungduk",
@@ -1307,6 +1419,7 @@
       "emile": 56.6
     },
     {
+      "linkid": 113,
       "source": 62,
       "target": 69,
       "line": "DanjikYoungduk",
@@ -1316,6 +1429,7 @@
       "emile": 60.4
     },
     {
+      "linkid": 114,
       "source": 70,
       "target": 62,
       "line": "DanjikYoungduk",
@@ -1325,6 +1439,7 @@
       "emile": 63
     },
     {
+      "linkid": 115,
       "source": 71,
       "target": 70,
       "line": "DanjikYoungduk",
@@ -1334,6 +1449,7 @@
       "emile": 65.9
     },
     {
+      "linkid": 116,
       "source": 72,
       "target": 71,
       "line": "DanjikYoungduk",
@@ -1343,6 +1459,7 @@
       "emile": 75
     },
     {
+      "linkid": 117,
       "source": 73,
       "target": 72,
       "line": "DanjikYoungduk",
@@ -1352,6 +1469,7 @@
       "emile": 80
     },
     {
+      "linkid": 118,
       "source": 1,
       "target": 0,
       "line": "Joongbu",
@@ -1361,6 +1479,7 @@
       "emile": 361.2
     },
     {
+      "linkid": 119,
       "source": 2,
       "target": 1,
       "line": "Joongbu",
@@ -1370,6 +1489,7 @@
       "emile": 357
     },
     {
+      "linkid": 120,
       "source": 3,
       "target": 2,
       "line": "Joongbu",
@@ -1379,6 +1499,7 @@
       "emile": 352
     },
     {
+      "linkid": 121,
       "source": 4,
       "target": 3,
       "line": "Joongbu",
@@ -1388,6 +1509,7 @@
       "emile": 339.9
     },
     {
+      "linkid": 122,
       "source": 5,
       "target": 4,
       "line": "Joongbu",
@@ -1397,6 +1519,7 @@
       "emile": 329.2
     },
     {
+      "linkid": 123,
       "source": 6,
       "target": 5,
       "line": "Joongbu",
@@ -1406,6 +1529,7 @@
       "emile": 325.9
     },
     {
+      "linkid": 124,
       "source": 7,
       "target": 6,
       "line": "Joongbu",
@@ -1415,6 +1539,7 @@
       "emile": 323.5
     },
     {
+      "linkid": 125,
       "source": 8,
       "target": 7,
       "line": "Joongbu",
@@ -1424,6 +1549,7 @@
       "emile": 306.8
     },
     {
+      "linkid": 126,
       "source": 9,
       "target": 8,
       "line": "Joongbu",
@@ -1433,6 +1559,7 @@
       "emile": 290
     },
     {
+      "linkid": 127,
       "source": 10,
       "target": 9,
       "line": "Joongbu",
@@ -1442,6 +1569,7 @@
       "emile": 289
     },
     {
+      "linkid": 128,
       "source": 11,
       "target": 10,
       "line": "Joongbu",
@@ -1451,6 +1579,7 @@
       "emile": 281.2
     },
     {
+      "linkid": 129,
       "source": 12,
       "target": 11,
       "line": "Joongbu",
@@ -1460,6 +1589,7 @@
       "emile": 269.3
     },
     {
+      "linkid": 130,
       "source": 13,
       "target": 12,
       "line": "Joongbu",
@@ -1469,6 +1599,7 @@
       "emile": 260.9
     },
     {
+      "linkid": 131,
       "source": 14,
       "target": 13,
       "line": "Joongbu",
@@ -1478,6 +1609,7 @@
       "emile": 253.4
     },
     {
+      "linkid": 132,
       "source": 15,
       "target": 14,
       "line": "Joongbu",
@@ -1487,6 +1619,7 @@
       "emile": 247.4
     },
     {
+      "linkid": 133,
       "source": 16,
       "target": 15,
       "line": "Joongbu",
@@ -1496,6 +1629,7 @@
       "emile": 240
     },
     {
+      "linkid": 134,
       "source": 17,
       "target": 16,
       "line": "Joongbu",
@@ -1505,6 +1639,7 @@
       "emile": 239.9
     },
     {
+      "linkid": 135,
       "source": 18,
       "target": 17,
       "line": "Joongbu",
@@ -1514,60 +1649,67 @@
       "emile": 228.8
     },
     {
+      "linkid": 136,
       "source": 55,
       "target": 37,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "U",
       "smile": 2.8,
       "emile": 0
     },
     {
+      "linkid": 137,
       "source": 56,
       "target": 55,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "U",
       "smile": 20.8,
       "emile": 2.8
     },
     {
+      "linkid": 138,
       "source": 48,
       "target": 56,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "U",
       "smile": 23.7,
       "emile": 20.8
     },
     {
+      "linkid": 139,
       "source": 57,
       "target": 48,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "U",
       "smile": 25.7,
       "emile": 23.7
     },
     {
+      "linkid": 140,
       "source": 58,
       "target": 57,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "U",
       "smile": 36.6,
       "emile": 25.7
     },
     {
+      "linkid": 141,
       "source": 9,
       "target": 58,
       "line": "PyungtaekJecheon",
-      "color": "Navy",
+      "color": "Navie",
       "direct": "U",
       "smile": 57.8,
       "emile": 36.6
     },
     {
+      "linkid": 142,
       "source": 20,
       "target": 19,
       "line": "Youngdong",
@@ -1577,6 +1719,7 @@
       "emile": 18
     },
     {
+      "linkid": 143,
       "source": 21,
       "target": 20,
       "line": "Youngdong",
@@ -1586,6 +1729,7 @@
       "emile": 22.7
     },
     {
+      "linkid": 144,
       "source": 22,
       "target": 21,
       "line": "Youngdong",
@@ -1595,6 +1739,7 @@
       "emile": 24.4
     },
     {
+      "linkid": 145,
       "source": 23,
       "target": 22,
       "line": "Youngdong",
@@ -1604,6 +1749,7 @@
       "emile": 25.8
     },
     {
+      "linkid": 146,
       "source": 24,
       "target": 23,
       "line": "Youngdong",
@@ -1613,6 +1759,7 @@
       "emile": 28
     },
     {
+      "linkid": 147,
       "source": 25,
       "target": 24,
       "line": "Youngdong",
@@ -1622,6 +1769,7 @@
       "emile": 30.8
     },
     {
+      "linkid": 148,
       "source": 26,
       "target": 25,
       "line": "Youngdong",
@@ -1631,6 +1779,7 @@
       "emile": 36.9
     },
     {
+      "linkid": 149,
       "source": 27,
       "target": 26,
       "line": "Youngdong",
@@ -1640,6 +1789,7 @@
       "emile": 38
     },
     {
+      "linkid": 150,
       "source": 28,
       "target": 27,
       "line": "Youngdong",
@@ -1649,6 +1799,7 @@
       "emile": 41.8
     },
     {
+      "linkid": 151,
       "source": 29,
       "target": 28,
       "line": "Youngdong",
@@ -1658,6 +1809,7 @@
       "emile": 48.4
     },
     {
+      "linkid": 152,
       "source": 30,
       "target": 29,
       "line": "Youngdong",
@@ -1667,6 +1819,7 @@
       "emile": 52.5
     },
     {
+      "linkid": 153,
       "source": 31,
       "target": 30,
       "line": "Youngdong",
@@ -1676,6 +1829,7 @@
       "emile": 60.5
     },
     {
+      "linkid": 154,
       "source": 6,
       "target": 31,
       "line": "Youngdong",
