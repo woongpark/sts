@@ -304,6 +304,21 @@
 
   $("#sim-run").click(function() {
     var data = getSimInfo();
+    for(var i=0; i< data.length;i++){
+      $.getJSON( "/sim_input", {
+        SIMULATIONNO: Number(data[i].SIMULATIONNO.substring(8,12)),
+        EVENTNO: data[i].EVENTNO,
+        EVENTTYPE: String(data[i].EVENTTYPE),
+        LINKID: String(data[i].LINKID),
+        LOCATION: data[i].LOCATION,
+        DERECTION: data[i].DERECTION.substring(0,1),
+        STARTTIME: data[i].STARTTIME.split(':').join(""),
+        ENDTIME: data[i].ENDTIME.split(':').join(""),
+        SEVERITY: String(data[i].SEVERITY)
+      }, function() {
+
+      });
+    }
   });
 
   function getSimInfo() {
@@ -324,7 +339,6 @@
         SEVERITY: severity
       };
     });
-
-    console.log(data);
+    return data;
   }
 }());
