@@ -81,38 +81,45 @@ function query(queryStr, callback) {
 function queryArray(queryStr, callback) {
   var connection = new Connection(config);
   connection.on('connect', function(err) {
-      if(err) {
-        console.log(err);
-        return;
-      }
-      var request = new Request(queryStr, function(err, rowCount, rows) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log(rowCount + ' rows');
-          var headers = rows[0].map(function(val) {
-            return val.metadata.colName;
-          });
-          var data = rows.map(function(row) {
-            return row.map(function(val) {
-              return val.value.toString().trim();
-            });
-          });
-          var result = {
-            headers: headers,
-            data: data
-          };
-          if(typeof callback == "function") {
-            callback(result);
-          } else {
-            callback.json(result);
-          }
-        }
-        connection.close();
-      });
-      connection.execSql(request);
+    if(err) {
+      console.log(err);
+      return;
     }
-  );
+    var request = new Request(queryStr, function(err, rowCount, rows) {
+      var result;
+      if (err) {
+        console.log(err);
+        connection.close();
+      } else if(queryStr.slice(0, 6).toLowerCase() == "insert") {
+        console.log('result: ' + rowCount);
+        result = {
+          rowCount: rowCount,
+          rows: rows
+        };
+      } else {
+        console.log(rowCount + ' rows');
+        var headers = rows[0].map(function(val) {
+          return val.metadata.colName;
+        });
+        var data = rows.map(function(row) {
+          return row.map(function(val) {
+            return val.value.toString().trim();
+          });
+        });
+        result = {
+          headers: headers,
+          data: data
+        };
+      }
+      if(typeof callback == "function") {
+        callback(result);
+      } else {
+        callback.json(result);
+      }
+      connection.close();
+    });
+    connection.execSql(request);
+  });
 }
 
 router.get('/linkinfo', function(req, res, next) {
@@ -293,7 +300,6 @@ router.get('/sim_vsl', function(req, res, next) {
 
 router.get('/sim_input', function(req, res, next) {
   var str = "INSERT INTO SIMULATIONINPUT VALUES(" + req.query.SIMULATIONNO + "," + req.query.EVENTNO + ",'" + req.query.EVENTTYPE + "','" + req.query.LINKID + "'," + req.query.LOCATION + ",'" + req.query.DERECTION + "','" + req.query.STARTTIME + "','" + req.query.ENDTIME + "','" + req.query.SEVERITY + "');" ;
-  console.log(str);
   queryArray(str, res);
 });
 
