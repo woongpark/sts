@@ -291,4 +291,10 @@ router.get('/sim_vsl', function(req, res, next) {
   queryArray(str, res);
 });
 
+router.get('/sim_input', function(req, res, next) {
+  var str = "INSERT INTO SIMULATIONINPUT VALUES(" + req.query.SIMULATIONNO + "," + req.query.EVENTNO + ",'" + req.query.EVENTTYPE + "','" + req.query.LINKID + "'," + req.query.LOCATION + ",'" + req.query.DERECTION + "','" + req.query.STARTTIME + "','" + req.query.ENDTIME + "','" + req.query.SEVERITY + "');" ;
+  console.log(str);
+  queryArray(str, res);
+});
+
 module.exports = router;
