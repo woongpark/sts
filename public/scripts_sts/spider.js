@@ -257,8 +257,15 @@
         .filter("[value='" + (d.direction||"UP") + "']").prop('checked', true);
     $form.find("[name='start_time']").val(d.start_time || "13:00");
     $form.find("[name='end_time']").val(d.end_time || "13:00");
-    $form.find("[name='blocked_lane']").val(d.blocked_lane || "1");
-    // TODO: Road Work와 Weather입력
+    if(d.type == "weather") {
+      $form.find("[name='weather']").val(d.weather || "1");
+      $form.find(".weather").show();
+      $form.find(".blocked_lane").hide();
+    } else {
+      $form.find("[name='blocked_lane']").val(d.blocked_lane || "1");
+      $form.find(".blocked_lane").show();
+      $form.find(".weather").hide();
+    }
   }
 
   $(".sim-input .insert").click(function(e) {
@@ -269,7 +276,11 @@
     d.direction = $form.find("input[type=radio]:checked").val();
     d.start_time = $form.find("[name='start_time']").val();
     d.end_time = $form.find("[name='end_time']").val();
-    d.blocked_lane = $form.find("[name='blocked_lane']").val();
+    if(d.type == "weather") {
+      d.weather = $form.find("[name='weather']").val();
+    } else {
+      d.blocked_lane = $form.find("[name='blocked_lane']").val();
+    }
     $form.hide();
   });
   $(".sim-input .delete").click(function(e) {
@@ -300,6 +311,7 @@
     var data = markers.filter(function(datum) {
       return !!datum.data;
     }).map(function(datum, index) {
+      var severity = datum.eventtype == "weather" ? datum.weather : datum.blocked_lane;
       return {
         SIMULATIONNO: sim_no,
         EVENTNO: index + 1,
@@ -307,9 +319,9 @@
         LINKID: datum.data.linkid,
         LOCATION: +(datum.location || 0),
         DERECTION: datum.direction,
-        STARTTIME: datum.start_time,
-        ENDTIME: datum.end_time,
-        SEVERITY: datum.blocked_lane
+        STARTTIME: datum.start_time.split(":").join(""),
+        ENDTIME: datum.end_time.split(":").join(""),
+        SEVERITY: severity
       };
     });
 
