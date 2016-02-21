@@ -9,6 +9,7 @@
 (function () {
   "use strict";
   var svg = d3.select('.header .graphic').append("svg").attr('width', 283).attr('height', 283);
+  var margin = {top: 10, right: 10, bottom: 10, left: 10};
 
   // Render the station map first, then load the train data and start animating trains
   VIZ.requiresData([
@@ -43,7 +44,6 @@
 
     // render the map given a particular width and height that it needs to fit into
     function drawMap(svgContainer, outerWidth, outerHeight) {
-      var margin = {top: 20, right: 30, bottom: 10, left: 10};
       var xRange = d3.extent(network.nodes, function (d) { return d.x; });
       var yRange = d3.extent(network.nodes, function (d) { return d.y; });
       var width = outerWidth - margin.left - margin.right,
@@ -142,7 +142,7 @@
   var templates = [{
     type: "accident",
     title: "Accident",
-    url: "images/squat-marker-red.svg",
+    shape: "images/squat-marker-red.svg",
     x: 0,
     y: 0,
     snapto: "link",
@@ -152,7 +152,7 @@
   }, {
     type: "roadwork",
     title: "Road Work",
-    url: "images/squat-marker-yellow.svg",
+    shape: "images/squat-marker-yellow.svg",
     x: 0,
     y: 50,
     snapto: "link",
@@ -162,7 +162,7 @@
   }, {
     type: "weather",
     title: "Weather",
-    url: "images/squat-marker-green.svg",
+    shape: "images/squat-marker-green.svg",
     x: 0,
     y: 100,
     snapto: "link",
@@ -174,7 +174,8 @@
     title: "Ramp Metering",
     x: 0,
     y: 150,
-    url: "images/squat-marker-green.svg",
+    shape: "rect",
+    color: "green",
     snapto: "node",
     data: {
       CONTROLTYPE: "1"
@@ -200,20 +201,40 @@
     })[0];
     marker = JSON.parse(JSON.stringify(marker));
     markers.push(marker);
-    d3.xml(marker.url, "image/svg+xml", function(error, xml) {
-      if (error) throw error;
-
-      var container = svg.append("g").data([marker]);
-      var svgNode = xml.getElementsByTagName("svg")[0];
-      container.node().appendChild(svgNode);
-      container
+    if(marker.shape == "rect") {
+      var container = svg.append("g").classed("marker", true).data([marker])
         .attr("transform", function(d) { return "translate(" + d.x + " " + d.y + ")"; })
         .on("click", clicked)
-        .call(drag)
-        .select("svg")
-          .attr("width", 25)
-          .attr("height", 39);
-    });
+        .call(drag);
+
+      container.append("rect")
+          .attr("width", 20)
+          .attr("height", 20)
+          .attr("fill", marker.color)
+          .attr("stroke", "black")
+          .attr("stroke-width", 2);
+      container.append("circle")
+          .attr("cx", 10)
+          .attr("cy", 10)
+          .attr("r", 2)
+          .attr("fill", "black");
+
+    } else {
+      d3.xml(marker.shape, "image/svg+xml", function(error, xml) {
+        if (error) throw error;
+
+        var container = svg.append("g").classed("marker", true).data([marker]);
+        var svgNode = xml.getElementsByTagName("svg")[0];
+        container.node().appendChild(svgNode);
+        container
+          .attr("transform", function(d) { return "translate(" + d.x + " " + d.y + ")"; })
+          .on("click", clicked)
+          .call(drag)
+          .select("svg")
+            .attr("width", 25)
+            .attr("height", 39);
+      });
+    }
   }
 
   function dragstarted(d) {
@@ -228,16 +249,20 @@
       return;
     }
     var min = Infinity,
-        marker = svg.select("#layer1"),
-        box = marker.node().getBBox();
+        marker = d3.selectAll(".marker").filter(function(_d) {
+          return d == _d;
+        }),
+        box = marker.node().getBBox(),
+        px = marker.data()[0].shape == "rect" ? -box.width / 2 : -box.width / 2,
+        py = marker.data()[0].shape == "rect" ? -box.height / 2 : -box.height;
     d.x = d3.event.x;
     d.y = d3.event.y;
     d.snap = false;
     if(d.snapto == "link") {
       svg.selectAll('.connect').each(function() {
         var line = d3.select(this),
-            cx = (+line.attr("x1") + +line.attr("x2")) / 2 - 2,
-            cy = (+line.attr("y1") + +line.attr("y2")) / 2 - box.height / 2,
+            cx = (+line.attr("x1") + +line.attr("x2")) / 2 + px + margin.left,
+            cy = (+line.attr("y1") + +line.attr("y2")) / 2 + py + margin.top,
             dist_cube = (d.x - cx) * (d.x - cx) + (d.y - cy) * (d.y - cy);
         if(dist_cube < 100 && dist_cube < min) {
           min = dist_cube;
@@ -251,8 +276,8 @@
     } else {
       svg.selectAll('.station').each(function() {
         var circle = d3.select(this),
-            cx = +circle.attr("cx") - 2,
-            cy = +circle.attr("cy") - box.height / 2,
+            cx = +circle.attr("cx") + px + margin.left,
+            cy = +circle.attr("cy") + py + margin.top,
             dist_cube = (d.x - cx) * (d.x - cx) + (d.y - cy) * (d.y - cy);
         if(dist_cube < 100 && dist_cube < min) {
           min = dist_cube;
