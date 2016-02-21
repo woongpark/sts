@@ -140,26 +140,45 @@
 
   var markers = [];
   var templates = [{
-    eventtype: 1,
     type: "accident",
     title: "Accident",
     url: "images/squat-marker-red.svg",
     x: 0,
-    y: 0
+    y: 0,
+    snapto: "link",
+    data: {
+      EVENTTYPE: "1"
+    }
   }, {
-    eventtype: 2,
     type: "roadwork",
     title: "Road Work",
     url: "images/squat-marker-yellow.svg",
     x: 0,
-    y: 50
+    y: 50,
+    snapto: "link",
+    data: {
+      EVENTTYPE: "2"
+    }
   }, {
-    eventtype: 3,
     type: "weather",
     title: "Weather",
     url: "images/squat-marker-green.svg",
     x: 0,
-    y: 100
+    y: 100,
+    snapto: "link",
+    data: {
+      EVENTTYPE: "3"
+    }
+  }, {
+    type: "ramp",
+    title: "Ramp Metering",
+    x: 0,
+    y: 150,
+    url: "images/squat-marker-green.svg",
+    snapto: "node",
+    data: {
+      CONTROLTYPE: "1"
+    }
   }];
 
   templates.forEach(function(template) {
@@ -168,9 +187,10 @@
 
   for(var i = 13; i <= 18; i++) {
     for(var j = 0; j <= 55; j+=5) {
-      var t = i + ":" + (j < 10 ? "0" : "") + j;
-      $(".sim-input [name='start_time'], .sim-input [name='end_time']")
-          .append("<option>" + t + "</option>");
+      var hh = i,
+          mm = (j < 10 ? "0" : "") + j;
+      $(".sim-input [name='STARTTIME'], .sim-input [name='ENDTIME']")
+          .append('<option value="' + hh + mm + '">' + hh + ':' + mm + '</option>');
     }
   }
 
@@ -209,24 +229,41 @@
     }
     var min = Infinity,
         marker = svg.select("#layer1"),
-        box = marker.node().getBBox(),
-        snap = false;
+        box = marker.node().getBBox();
     d.x = d3.event.x;
     d.y = d3.event.y;
-    var connections = svg.selectAll('.connect').each(function() {
-      var line = d3.select(this),
-          cx = (+line.attr("x1") + +line.attr("x2")) / 2 - 2,
-          cy = (+line.attr("y1") + +line.attr("y2")) / 2 - box.height / 2,
-          dist_cube = (d.x - cx) * (d.x - cx) + (d.y - cy) * (d.y - cy);
-      if(dist_cube < 100 && dist_cube < min) {
-        min = dist_cube;
-        d.x = cx;
-        d.y = cy;
-        d.data = line.data()[0];
-        snap = true;
-      }
-    });
-    d.snap = snap;
+    d.snap = false;
+    if(d.snapto == "link") {
+      svg.selectAll('.connect').each(function() {
+        var line = d3.select(this),
+            cx = (+line.attr("x1") + +line.attr("x2")) / 2 - 2,
+            cy = (+line.attr("y1") + +line.attr("y2")) / 2 - box.height / 2,
+            dist_cube = (d.x - cx) * (d.x - cx) + (d.y - cy) * (d.y - cy);
+        if(dist_cube < 100 && dist_cube < min) {
+          min = dist_cube;
+          d.x = cx;
+          d.y = cy;
+          d.snap = true;
+          d.link_data = line.data()[0];
+          d.data.LINKID = "" + line.data()[0].linkid;
+        }
+      });
+    } else {
+      svg.selectAll('.station').each(function() {
+        var circle = d3.select(this),
+            cx = +circle.attr("cx") - 2,
+            cy = +circle.attr("cy") - box.height / 2,
+            dist_cube = (d.x - cx) * (d.x - cx) + (d.y - cy) * (d.y - cy);
+        if(dist_cube < 100 && dist_cube < min) {
+          min = dist_cube;
+          d.x = cx;
+          d.y = cy;
+          d.snap = true;
+          d.node_data = circle.data()[0];
+          d.data.LINKID = "" + circle.data()[0].id;
+        }
+      });
+    }
     d3.select(this).attr("transform", function(d) { return "translate(" + d.x + " " + d.y + ")"; })
   }
 
@@ -240,47 +277,59 @@
   }
 
   function clicked(d) {
-    popupSimInput(d);
+    if(d.fixed) {
+      popupSimInput(d);
+    }
   }
 
   function popupSimInput(d) {
-    var min = Math.min(d.data.smile, d.data.emile),
-        max = Math.max(d.data.smile, d.data.emile),
+    var min = Math.min(d.link_data.smile, d.link_data.emile),
+        max = Math.max(d.link_data.smile, d.link_data.emile),
         $form = $(".sim-input");
     $form.data("data", d).removeClass().addClass("sim-input " + d.type).show();
     $form.find("h1").text(d.title);
-    $form.find(".line").text(d.data.color + " (" + d.data.line + ")");
+    $form.find(".line").text(d.link_data.color + " (" + d.link_data.line + ")");
     $form.find(".milepost").text(min + " KM ~ " + max + " KM");
-    $form.find(".location").val(d.location || "")
+    $form.find("[name='LOCATION']")
         .attr("placeholder", "Between " + min + " ~ " + max + " (default 0)");
-    $form.find("[name='direction']")
-        .filter("[value='" + (d.direction||"UP") + "']").prop('checked', true);
-    $form.find("[name='start_time']").val(d.start_time || "13:00");
-    $form.find("[name='end_time']").val(d.end_time || "13:00");
-    if(d.type == "weather") {
-      $form.find("[name='weather']").val(d.weather || "1");
-      $form.find(".weather").show();
-      $form.find(".blocked_lane").hide();
+    if(d.type == "accident" || d.type == "roadwork") {
+      $form.find(".severity label").text("Blocked Lane");
+      $form.find("[name='SEVERITY'] option").each(function() {
+        $(this).text($(this).val());
+      });
     } else {
-      $form.find("[name='blocked_lane']").val(d.blocked_lane || "1");
-      $form.find(".blocked_lane").show();
-      $form.find(".weather").hide();
+      $form.find(".severity label").text("Weather");
+      $form.find("[name='SEVERITY'] option").each(function(index) {
+        $(this).text(['1(Dry)', '2(Wet)', '3(Rain)', '4(Snow)'][index]);
+      });
     }
+    $form.find("[name]").each(function() {
+      var $this = $(this),
+          key = $this.attr("name"),
+          val = d.data[key];
+      if(val) {
+        $this.val(val);
+      } else if(this.tagName == "INPUT") {
+        $this.val("");
+      } else if(this.tagName == "SELECT") {
+        this.selectedIndex = 0;
+      }
+    });
   }
 
   $(".sim-input .insert").click(function(e) {
     e.preventDefault();
     var $form = $(".sim-input"),
         d = $form.data("data");
-    d.location = $form.find(".location").val();
-    d.direction = $form.find("input[type=radio]:checked").val();
-    d.start_time = $form.find("[name='start_time']").val();
-    d.end_time = $form.find("[name='end_time']").val();
-    if(d.type == "weather") {
-      d.weather = $form.find("[name='weather']").val();
-    } else {
-      d.blocked_lane = $form.find("[name='blocked_lane']").val();
-    }
+    $form.find("[name]").each(function() {
+      var $this = $(this),
+          key = $this.attr("name"),
+          val = $this.val();
+      if($this.attr("type") == "number") {
+        val = +val;
+      }
+      d.data[key] = val;
+    });
     $form.hide();
   });
   $(".sim-input .delete").click(function(e) {
@@ -304,40 +353,23 @@
 
   $("#sim-run").click(function() {
     var data = getSimInfo();
-    for(var i=0; i< data.length;i++){
-      $.getJSON( "/sim_input", {
-        SIMULATIONNO: Number(data[i].SIMULATIONNO.substring(8,12)),
-        EVENTNO: data[i].EVENTNO,
-        EVENTTYPE: String(data[i].EVENTTYPE),
-        LINKID: String(data[i].LINKID),
-        LOCATION: data[i].LOCATION,
-        DERECTION: data[i].DERECTION.substring(0,1),
-        STARTTIME: data[i].STARTTIME.split(':').join(""),
-        ENDTIME: data[i].ENDTIME.split(':').join(""),
-        SEVERITY: String(data[i].SEVERITY)
-      }, function() {
-
-      });
-    }
+    console.log(data);
+    // for(var i=0; i< data.length;i++) {
+    //   $.getJSON( "/sim_input", data[i], function() {
+    //
+    //   });
+    // }
   });
 
   function getSimInfo() {
     var sim_no = moment().format("YYYYMMDDhhmm");
     var data = markers.filter(function(datum) {
-      return !!datum.data;
+      var isSim = {"accident":1, "roadwork":1, "weather":1}[datum.type];
+      return datum.fixed && isSim;
     }).map(function(datum, index) {
-      var severity = datum.eventtype == "weather" ? datum.weather : datum.blocked_lane;
-      return {
-        SIMULATIONNO: sim_no,
-        EVENTNO: index + 1,
-        EVENTTYPE: datum.eventtype,
-        LINKID: datum.data.linkid,
-        LOCATION: +(datum.location || 0),
-        DERECTION: datum.direction,
-        STARTTIME: datum.start_time.split(":").join(""),
-        ENDTIME: datum.end_time.split(":").join(""),
-        SEVERITY: severity
-      };
+      datum.data.SIMULATIONNO = Number(sim_no.substring(8,12));
+      datum.data.EVENTNO = index + 1;
+      return datum.data;
     });
     return data;
   }
