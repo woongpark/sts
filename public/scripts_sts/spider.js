@@ -138,6 +138,57 @@
     .on("drag", dragged)
     .on("dragend", dragended);
 
+  var forms = {
+    line: '<label>Line</label> : '
+        + '<%= link_data.color %> (<%= link_data.line %>)',
+    node: '<label>Node</label> : '
+        + '<%= node_data.id %>',
+    milepost: '<label>Mile Post</label> : '
+        + '<%= Math.min(link_data.smile, link_data.emile) %> KM ~ '
+        + '<%= Math.max(link_data.smile, link_data.emile) %> KM',
+    location: '<label>Location</label><br/>'
+        + '<input name="LOCATION" type="number"'
+        + ' placeholder="Between <%= Math.min(link_data.smile, link_data.emile) %> ~ '
+        + '<%= Math.max(link_data.smile, link_data.emile) %> (default 0)"/>',
+    direction: '<label>Direction</label><br/>'
+        + '<select name="DIRECTION">'
+        +   '<option value="U">Up</option><option value="D">Down</option>'
+        + '</select>',
+    direction2: '<label>Direction</label><br/>'
+        + '<select name="DIRECTION">'
+        +   '<option value="U">Up</option><option value="D">Down</option><option value="B">Both</option>'
+        + '</select>',
+    time: '<label>Start Time</label><label class="second">End Time</label><br/>'
+        + '<select name="STARTTIME">' + getTimeOptions() + '</select>'
+        + '<select name="ENDTIME" class="second">' + getTimeOptions() + '</select>',
+    blockedlane: '<label>Blocked Lane</label><br/>'
+        + '<select name="SEVERITY">'
+        +   '<option>1</option>'
+        +   '<option>2</option>'
+        +   '<option>3</option>'
+        +   '<option>4</option>'
+        + '</select>',
+    weather: '<label>Weather</label><br/>'
+        + '<select name="SEVERITY">'
+        +   '<option value="1">1(Dry)</option>'
+        +   '<option value="2">2(Wet)</option>'
+        +   '<option value="3">3(Rain)</option>'
+        +   '<option value="4">4(Snow)</option>'
+        + '</select>',
+    blockratio: '<label>Block Ratio</label><br/>'
+        + '<input name="SETTING" type="number" min="0" max="100"'
+        + ' placeholder="Between 0 ~ 100% (default 0)"/>',
+    fakerate: '<label>Fake Rate</label><br/>'
+        + '<input name="SETTING" type="number" min="0" max="500"'
+        + ' placeholder="Between 0 ~ 500 (default 100)"/>',
+    speedlimit: '<label>Speed Limit</label><br/>'
+        + '<input name="SETTING" type="number" min="0" max="150"'
+        + ' placeholder="Between 0 ~ 150 (default 100)"/>',
+    speedlimit: '<label>Capacity Change</label><br/>'
+        + '<input name="SETTING" type="number" min="0" max="1000"'
+        + ' placeholder="Between 0 ~ 1000 (default 100)"/>'
+  };
+
   var markers = [];
   var templates = [{
     type: "accident",
@@ -146,6 +197,14 @@
     x: 0,
     y: 0,
     snapto: "link",
+    forms: [
+      forms.line,
+      forms.milepost,
+      forms.location,
+      forms.direction,
+      forms.time,
+      forms.blockedlane
+    ],
     data: {
       EVENTTYPE: "1"
     }
@@ -156,6 +215,14 @@
     x: 0,
     y: 50,
     snapto: "link",
+    forms: [
+      forms.line,
+      forms.milepost,
+      forms.location,
+      forms.direction,
+      forms.time,
+      forms.blockedlane
+    ],
     data: {
       EVENTTYPE: "2"
     }
@@ -166,19 +233,90 @@
     x: 0,
     y: 100,
     snapto: "link",
+    forms: [
+      forms.line,
+      forms.milepost,
+      forms.location,
+      forms.direction,
+      forms.time,
+      forms.weather
+    ],
     data: {
       EVENTTYPE: "3"
     }
   }, {
     type: "ramp",
     title: "Ramp Metering",
-    x: 0,
+    x: 3,
     y: 150,
     shape: "rect",
-    color: "green",
+    color: "red",
     snapto: "node",
+    forms: [
+      forms.node,
+      forms.direction2,
+      forms.time,
+      forms.blockratio
+    ],
     data: {
       CONTROLTYPE: "1"
+    }
+  }, {
+    type: "travel",
+    title: "Travel Time Information",
+    x: 3,
+    y: 180,
+    shape: "rect",
+    color: "yellow",
+    snapto: "link",
+    forms: [
+      forms.line,
+      forms.milepost,
+      forms.location,
+      forms.direction,
+      forms.time,
+      forms.fakerate
+    ],
+    data: {
+      CONTROLTYPE: "2"
+    }
+  }, {
+    type: "variable",
+    title: "Variable Speed Limit",
+    x: 3,
+    y: 210,
+    shape: "rect",
+    color: "blue",
+    snapto: "link",
+    forms: [
+      forms.line,
+      forms.milepost,
+      forms.location,
+      forms.direction,
+      forms.time,
+      forms.speedlimit
+    ],
+    data: {
+      CONTROLTYPE: "3"
+    }
+  }, {
+    type: "newcontrol",
+    title: "New Control",
+    x: 3,
+    y: 240,
+    shape: "rect",
+    color: "green",
+    snapto: "link",
+    forms: [
+      forms.line,
+      forms.milepost,
+      forms.location,
+      forms.direction,
+      forms.time,
+      forms.capacitychange
+    ],
+    data: {
+      CONTROLTYPE: "4"
     }
   }];
 
@@ -186,13 +324,16 @@
     createMarker(template.type);
   });
 
-  for(var i = 13; i <= 18; i++) {
-    for(var j = 0; j <= 55; j+=5) {
-      var hh = i,
-          mm = (j < 10 ? "0" : "") + j;
-      $(".sim-input [name='STARTTIME'], .sim-input [name='ENDTIME']")
-          .append('<option value="' + hh + mm + '">' + hh + ':' + mm + '</option>');
+  function getTimeOptions() {
+    var result = "";
+    for(var i = 13; i <= 18; i++) {
+      for(var j = 0; j <= 55; j+=5) {
+        var hh = i,
+            mm = (j < 10 ? "0" : "") + j;
+        result += '<option value="' + hh + mm + '">' + hh + ':' + mm + '</option>';
+      }
     }
+    return result;
   }
 
   function createMarker(type) {
@@ -308,41 +449,21 @@
   }
 
   function popupSimInput(d) {
-    var min = Math.min(d.link_data.smile, d.link_data.emile),
-        max = Math.max(d.link_data.smile, d.link_data.emile),
+    var $popup = $(".popup"),
         $form = $(".sim-input");
-    $form.data("data", d).removeClass().addClass("sim-input " + d.type).show();
-    $form.find("h1").text(d.title);
-    $form.find(".line").text(d.link_data.color + " (" + d.link_data.line + ")");
-    $form.find(".milepost").text(min + " KM ~ " + max + " KM");
-    $form.find("[name='LOCATION']")
-        .attr("placeholder", "Between " + min + " ~ " + max + " (default 0)");
-    if(d.type == "accident" || d.type == "roadwork") {
-      $form.find(".severity label").text("Blocked Lane");
-      $form.find("[name='SEVERITY'] option").each(function() {
-        $(this).text($(this).val());
-      });
-    } else {
-      $form.find(".severity label").text("Weather");
-      $form.find("[name='SEVERITY'] option").each(function(index) {
-        $(this).text(['1(Dry)', '2(Wet)', '3(Rain)', '4(Snow)'][index]);
-      });
-    }
-    $form.find("[name]").each(function() {
-      var $this = $(this),
-          key = $this.attr("name"),
-          val = d.data[key];
-      if(val) {
-        $this.val(val);
-      } else if(this.tagName == "INPUT") {
-        $this.val("");
-      } else if(this.tagName == "SELECT") {
-        this.selectedIndex = 0;
-      }
+    $popup.removeClass().addClass("popup " + d.type).show();
+    $popup.find("h1").text(d.title);
+    $form.data("data", d).html("");
+    d.forms.forEach(function(form) {
+      var $row = $('<div class="popup-row">').append(_.template(form)(d));
+      $form.append($row);
     });
+    for(var key in d.data) {
+      $form.find("[name='" + key + "']").val(d.data[key]);
+    }
   }
 
-  $(".sim-input .insert").click(function(e) {
+  $(".popup .insert").click(function(e) {
     e.preventDefault();
     var $form = $(".sim-input"),
         d = $form.data("data");
@@ -355,12 +476,12 @@
       }
       d.data[key] = val;
     });
-    $form.hide();
+    $(".popup").hide();
   });
-  $(".sim-input .delete").click(function(e) {
+  $(".popup .delete").click(function(e) {
     e.preventDefault();
     removeMarker();
-    $(".sim-input").hide();
+    $(".popup").hide();
   });
 
   function removeMarker() {
@@ -377,16 +498,6 @@
   }
 
   $("#sim-run").click(function() {
-    var data = getSimInfo();
-    console.log(data);
-    // for(var i=0; i< data.length;i++) {
-    //   $.getJSON( "/sim_input", data[i], function() {
-    //
-    //   });
-    // }
-  });
-
-  function getSimInfo() {
     var sim_no = moment().format("YYYYMMDDhhmm");
     var data = markers.filter(function(datum) {
       var isSim = {"accident":1, "roadwork":1, "weather":1}[datum.type];
@@ -396,6 +507,28 @@
       datum.data.EVENTNO = index + 1;
       return datum.data;
     });
-    return data;
-  }
+    data.forEach(function(datum) {
+      // $.getJSON( "/sim_input", datum, function() {
+      // });
+    });
+    console.log(data);
+  });
+
+  $("#con-run").click(function() {
+    var sim_no = moment().format("YYYYMMDDhhmm");
+    var data = markers.filter(function(datum) {
+      var isCon = {"ramp":1, "travel":1, "variable":1, "newcontrol":1}[datum.type];
+      return datum.fixed && isCon;
+    }).map(function(datum, index) {
+      datum.data.SIMULATIONNO = Number(sim_no.substring(8,12));
+      datum.data.CONTROLNO = index + 1;
+      return datum.data;
+    });
+    data.forEach(function(datum) {
+      // $.getJSON( "/con_input", datum, function() {
+      // });
+    });
+    console.log(data);
+  });
+
 }());
