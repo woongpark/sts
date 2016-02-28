@@ -9,7 +9,7 @@
 (function () {
   "use strict";
   var svg = d3.select('.header .graphic').append("svg").attr('width', 283).attr('height', 283);
-  var margin = {top: 10, right: 10, bottom: 10, left: 10};
+  var margin = {top: 10, right: 10, bottom: 10, left: 100};
 
   // Render the station map first, then load the train data and start animating trains
   VIZ.requiresData([
@@ -129,6 +129,8 @@
         renderTrainsBySpeed(lastTime, true);
       }
     }
+
+    initMarkers();
   });
 
   // add draggable markers
@@ -258,6 +260,7 @@
       forms.time,
       forms.blockratio
     ],
+    entireNetwork: true,
     data: {
       CONTROLTYPE: "1"
     }
@@ -265,9 +268,9 @@
     type: "travel",
     title: "Travel Time Information",
     x: 3,
-    y: 180,
+    y: 200,
     shape: "rect",
-    color: "yellow",
+    color: "gold",
     snapto: "link",
     forms: [
       forms.line,
@@ -277,6 +280,7 @@
       forms.time,
       forms.fakerate
     ],
+    entireNetwork: true,
     data: {
       CONTROLTYPE: "2"
     }
@@ -284,7 +288,7 @@
     type: "variable",
     title: "Variable Speed Limit",
     x: 3,
-    y: 210,
+    y: 250,
     shape: "rect",
     color: "blue",
     snapto: "link",
@@ -296,6 +300,7 @@
       forms.time,
       forms.speedlimit
     ],
+    entireNetwork: true,
     data: {
       CONTROLTYPE: "3"
     }
@@ -303,7 +308,7 @@
     type: "newcontrol",
     title: "New Control",
     x: 3,
-    y: 240,
+    y: 300,
     shape: "rect",
     color: "green",
     snapto: "link",
@@ -315,14 +320,40 @@
       forms.time,
       forms.capacitychange
     ],
+    entireNetwork: true,
     data: {
       CONTROLTYPE: "4"
     }
   }];
 
-  templates.forEach(function(template) {
-    createMarker(template.type);
-  });
+  function initMarkers() {
+    templates.forEach(function(template) {
+      createMarker(template.type);
+
+      svg.append("text")
+          .classed('title', true)
+          .attr("x", template.x + 30)
+          .attr("y", template.y + 15)
+          .text(template.title);
+
+      if(template.entireNetwork) {
+        var group = svg.append("g")
+            .classed('entire-network', true)
+            .data([template])
+            .attr("transform", function(d) { return "translate(" + (d.x+30) + " " + (d.y+20) + ")"; });
+        group.append("rect")
+            .attr("fill", template.color)
+        group.append("text")
+            .attr("x", 15)
+            .attr("y", 15)
+            .text("Entire Network");
+        group.on("click", function() {
+          var active = d3.select(this).attr("class").indexOf("active") >= 0;
+          d3.select(this).classed("active", !active);
+        });
+      }
+    });
+  }
 
   function getTimeOptions() {
     var result = "";
@@ -381,7 +412,9 @@
   function dragstarted(d) {
     d3.event.sourceEvent.stopPropagation();
     if(!d.fixed) {
-      d3.select(this).classed("dragging", true);
+      d3.selectAll(".title").classed("hide", true);
+      d3.selectAll(".entire-network").classed("hide", true);
+      d3.select(this).classed("dragging", true).classed("hide", false);
     }
   }
 
@@ -435,6 +468,8 @@
 
   function dragended(d) {
     d3.select(this).classed("dragging", false);
+    d3.selectAll(".title").classed("hide", false);
+    d3.selectAll(".entire-network").classed("hide", false);
     if(d.snap && !d.fixed) {
       d.fixed = true;
       createMarker(d.type);
@@ -523,6 +558,19 @@
       datum.data.SIMULATIONNO = Number(sim_no.substring(8,12));
       datum.data.CONTROLNO = index + 1;
       return datum.data;
+    });
+    d3.selectAll(".entire-network.active").each(function(datum, index) {
+      data.push({
+        SIMULATIONNO: sim_no,
+        CONTROLNO: data.length + index + 1,
+        CONTROLTYPE: datum.data.CONTROLTYPE,
+        LINKID: "C",
+        LOCATION: 0,
+        DERECTION: "B",
+        STARTTIME: moment(window.ctime, "HH:mm").format("HHmm"),
+        ENDTIME: moment(window.ctime, "HH:mm").add(6, "h").format("HHmm"),
+        SETTING: "C"
+      });
     });
     data.forEach(function(datum) {
       // $.getJSON( "/con_input", datum, function() {
