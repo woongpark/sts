@@ -14,16 +14,16 @@ $(function() {
     $(".summary .number").text(number);
     window.ctime = ctime;
   });
-  $.getJSON("/sim_event", function(summary) {
-    summary.forEach(function(ev) {
-      var text = "";
-      $.each(ev, function(name, value) {
-        text += "<label>" + name + "</label> : ";
-        text += "<span>" + value + "</span>" + "<br/>";
-      });
-      $(".event.summary").append("<li>").html(text);
-    });
-  });
+  // $.getJSON("/sim_event", function(summary) {
+  //   summary.forEach(function(ev) {
+  //     var text = "";
+  //     $.each(ev, function(name, value) {
+  //       text += "<label>" + name + "</label> : ";
+  //       text += "<span>" + value + "</span>" + "<br/>";
+  //     });
+  //     $(".event.summary").append("<li>").html(text);
+  //   });
+  // });
 
   $('#VHT').highcharts({
     chart: { type: 'column' },

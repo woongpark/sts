@@ -535,54 +535,64 @@
   }
 
   $("#sim-run").click(function() {
-    var sim_no = moment().format("YYYYMMDDHHmm");
-    var data = markers.filter(function(datum) {
-      var isSim = {"accident":1, "roadwork":1, "weather":1}[datum.type];
-      return datum.fixed && isSim;
-    }).map(function(datum, index) {
-      datum.data.SIMULATIONNO = Number(sim_no.substring(8,12));
-      datum.data.EVENTNO = index + 1;
-      return datum.data;
+    var sim_no = moment().format("HHmm");
+    var sims = markers.filter(function(sim) {
+      var isSim = {"accident":1, "roadwork":1, "weather":1}[sim.type];
+      return sim.fixed && isSim;
+    }).map(function(sim, index) {
+      sim.data.SIMULATIONNO = sim_no;
+      sim.data.EVENTNO = index + 1;
+      return sim;
     });
-    data.forEach(function(datum) {
-       $.getJSON( "/sim_input", datum, function() {//확인
-       });
+    sims.forEach(function(sim) {
+      // sim.data : 서버로 전송할 데이터
+      // sim.link_data : 마커가 위치한 링크의 정보
+      // sim.node_data : 마커가 위치한 노드의 정보
+      $.getJSON( "/sim_input", sim.data, function() {//확인
+      });
     });
-    $.getJSON( "/sim_run", {SIMULATIONNO: data[0].SIMULATIONNO}, function() {//확인
+    // TODO: SIMULATIONNO의 length가 3자리라 부득이하게 3자리로 잘랐음
+    $.getJSON( "/sim_run", sim_no.slice(-3), function() {//확인
     });
-    console.log(data);
+    // console.log(sims.data);
   });
 
   $("#con-run").click(function() {
-    var sim_no = moment().format("YYYYMMDDHHmm");
-    var data = markers.filter(function(datum) {
-      var isCon = {"ramp":1, "travel":1, "variable":1, "newcontrol":1}[datum.type];
-      return datum.fixed && isCon;
-    }).map(function(datum, index) {
-      datum.data.SIMULATIONNO = Number(sim_no.substring(8,12));
-      datum.data.CONTROLNO = index + 1;
-      return datum.data;
+    var sim_no = moment().format("HHmm");
+    var cons = markers.filter(function(con) {
+      var isCon = {"ramp":1, "travel":1, "variable":1, "newcontrol":1}[con.type];
+      return con.fixed && isCon;
+    }).map(function(con, index) {
+      con.data.SIMULATIONNO = Number(sim_no.substring(8,12));
+      con.data.CONTROLNO = index + 1;
+      return con;
     });
-    d3.selectAll(".entire-network.active").each(function(datum, index) {
-      data.push({
-        SIMULATIONNO: Number(sim_no.substring(8,12)),
-        CONTROLNO: data.length + index + 1,
-        CONTROLTYPE: datum.data.CONTROLTYPE,
-        LINKID: "C",
-        LOCATION: 0,
-        DIRECTION: "B",
-        STARTTIME: moment(window.ctime, "HH:mm").format("HHmm"),
-        ENDTIME: moment(window.ctime, "HH:mm").add(6, "h").format("HHmm"),
-        SETTING: "C"
+    d3.selectAll(".entire-network.active").each(function(con, index) {
+      cons.push({
+        data: {
+          SIMULATIONNO: sim_no,
+          CONTROLNO: cons.length + index + 1,
+          CONTROLTYPE: con.data.CONTROLTYPE,
+          LINKID: "C",
+          LOCATION: 0,
+          DIRECTION: "B",
+          STARTTIME: moment(window.ctime, "HH:mm").format("HHmm"),
+          ENDTIME: moment(window.ctime, "HH:mm").add(6, "h").format("HHmm"),
+          SETTING: "C"
+        }
       });
     });
-    data.forEach(function(datum) {
-       $.getJSON( "/con_input", datum, function() {
-       });
+    cons.forEach(function(con) {
+      // con.data : 서버로 전송할 데이터
+      // con.link_data : 마커가 위치한 링크의 정보
+      // con.node_data : 마커가 위치한 노드의 정보
+      $.getJSON( "/con_input", datum, function() {
+      });
     });
-    $.getJSON( "/con_run", {SIMULATIONNO: data[0].SIMULATIONNO}, function() {//확인
+    // TODO: SIMULATIONNO의 length가 3자리라 부득이하게 3자리로 잘랐음
+    $.getJSON( "/con_run", sim_no.slice(-3), function() {//확인
     });
-    console.log(data);
+    // console.log(cons.data);
   });
 
 }());
