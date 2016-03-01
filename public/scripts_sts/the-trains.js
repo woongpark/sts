@@ -25,10 +25,10 @@
 /* 1. Load and pre-process the data
  *************************************************************/
 VIZ.requiresData([
-  'json!data/station-network.json',
-  'json!data/spider.json',
+  'json!newdata/station-network.json',
+  'json!newdata/spider.json',
   'json!data/marey-trips.json',
-  'json!data/marey-header.json'
+  'json!newdata/marey-header.json'
 ], true).progress(function (percent) {
   "use strict";
   d3.selectAll(".marey, .lined-up-marey").text('Loading train data... ' + percent + '%').style('text-align', 'center');
@@ -38,117 +38,179 @@ VIZ.requiresData([
 }).done(function (network, spider, trips, header) {
   "use strict";
 
-  // The annotations displayed along the right side of the Marey diagram
-  var sideAnnotationData = [
-    // At the minimum you need time and text which positions the annotation...
-    {
-      time: '2014/02/03 05:00',
-      text: 'Service starts at 5AM on Monday morning. Each line represents the path of one train. Time continues downward, so steeper lines indicate slower trains. <br> \u25BE'
-    },
-    {
-      time: '2014/02/03 05:55',
-      text: 'Since the red line splits, we show the Ashmont branch first then the Braintree branch.  Trains on the Braintree branch "jump over" the Ashmont branch.',
-      // But additionally you can have a line connecting the annotation to a point in the marey diagram
-      connections: [{
-        time: '2014/02/03 05:40',
-        station: 'ashmont',
-        line: 'red'
-      }]
-    },
-    {
-      time: '2014/02/03 06:30',
-      text: 'Train frequency increases around 6:30AM as morning rush hour begins.',
-      id: 'marey-morning-rush'
-    },
-    {
-      time: '2014/02/03 11:30',
-      text: 'After the morning rush-hour subsides, everything runs smoothly throughout the middle of the day',
-      id: 'marey-midday-lull'
-    },
-    {
-      time: '2014/02/03 15:30',
-      text: 'The afternoon rush hour begins around 3:30PM',
-      id: 'marey-evening-rush'
-    },
-    {
-      time: '2014/02/03 17:00',
-      text: 'A disabled train causes delays on trains after (below) it for over an hour.  Notice how this causes delays in the other direction as well, as trains immediately arrive at Alewife then turn around to go south.',
-      connections: [{
-        // or a range of times on a line in the marey diagram
-        start: '2014/02/03 17:02',
-        stop: '2014/02/03 18:07',
-        station: 'JFK',
-        line: 'red'
-      }],
-      // links can also be used to highlight specific trains.  Links do not work over wrapped lines
-      link: {
-        text: 'disabled train',
-        trip: 'R983382C2'
+  jQuery.ajax({
+    url: '/sim_traveltime',
+    success: function (result) {
+      var buckets = {},
+          lineCode2Name = {
+            "1": "Kyungbu",
+            "15": "Seohaean",
+            "25": "CheonanNonsan",
+            "30": "DanjikYoungduk",
+            "35": "Joongbu",
+            "40": "PyungtaekJecheon",
+            "50": "Youngdong"
+          };
+      function getTime(t) {
+        var d = new Date(),
+            hour = parseInt(+t / 100, 10),
+            min = parseInt(+t % 100, 10),
+            sec = +(t.split(".")[1] || 0);
+        d.setHours(hour);
+        d.setMinutes(min);
+        d.setSeconds(sec);
+        return parseInt(+d / 1000, 10);
       }
-    },
-    {
-      time: '2014/02/03 18:20',
-      text: 'Service to Bowdoin stops at 6:20PM',
-      connections: [{
-        time: '2014/02/03 18:20',
-        station: 'Bowdoin',
-        line: 'blue'
-      }]
-    },
-    {
-      time: '2014/02/03 19:00',
-      text: 'Normal service resumes for the evening starting around 7PM',
-      id: 'marey-evening-lull'
-    },
-    {
-      time: '2014/02/03 20:50',
-      text: 'A disabled train at Wellington Station causes northbound delays on the Orange Line from 8:50PM to 9:15PM',
-      connections: [{
-        start: '2014/02/03 20:50',
-        stop: '2014/02/03 21:15',
-        station: 'Community College',
-        line: 'orange'
-      }],
-      link: {
-        text: 'disabled train',
-        trip: 'O9861AEF3'
-      }
-    },
-    {
-      time: '2014/02/03 21:20',
-      text: 'Notice how southbound trains are temporarily delayed, but get back on schedule quickly.'
-    },
-    {
-      time: '2014/02/04 01:30',
-      text: 'The last trains of the night move much slower, sweeping up the remaining passengers to finish around 1:30AM'
-    },
-    {
-      time: '2014/02/04 02:30',
-      text: 'At night, trains are moved between stations',
-      connections: [
-        {
-          start: '2014/02/04 01:56',
-          stop: '2014/02/04 02:03',
-          station: 'Orient Heights',
-          line: 'blue'
-        },
-        {
-          start: '2014/02/04 03:59',
-          stop: '2014/02/04 04:25',
-          station: 'JFK',
-          line: 'red'
+
+      result.data.forEach(function(item) {
+        if(!buckets[item[0]]) {
+          buckets[item[0]] = [];
         }
-      ]
+        buckets[item[0]].push(item);
+      });
+      trips = [];
+      for(var id in buckets) {
+        buckets[id].sort(function(a, b) {
+          return (+a[3]) - (+b[3]);
+        });
+        var stops = buckets[id].map(function(stop) {
+              return {
+                stop: network.nodes[+stop[2]-1].id,
+                time: getTime(stop[3])
+              }
+            }),
+            first = buckets[id][0],
+            last = buckets[id][buckets[id].length - 1];
+        stops.push({
+          stop: network.nodes[last[4]-1].id,
+          time: getTime(last[5])
+        });
+        trips.push({
+          trip: id,
+          line: lineCode2Name[first[1]],
+          begin: getTime(first[3]),
+          end: getTime(last[5]),
+          stops: stops
+        });
+      }
     },
-    {
-      time: '2014/02/04 05:15',
-      text: 'At 5AM on Tuesday, the cycle begins again'
-    }
-  ];
+    async: false
+  });
+
+  // The annotations displayed along the right side of the Marey diagram
+  var sideAnnotationData = [];
+  // var sideAnnotationData = [
+  //   // At the minimum you need time and text which positions the annotation...
+  //   {
+  //     time: '2014/02/03 05:00',
+  //     text: 'Service starts at 5AM on Monday morning. Each line represents the path of one train. Time continues downward, so steeper lines indicate slower trains. <br> \u25BE'
+  //   },
+  //   {
+  //     time: '2014/02/03 05:55',
+  //     text: 'Since the red line splits, we show the Ashmont branch first then the Braintree branch.  Trains on the Braintree branch "jump over" the Ashmont branch.',
+  //     // But additionally you can have a line connecting the annotation to a point in the marey diagram
+  //     connections: [{
+  //       time: '2014/02/03 05:40',
+  //       station: 'ashmont',
+  //       line: 'red'
+  //     }]
+  //   },
+  //   {
+  //     time: '2014/02/03 06:30',
+  //     text: 'Train frequency increases around 6:30AM as morning rush hour begins.',
+  //     id: 'marey-morning-rush'
+  //   },
+  //   {
+  //     time: '2014/02/03 11:30',
+  //     text: 'After the morning rush-hour subsides, everything runs smoothly throughout the middle of the day',
+  //     id: 'marey-midday-lull'
+  //   },
+  //   {
+  //     time: '2014/02/03 15:30',
+  //     text: 'The afternoon rush hour begins around 3:30PM',
+  //     id: 'marey-evening-rush'
+  //   },
+  //   {
+  //     time: '2014/02/03 17:00',
+  //     text: 'A disabled train causes delays on trains after (below) it for over an hour.  Notice how this causes delays in the other direction as well, as trains immediately arrive at Alewife then turn around to go south.',
+  //     connections: [{
+  //       // or a range of times on a line in the marey diagram
+  //       start: '2014/02/03 17:02',
+  //       stop: '2014/02/03 18:07',
+  //       station: 'JFK',
+  //       line: 'red'
+  //     }],
+  //     // links can also be used to highlight specific trains.  Links do not work over wrapped lines
+  //     link: {
+  //       text: 'disabled train',
+  //       trip: 'R983382C2'
+  //     }
+  //   },
+  //   {
+  //     time: '2014/02/03 18:20',
+  //     text: 'Service to Bowdoin stops at 6:20PM',
+  //     connections: [{
+  //       time: '2014/02/03 18:20',
+  //       station: 'Bowdoin',
+  //       line: 'blue'
+  //     }]
+  //   },
+  //   {
+  //     time: '2014/02/03 19:00',
+  //     text: 'Normal service resumes for the evening starting around 7PM',
+  //     id: 'marey-evening-lull'
+  //   },
+  //   {
+  //     time: '2014/02/03 20:50',
+  //     text: 'A disabled train at Wellington Station causes northbound delays on the Orange Line from 8:50PM to 9:15PM',
+  //     connections: [{
+  //       start: '2014/02/03 20:50',
+  //       stop: '2014/02/03 21:15',
+  //       station: 'Community College',
+  //       line: 'orange'
+  //     }],
+  //     link: {
+  //       text: 'disabled train',
+  //       trip: 'O9861AEF3'
+  //     }
+  //   },
+  //   {
+  //     time: '2014/02/03 21:20',
+  //     text: 'Notice how southbound trains are temporarily delayed, but get back on schedule quickly.'
+  //   },
+  //   {
+  //     time: '2014/02/04 01:30',
+  //     text: 'The last trains of the night move much slower, sweeping up the remaining passengers to finish around 1:30AM'
+  //   },
+  //   {
+  //     time: '2014/02/04 02:30',
+  //     text: 'At night, trains are moved between stations',
+  //     connections: [
+  //       {
+  //         start: '2014/02/04 01:56',
+  //         stop: '2014/02/04 02:03',
+  //         station: 'Orient Heights',
+  //         line: 'blue'
+  //       },
+  //       {
+  //         start: '2014/02/04 03:59',
+  //         stop: '2014/02/04 04:25',
+  //         station: 'JFK',
+  //         line: 'red'
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     time: '2014/02/04 05:15',
+  //     text: 'At 5AM on Tuesday, the cycle begins again'
+  //   }
+  // ];
   var idToNode = {};
+  var xRange = d3.extent(network.nodes, function (data) { return spider[data.id][0]; });
+  var yRange = d3.extent(network.nodes, function (data) { return spider[data.id][1]; });
   network.nodes.forEach(function (data) {
-    data.x = spider[data.id][0];
-    data.y = spider[data.id][1];
+    data.x = spider[data.id][0] - xRange[0];
+    data.y = spider[data.id][1] - yRange[0];
     idToNode[data.id] = data;
   });
   network.links.forEach(function (link) {
@@ -161,7 +223,7 @@ VIZ.requiresData([
   });
   trips.forEach(function (d) {
     d.stops = d.stops || [];
-    var m = moment(d.begin*1000).zone(5);
+    var m = moment(d.begin*1000).zone(-9);
     d.secs = m.diff(m.clone().startOf('day')) / 1000;
   });
   var stationToName = {};
@@ -312,7 +374,7 @@ VIZ.requiresData([
         .attr('cx', function (d) { return d.pos[0]; })
         .attr('cy', function (d) { return d.pos[1]; });
     trains.exit().remove();
-    timeDisplay.text(moment(unixSeconds * 1000).zone(5).format('h:mm a'));
+    timeDisplay.text(moment(unixSeconds * 1000).zone(-9).format('h:mm a'));
   }
 
 
@@ -499,7 +561,7 @@ VIZ.requiresData([
 
     // draw the tall time axis down the side
     var yAxis = d3.svg.axis()
-      .tickFormat(function (d) { return moment(d).zone(5).format("h:mm A"); })
+      .tickFormat(function (d) { return moment(d).zone(-9).format("h:mm A"); })
       .ticks(d3.time.minute, 15)
       .scale(timeScale)
       .orient("left");
@@ -578,7 +640,7 @@ VIZ.requiresData([
     function select(time) {
       var y = yScale(time);
       bar.attr('transform', 'translate(0,' + y + ')');
-      timeDisplay.text(moment(time * 1000).zone(5).format('h:mm a'));
+      timeDisplay.text(moment(time * 1000).zone(-9).format('h:mm a'));
       renderTrainsAtTime(time);
     }
 
@@ -651,10 +713,10 @@ VIZ.requiresData([
     connections
         .attr('d', function (connection) {
           var station = network.nodes.find(function (station) { return new RegExp(connection.station, 'i').test(station.name); });
-          var annotationY = yScale(moment(connection.parent.time + ' -0500', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000) - 4;
-          var connectionStartY = yScale(moment(connection.start + ' -0500', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
-          var connectionEndY = yScale(moment(connection.stop + ' -0500', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
-          var connectionSingleY = yScale(moment(connection.time + ' -0500', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
+          var annotationY = yScale(moment(connection.parent.time + ' +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000) - 4;
+          var connectionStartY = yScale(moment(connection.start + ' +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
+          var connectionEndY = yScale(moment(connection.stop + ' +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
+          var connectionSingleY = yScale(moment(connection.time + ' +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
           var connectionX = xScale(header[station.id + '|' + connection.line][0]);
           return 'M' + [
             [
@@ -675,7 +737,7 @@ VIZ.requiresData([
 
     annotationContainer.selectAll('text, text tspan')
         .attr('x', fullMareyWidth + 15)
-        .attr('y', function (d) { return yScale(moment(d.time + ' -0500', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000); });
+        .attr('y', function (d) { return yScale(moment(d.time + ' +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000); });
 
 
     // add links to annotations if they are set
@@ -915,7 +977,7 @@ VIZ.requiresData([
         .attr('x', xBegin + (linedUpMareyStartingStationLabels[first.stop].anchor === 'start' ?  5 : -5))
         .attr('y', -2)
         .style('text-anchor', linedUpMareyStartingStationLabels[first.stop].anchor)
-        .text(moment(first.time * 1000).zone(5).format('h:mma'));
+        .text(moment(first.time * 1000).zone(-9).format('h:mma'));
       linedUp.appendOnce('text', 'mareyannotation clickme')
         .attr('x', xEnd)
         .attr('y', 16)
@@ -926,7 +988,7 @@ VIZ.requiresData([
         .attr('x', xEnd)
         .attr('y', y + 15)
         .style('text-anchor', 'middle')
-        .text(moment(last.time * 1000).zone(5).format('h:mma'));
+        .text(moment(last.time * 1000).zone(-9).format('h:mma'));
       linedUp.appendOnce('text', 'mareyannotation time')
         .attr('x', xEnd)
         .attr('y', y + 30)
@@ -1061,7 +1123,7 @@ VIZ.requiresData([
           .attr('dx', function () { return linedUpMareyStartingStationLabels[highlightedLinedUpMarey.stops[0].stop].anchor === 'start' ? -2 : 2; })
           .attr('dy', function (d) { return d.dybottom; })
           .text(function (d) {
-            return moment(d.stop.time * 1000).zone(5).format('h:mma');
+            return moment(d.stop.time * 1000).zone(-9).format('h:mma');
           })
           .attr('text-anchor', function () { return linedUpMareyStartingStationLabels[highlightedLinedUpMarey.stops[0].stop].anchor === 'start' ? 'end' : 'start'; });
 

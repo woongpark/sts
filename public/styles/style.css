@@ -75,3 +75,38 @@
   height: 71px;
   line-height: 71px;
 }
+.Kyungbu {
+  fill: #22B04C;
+  stroke: #22B04C;
+  background-color: #22B04C!important;
+}
+.Seohaean {
+  fill: #FFF100;
+  stroke: #FFF100;
+  background-color: #FFF100!important;
+}
+.CheonanNonsan {
+  fill: #777F27;
+  stroke: #777F27;
+  background-color: #777F27!important;
+}
+.DanjikYoungduk {
+  fill: #01A2E8;
+  stroke: #01A2E8;
+  background-color: #01A2E8!important;
+}
+.Joongbu {
+  fill: #ED1C23;
+  stroke: #ED1C23;
+  background-color: #ED1C23!important;
+}
+.PyungtaekJecheon {
+  fill: #130082;
+  stroke: #130082;
+  background-color: #130082!important;
+}
+.Youngdong {
+  fill: #A34AA4;
+  stroke: #A34AA4;
+  background-color: #A34AA4!important;
+}

@@ -99,196 +99,236 @@
     25,
     0
   ],
-  "NAMCHEONAN|CheonanNonsan": [
+  "CHEONANJC|CheonanNonsan": [
     26,
     0
   ],
-  "PUNGSE|CheonanNonsan": [
+  "NAMCHEONAN|CheonanNonsan": [
     27,
     0
   ],
-  "JUNGAN|CheonanNonsan": [
+  "PUNGSE|CheonanNonsan": [
     28,
     0
   ],
-  "GONGJUJC|CheonanNonsan": [
+  "JUNGAN|CheonanNonsan": [
     29,
     0
   ],
-  "MYEONCHEON|DanjikYoungduk": [
+  "GONGJUJC|CheonanNonsan": [
     30,
     0
   ],
-  "GODEOK|DanjikYoungduk": [
+  "DANGJINJC|DanjikYoungduk": [
     31,
     0
   ],
-  "YESANSUDUKSA|DanjikYoungduk": [
+  "MYEONCHEON|DanjikYoungduk": [
     32,
     0
   ],
-  "SINYANG|DanjikYoungduk": [
+  "GODEOK|DanjikYoungduk": [
     33,
     0
   ],
-  "YOOGU|DanjikYoungduk": [
+  "YESANSUDUKSA|DanjikYoungduk": [
     34,
     0
   ],
-  "MAGOKSA|DanjikYoungduk": [
+  "SINYANG|DanjikYoungduk": [
     35,
     0
   ],
-  "SEOGONGJUJC|DanjikYoungduk": [
+  "YOOGU|DanjikYoungduk": [
     36,
     0
   ],
-  "GONGJU|DanjikYoungduk": [
+  "MAGOKSA|DanjikYoungduk": [
     37,
     0
   ],
-  "SEOSEJONG|DanjikYoungduk": [
+  "SEOGONGJUJC|DanjikYoungduk": [
     38,
     0
   ],
-  "NAMSEJONG|DanjikYoungduk": [
+  "GONGJUJC|DanjikYoungduk": [
     39,
     0
   ],
-  "YUSEONG|DanjikYoungduk": [
+  "GONGJU|DanjikYoungduk": [
     40,
     0
   ],
-  "DONGSEOUL|Joongbu": [
+  "SEOSEJONG|DanjikYoungduk": [
     41,
     0
   ],
-  "SANGOK|Joongbu": [
+  "NAMSEJONG|DanjikYoungduk": [
     42,
     0
   ],
-  "GYEONGGIGWANGJU|Joongbu": [
+  "YUSEONG|DanjikYoungduk": [
     43,
     0
   ],
-  "GONJIAM|Joongbu": [
+  "DONGSEOUL|Joongbu": [
     44,
     0
   ],
-  "SEOICHEON|Joongbu": [
+  "SANGOK|Joongbu": [
     45,
     0
   ],
-  "MAJANG|Joongbu": [
+  "GYEONGGIGWANGJU|Joongbu": [
     46,
     0
   ],
-  "HOBUBJC|Joongbu": [
+  "GONJIAM|Joongbu": [
     47,
     0
   ],
-  "ILJUK|Joongbu": [
+  "SEOICHEON|Joongbu": [
     48,
     0
   ],
-  "DAESO|Joongbu": [
+  "MAJANG|Joongbu": [
     49,
     0
   ],
-  "DAESOJC|Joongbu": [
+  "HOBUBJC|Joongbu": [
     50,
     0
   ],
-  "JINCHEON|Joongbu": [
+  "ILJUK|Joongbu": [
     51,
     0
   ],
-  "JEUNGPYEONG|Joongbu": [
+  "DAESO|Joongbu": [
     52,
     0
   ],
-  "OCHANG|Joongbu": [
+  "DAESOJC|Joongbu": [
     53,
     0
   ],
-  "SEOCHEONGJU|Joongbu": [
+  "JINCHEON|Joongbu": [
     54,
     0
   ],
-  "CHEONGWONJC|Joongbu": [
+  "JEUNGPYEONG|Joongbu": [
     55,
     0
   ],
-  "CHEONGWON|Joongbu": [
+  "OCHANG|Joongbu": [
     56,
     0
   ],
-  "SINTANJIN|Joongbu": [
+  "SEOCHEONGJU|Joongbu": [
     57,
     0
   ],
-  "HOIDUKJC|Joongbu": [
+  "NAMIJC|Joongbu": [
     58,
     0
   ],
-  "CHEONGBUK|PyungtaekJecheon": [
+  "CHEONGWONJC|Joongbu": [
     59,
     0
   ],
-  "SONGTANG|PyungtaekJecheon": [
+  "CHEONGWON|Joongbu": [
     60,
     0
   ],
-  "SEOANSUNG|PyungtaekJecheon": [
+  "SINTANJIN|Joongbu": [
     61,
     0
   ],
-  "NAMANSUNG|PyungtaekJecheon": [
+  "HOIDUKJC|Joongbu": [
     62,
     0
   ],
-  "DUNDAE|Youngdong": [
+  "SEOPYONGTAEKJC|PyungtaekJecheon": [
     63,
     0
   ],
-  "GUNPO|Youngdong": [
+  "CHEONGBUK|PyungtaekJecheon": [
     64,
     0
   ],
-  "DONGGUNPO|Youngdong": [
+  "SONGTANG|PyungtaekJecheon": [
     65,
     0
   ],
-  "BUGOK|Youngdong": [
+  "ANSUNGJC|PyungtaekJecheon": [
     66,
     0
   ],
-  "BUKSUWON|Youngdong": [
+  "SEOANSUNG|PyungtaekJecheon": [
     67,
     0
   ],
-  "DONGSUWON|Youngdong": [
+  "NAMANSUNG|PyungtaekJecheon": [
     68,
     0
   ],
-  "GWANGYO|Youngdong": [
+  "DAESOJC|PyungtaekJecheon": [
     69,
     0
   ],
-  "MASUNG|Youngdong": [
+  "ANSAN|Youngdong": [
     70,
     0
   ],
-  "YONGIN|Youngdong": [
+  "DUNDAE|Youngdong": [
     71,
     0
   ],
-  "YANGJI|Youngdong": [
+  "GUNPO|Youngdong": [
     72,
     0
   ],
-  "DUKPYEONG|Youngdong": [
+  "DONGGUNPO|Youngdong": [
     73,
+    0
+  ],
+  "BUGOK|Youngdong": [
+    74,
+    0
+  ],
+  "BUKSUWON|Youngdong": [
+    75,
+    0
+  ],
+  "DONGSUWON|Youngdong": [
+    76,
+    0
+  ],
+  "GWANGYO|Youngdong": [
+    77,
+    0
+  ],
+  "SHINGALJC|Youngdong": [
+    78,
+    0
+  ],
+  "MASUNG|Youngdong": [
+    79,
+    0
+  ],
+  "YONGIN|Youngdong": [
+    80,
+    0
+  ],
+  "YANGJI|Youngdong": [
+    81,
+    0
+  ],
+  "DUKPYEONG|Youngdong": [
+    82,
+    0
+  ],
+  "HOBUBJC|Youngdong": [
+    83,
     0
   ]
 }

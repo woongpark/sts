@@ -303,4 +303,9 @@ router.get('/sim_input', function(req, res, next) {
   queryArray(str, res);
 });
 
+router.get('/sim_traveltime', function(req, res, next) {
+  var str = "SELECT * FROM SIMULATIONTRAVELTIME";
+  queryArray(str, res);
+});
+
 module.exports = router;

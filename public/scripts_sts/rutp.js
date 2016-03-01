@@ -1027,7 +1027,6 @@ function resetLink(){
 function onClickHandler(e) {
   if (e.targetType == "polygon") {
     if(e.target.ROUTETYPE==1){
-      debugger
       for(var i=0;i<route1_list.length;i++){
         route1_list[i]._strokeColor.r=0;
         route1_list[i]._strokeColor.g=255;
