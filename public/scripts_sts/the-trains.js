@@ -53,8 +53,8 @@ VIZ.requiresData([
           };
       function getTime(t) {
         var d = new Date(),
-            hour = parseInt(+t / 100, 10),
-            min = parseInt(+t % 100, 10),
+            hour = 0, //parseInt(+t / 100, 10),
+            min = parseInt(+t, 10),
             sec = +(t.split(".")[1] || 0);
         d.setHours(hour);
         d.setMinutes(min);

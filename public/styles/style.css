@@ -75,6 +75,9 @@
   height: 71px;
   line-height: 71px;
 }
+.mareyline {
+  fill: transparent !important;
+}
 .Kyungbu {
   fill: #22B04C;
   stroke: #22B04C;
