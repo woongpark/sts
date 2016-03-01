@@ -59,7 +59,7 @@ VIZ.requiresData([
         d.setHours(hour);
         d.setMinutes(min);
         d.setSeconds(sec);
-        return parseInt(+d / 100, 10);
+        return parseInt(+d / 1000, 10);
       }
 
       result.data.forEach(function(item) {
@@ -223,7 +223,7 @@ VIZ.requiresData([
   });
   trips.forEach(function (d) {
     d.stops = d.stops || [];
-    var m = moment(d.begin*1000).zone(5);
+    var m = moment(d.begin*1000).zone(-9);
     d.secs = m.diff(m.clone().startOf('day')) / 1000;
   });
   var stationToName = {};
@@ -374,7 +374,7 @@ VIZ.requiresData([
         .attr('cx', function (d) { return d.pos[0]; })
         .attr('cy', function (d) { return d.pos[1]; });
     trains.exit().remove();
-    timeDisplay.text(moment(unixSeconds * 1000).zone(5).format('h:mm a'));
+    timeDisplay.text(moment(unixSeconds * 1000).zone(-9).format('h:mm a'));
   }
 
 
@@ -561,7 +561,7 @@ VIZ.requiresData([
 
     // draw the tall time axis down the side
     var yAxis = d3.svg.axis()
-      .tickFormat(function (d) { return moment(d).zone(5).format("h:mm A"); })
+      .tickFormat(function (d) { return moment(d).zone(-9).format("h:mm A"); })
       .ticks(d3.time.minute, 15)
       .scale(timeScale)
       .orient("left");
@@ -640,7 +640,7 @@ VIZ.requiresData([
     function select(time) {
       var y = yScale(time);
       bar.attr('transform', 'translate(0,' + y + ')');
-      timeDisplay.text(moment(time * 1000).zone(5).format('h:mm a'));
+      timeDisplay.text(moment(time * 1000).zone(-9).format('h:mm a'));
       renderTrainsAtTime(time);
     }
 
@@ -713,10 +713,10 @@ VIZ.requiresData([
     connections
         .attr('d', function (connection) {
           var station = network.nodes.find(function (station) { return new RegExp(connection.station, 'i').test(station.name); });
-          var annotationY = yScale(moment(connection.parent.time + ' -0500', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000) - 4;
-          var connectionStartY = yScale(moment(connection.start + ' -0500', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
-          var connectionEndY = yScale(moment(connection.stop + ' -0500', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
-          var connectionSingleY = yScale(moment(connection.time + ' -0500', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
+          var annotationY = yScale(moment(connection.parent.time + ' +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000) - 4;
+          var connectionStartY = yScale(moment(connection.start + ' +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
+          var connectionEndY = yScale(moment(connection.stop + ' +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
+          var connectionSingleY = yScale(moment(connection.time + ' +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000);
           var connectionX = xScale(header[station.id + '|' + connection.line][0]);
           return 'M' + [
             [
@@ -737,7 +737,7 @@ VIZ.requiresData([
 
     annotationContainer.selectAll('text, text tspan')
         .attr('x', fullMareyWidth + 15)
-        .attr('y', function (d) { return yScale(moment(d.time + ' -0500', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000); });
+        .attr('y', function (d) { return yScale(moment(d.time + ' +0900', 'YYYY/MM/DD HH:m ZZ').valueOf() / 1000); });
 
 
     // add links to annotations if they are set
@@ -977,7 +977,7 @@ VIZ.requiresData([
         .attr('x', xBegin + (linedUpMareyStartingStationLabels[first.stop].anchor === 'start' ?  5 : -5))
         .attr('y', -2)
         .style('text-anchor', linedUpMareyStartingStationLabels[first.stop].anchor)
-        .text(moment(first.time * 1000).zone(5).format('h:mma'));
+        .text(moment(first.time * 1000).zone(-9).format('h:mma'));
       linedUp.appendOnce('text', 'mareyannotation clickme')
         .attr('x', xEnd)
         .attr('y', 16)
@@ -988,7 +988,7 @@ VIZ.requiresData([
         .attr('x', xEnd)
         .attr('y', y + 15)
         .style('text-anchor', 'middle')
-        .text(moment(last.time * 1000).zone(5).format('h:mma'));
+        .text(moment(last.time * 1000).zone(-9).format('h:mma'));
       linedUp.appendOnce('text', 'mareyannotation time')
         .attr('x', xEnd)
         .attr('y', y + 30)
@@ -1123,7 +1123,7 @@ VIZ.requiresData([
           .attr('dx', function () { return linedUpMareyStartingStationLabels[highlightedLinedUpMarey.stops[0].stop].anchor === 'start' ? -2 : 2; })
           .attr('dy', function (d) { return d.dybottom; })
           .text(function (d) {
-            return moment(d.stop.time * 1000).zone(5).format('h:mma');
+            return moment(d.stop.time * 1000).zone(-9).format('h:mma');
           })
           .attr('text-anchor', function () { return linedUpMareyStartingStationLabels[highlightedLinedUpMarey.stops[0].stop].anchor === 'start' ? 'end' : 'start'; });
 
