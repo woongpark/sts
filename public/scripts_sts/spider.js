@@ -550,9 +550,40 @@
       // sim.node_data : 마커가 위치한 노드의 정보
       $.getJSON( "/sim_input", sim.data, function() {//확인
       });
+
+      var typetext = "";
+      if(sim.data.EVENTTYPE=='1'){
+        typetext = 'Accident';
+      }else if(sim.data.EVENTTYPE=='2'){
+        typetext = 'Road Work';
+      }else{
+        typetext = 'Weather';
+      }
+
+      var text = "";
+      text += "<label>EVENT" + sim.data.EVENTNO + "</label> : ";
+      text += "<span>"+typetext+"<br>Between " + sim.link_data.source.id + " TG and "+sim.link_data.target.id+" TG<br>";
+      text += " Direction : "+sim.data.DIRECTION+", Time : "+sim.data.STARTTIME.slice(0,2)+":"+sim.data.STARTTIME.slice(2,4)+ " - "+sim.data.ENDTIME.slice(0,2)+":"+sim.data.ENDTIME.slice(2,4)+", Severity : "+sim.data.SEVERITY+"</span>" + "<br/>";
+      $("<li>").html(text).appendTo(".event.summary")
     });
+    event_summay.style.visibility = "visible";
     // TODO: SIMULATIONNO의 length가 3자리라 부득이하게 3자리로 잘랐음
     $.getJSON( "/sim_run", sim_no.slice(-3), function() {//확인
+    });
+
+    $.getJSON("/sim_summary", function(summary) {
+      sim_summay.style.visibility = "visible";
+      var hours = summary[0].HORIZON.trim() + " hours";
+      var ctime = summary[0].CTIME.trim();
+      var number = summary[0].NUMBER.trim();
+      ctime = ctime.slice(0, 2) + ":" + ctime.slice(2) + " PM";
+      if(number.length > 3) {
+        number = number.slice(0, -3) + "," + number.slice(-3);
+      }
+      $(".summary .horizon").text(hours);
+      $(".summary .ctime").text(ctime);
+      $(".summary .number").text(number);
+      window.ctime = ctime;
     });
     // console.log(sims.data);
   });
@@ -586,11 +617,49 @@
       // con.data : 서버로 전송할 데이터
       // con.link_data : 마커가 위치한 링크의 정보
       // con.node_data : 마커가 위치한 노드의 정보
-      $.getJSON( "/con_input", datum, function() {
+      $.getJSON( "/con_input", con.data, function() {
       });
+
+      var typetext = "";
+      if(con.data.CONTROLTYPE=='1'){
+        typetext = 'Ramp Metering';
+      }else if(con.data.CONTROLTYPE=='2'){
+        typetext = 'Travel Time Information';
+      }else if(con.data.CONTROLTYPE=='3'){
+        typetext = 'Variable Speed Limit';
+      }else{
+        typetext = 'New Control';
+      }
+      debugger
+      var text = "";
+      text += "<label>Control" + con.data.CONTROLNO + "</label> : ";
+      if(typetext == 'Ramp Metering'){
+        text += "<span>"+typetext+" in " + con.data.LINKID + " <br>";
+      }else{
+        text += "<span>"+typetext+"<br>Between " + con.link_data.source.id + " TG and "+con.link_data.target.id+" TG<br>";
+      }
+      text += " Direction : "+con.data.DIRECTION+", Time : "+con.data.STARTTIME.slice(0,2)+":"+con.data.STARTTIME.slice(2,4)+ " - "+con.data.ENDTIME.slice(0,2)+":"+con.data.ENDTIME.slice(2,4)+", Setting : "+con.data.SETTING+"</span>" + "<br/>";
+      $("<li>").html(text).appendTo(".control.summary")
+
     });
+    control_summay.style.visibility = "visible";
     // TODO: SIMULATIONNO의 length가 3자리라 부득이하게 3자리로 잘랐음
     $.getJSON( "/con_run", sim_no.slice(-3), function() {//확인
+    });
+
+    $.getJSON("/sim_summary", function(summary) {
+      sim_summay.style.visibility = "visible";
+      var hours = summary[0].HORIZON.trim() + " hours";
+      var ctime = summary[0].CTIME.trim();
+      var number = summary[0].NUMBER.trim();
+      ctime = ctime.slice(0, 2) + ":" + ctime.slice(2) + " PM";
+      if(number.length > 3) {
+        number = number.slice(0, -3) + "," + number.slice(-3);
+      }
+      $(".summary .horizon").text(hours);
+      $(".summary .ctime").text(ctime);
+      $(".summary .number").text(number);
+      window.ctime = ctime;
     });
     // console.log(cons.data);
   });
