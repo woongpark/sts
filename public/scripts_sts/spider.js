@@ -152,6 +152,7 @@
         + '<input name="LOCATION" type="number"'
         + ' placeholder="Between <%= Math.min(link_data.smile, link_data.emile) %> ~ '
         + '<%= Math.max(link_data.smile, link_data.emile) %> (default 0)"/>',
+    location0: '<input name="LOCATION" type="hidden">',
     direction: '<label>Direction</label><br/>'
         + '<select name="DIRECTION">'
         +   '<option value="U">Up</option><option value="D">Down</option>'
@@ -186,7 +187,7 @@
     speedlimit: '<label>Speed Limit</label><br/>'
         + '<input name="SETTING" type="number" min="0" max="150"'
         + ' placeholder="Between 0 ~ 150 (default 100)"/>',
-    speedlimit: '<label>Capacity Change</label><br/>'
+    capacitychange: '<label>Capacity Change</label><br/>'
         + '<input name="SETTING" type="number" min="0" max="1000"'
         + ' placeholder="Between 0 ~ 1000 (default 100)"/>'
   };
@@ -258,7 +259,8 @@
       forms.node,
       forms.direction2,
       forms.time,
-      forms.blockratio
+      forms.blockratio,
+      forms.location0
     ],
     entireNetwork: true,
     data: {
@@ -506,7 +508,7 @@
       var $this = $(this),
           key = $this.attr("name"),
           val = $this.val();
-      if($this.attr("type") == "number") {
+      if($this.attr("type") == "number" || $this.attr("type") == "hidden") {
         val = +val;
       }
       d.data[key] = val;
@@ -546,7 +548,7 @@
        $.getJSON( "/sim_input", datum, function() {//확인
        });
     });
-    $.getJSON( "/sim_run", {SIMULATIONNO: datum.SIMULATIONNO}, function() {//확인
+    $.getJSON( "/sim_run", {SIMULATIONNO: data[0].SIMULATIONNO}, function() {//확인
     });
     console.log(data);
   });
@@ -563,20 +565,22 @@
     });
     d3.selectAll(".entire-network.active").each(function(datum, index) {
       data.push({
-        SIMULATIONNO: sim_no,
+        SIMULATIONNO: Number(sim_no.substring(8,12)),
         CONTROLNO: data.length + index + 1,
         CONTROLTYPE: datum.data.CONTROLTYPE,
         LINKID: "C",
         LOCATION: 0,
-        DERECTION: "B",
+        DIRECTION: "B",
         STARTTIME: moment(window.ctime, "HH:mm").format("HHmm"),
         ENDTIME: moment(window.ctime, "HH:mm").add(6, "h").format("HHmm"),
         SETTING: "C"
       });
     });
     data.forEach(function(datum) {
-      // $.getJSON( "/con_input", datum, function() {
-      // });
+       $.getJSON( "/con_input", datum, function() {
+       });
+    });
+    $.getJSON( "/con_run", {SIMULATIONNO: data[0].SIMULATIONNO}, function() {//확인
     });
     console.log(data);
   });

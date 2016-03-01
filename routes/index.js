@@ -307,4 +307,13 @@ router.get('/sim_run', function(req, res, next) {
   queryArray(str, res);
 });
 
+router.get('/con_input', function(req, res, next) {
+  var str = "INSERT INTO CONTROLINPUT VALUES(" + req.query.SIMULATIONNO + "," + req.query.CONTROLNO + ",'" + req.query.CONTROLTYPE + "','" + req.query.LINKID + "'," + req.query.LOCATION + ",'" + req.query.DIRECTION + "','" + req.query.STARTTIME + "','" + req.query.ENDTIME + "','" + req.query.SETTING + "');" ;
+  queryArray(str, res);
+});
+router.get('/con_run', function(req, res, next) {
+  var str = "INSERT INTO SIMULATIONSTATE VALUES(" + req.query.SIMULATIONNO + ",'2');" ;
+  queryArray(str, res);
+});
+
 module.exports = router;
