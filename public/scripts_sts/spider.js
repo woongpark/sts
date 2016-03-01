@@ -535,7 +535,7 @@
   }
 
   $("#sim-run").click(function() {
-    var sim_no = moment().format("YYYYMMDDhhmm");
+    var sim_no = moment().format("YYYYMMDDHHmm");
     var data = markers.filter(function(datum) {
       var isSim = {"accident":1, "roadwork":1, "weather":1}[datum.type];
       return datum.fixed && isSim;
@@ -554,7 +554,7 @@
   });
 
   $("#con-run").click(function() {
-    var sim_no = moment().format("YYYYMMDDhhmm");
+    var sim_no = moment().format("YYYYMMDDHHmm");
     var data = markers.filter(function(datum) {
       var isCon = {"ramp":1, "travel":1, "variable":1, "newcontrol":1}[datum.type];
       return datum.fixed && isCon;
