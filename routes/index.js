@@ -299,7 +299,11 @@ router.get('/sim_vsl', function(req, res, next) {
 });
 
 router.get('/sim_input', function(req, res, next) {
-  var str = "INSERT INTO SIMULATIONINPUT VALUES(" + req.query.SIMULATIONNO + "," + req.query.EVENTNO + ",'" + req.query.EVENTTYPE + "','" + req.query.LINKID + "'," + req.query.LOCATION + ",'" + req.query.DERECTION + "','" + req.query.STARTTIME + "','" + req.query.ENDTIME + "','" + req.query.SEVERITY + "');" ;
+  var str = "INSERT INTO SIMULATIONINPUT VALUES(" + req.query.SIMULATIONNO + "," + req.query.EVENTNO + ",'" + req.query.EVENTTYPE + "','" + req.query.LINKID + "'," + req.query.LOCATION + ",'" + req.query.DIRECTION + "','" + req.query.STARTTIME + "','" + req.query.ENDTIME + "','" + req.query.SEVERITY + "');" ;
+  queryArray(str, res);
+});
+router.get('/sim_run', function(req, res, next) {
+  var str = "INSERT INTO SIMULATIONSTATE VALUES(" + req.query.SIMULATIONNO + ",'1');" ;
   queryArray(str, res);
 });
 

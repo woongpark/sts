@@ -543,8 +543,10 @@
       return datum.data;
     });
     data.forEach(function(datum) {
-      // $.getJSON( "/sim_input", datum, function() {
-      // });
+       $.getJSON( "/sim_input", datum, function() {//확인
+       });
+    });
+    $.getJSON( "/sim_run", {SIMULATIONNO: datum.SIMULATIONNO}, function() {//확인
     });
     console.log(data);
   });
