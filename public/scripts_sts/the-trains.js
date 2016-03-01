@@ -50,7 +50,8 @@ VIZ.requiresData([
             "35": "Joongbu",
             "40": "PyungtaekJecheon",
             "50": "Youngdong"
-          };
+          },
+          temp = null;
       function getTime(t) {
         var d = new Date(),
             hour = 0, //parseInt(+t / 100, 10),
@@ -73,6 +74,14 @@ VIZ.requiresData([
         buckets[id].sort(function(a, b) {
           return (+a[3]) - (+b[3]);
         });
+        if(buckets[id][0][2] === buckets[id][1][4]) {
+          buckets[id] = buckets[id].map(function(item) {
+            temp = item[2];
+            item[2] = item[4];
+            item[4] = temp;
+            return item;
+          });
+        }
         var stops = buckets[id].map(function(stop) {
               return {
                 stop: network.nodes[+stop[2]-1].id,
@@ -495,7 +504,7 @@ VIZ.requiresData([
     /* 4a. Render the full Marey
      *************************************************************/
     var fullMareyMargin = {top: 100, right: 200, bottom: 0, left: 60};
-    var fullMareyOuterHeight = 3500;
+    var fullMareyOuterHeight = 1000;
     var fullMareyWidth = fullMareyOuterWidth - fullMareyMargin.left - fullMareyMargin.right,
         fullMareyHeight = fullMareyOuterHeight - fullMareyMargin.top - fullMareyMargin.bottom;
     outerSvg.attr('width', fullMareyOuterWidth)
