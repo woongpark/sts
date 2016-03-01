@@ -187,7 +187,7 @@
     speedlimit: '<label>Speed Limit</label><br/>'
         + '<input name="SETTING" type="number" min="0" max="150"'
         + ' placeholder="Between 0 ~ 150 (default 100)"/>',
-    speedlimit: '<label>Capacity Change</label><br/>'
+    capacitychange: '<label>Capacity Change</label><br/>'
         + '<input name="SETTING" type="number" min="0" max="1000"'
         + ' placeholder="Between 0 ~ 1000 (default 100)"/>'
   };
@@ -259,7 +259,8 @@
       forms.node,
       forms.direction2,
       forms.time,
-      forms.blockratio
+      forms.blockratio,
+      forms.location0
     ],
     entireNetwork: true,
     data: {
@@ -534,7 +535,7 @@
   }
 
   $("#sim-run").click(function() {
-    var sim_no = moment().format("YYYYMMDDhhmm");
+    var sim_no = moment().format("YYYYMMDDHHmm");
     var data = markers.filter(function(datum) {
       var isSim = {"accident":1, "roadwork":1, "weather":1}[datum.type];
       return datum.fixed && isSim;
@@ -544,14 +545,16 @@
       return datum.data;
     });
     data.forEach(function(datum) {
-      // $.getJSON( "/sim_input", datum, function() {
-      // });
+       $.getJSON( "/sim_input", datum, function() {//확인
+       });
+    });
+    $.getJSON( "/sim_run", {SIMULATIONNO: data[0].SIMULATIONNO}, function() {//확인
     });
     console.log(data);
   });
 
   $("#con-run").click(function() {
-    var sim_no = moment().format("YYYYMMDDhhmm");
+    var sim_no = moment().format("YYYYMMDDHHmm");
     var data = markers.filter(function(datum) {
       var isCon = {"ramp":1, "travel":1, "variable":1, "newcontrol":1}[datum.type];
       return datum.fixed && isCon;
@@ -562,20 +565,22 @@
     });
     d3.selectAll(".entire-network.active").each(function(datum, index) {
       data.push({
-        SIMULATIONNO: sim_no,
+        SIMULATIONNO: Number(sim_no.substring(8,12)),
         CONTROLNO: data.length + index + 1,
         CONTROLTYPE: datum.data.CONTROLTYPE,
         LINKID: "C",
         LOCATION: 0,
-        DERECTION: "B",
+        DIRECTION: "B",
         STARTTIME: moment(window.ctime, "HH:mm").format("HHmm"),
         ENDTIME: moment(window.ctime, "HH:mm").add(6, "h").format("HHmm"),
         SETTING: "C"
       });
     });
     data.forEach(function(datum) {
-      // $.getJSON( "/con_input", datum, function() {
-      // });
+       $.getJSON( "/con_input", datum, function() {
+       });
+    });
+    $.getJSON( "/con_run", {SIMULATIONNO: data[0].SIMULATIONNO}, function() {//확인
     });
     console.log(data);
   });
