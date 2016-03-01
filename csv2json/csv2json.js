@@ -43,17 +43,17 @@ if(!fs.existsSync(outputPath)) {
 async.map(csvFiles, csv2json, function(err, result) {
   var nodes = result[0],
       links = result[1],
-      check = {};
-  nodes = nodes.filter(function(obj) {
-    if(!check[obj.num]) {
-      check[obj.num] = true;
-      return true;
-    } else {
-      return false;
-    }
-  });
+      check = {},
+      nodes_unique = nodes.filter(function(obj) {
+        if(!check[obj.num]) {
+          check[obj.num] = true;
+          return true;
+        } else {
+          return false;
+        }
+      });
   for(var name in restructers) {
-    json2File(name, restructers[name](nodes, links));
+    json2File(name, restructers[name](nodes_unique, links, nodes));
   }
 });
 
@@ -93,7 +93,7 @@ var restructers = {
     }
     return spider;
   },
-  "marey-header": function(nodes) {
+  "marey-header": function(nodes_unique, links, nodes) {
     var data = [],
         ret = {};
     for(var i = 0; i < nodes.length; i++) {

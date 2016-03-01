@@ -152,6 +152,7 @@
         + '<input name="LOCATION" type="number"'
         + ' placeholder="Between <%= Math.min(link_data.smile, link_data.emile) %> ~ '
         + '<%= Math.max(link_data.smile, link_data.emile) %> (default 0)"/>',
+    location0: '<input name="LOCATION" type="hidden">',
     direction: '<label>Direction</label><br/>'
         + '<select name="DIRECTION">'
         +   '<option value="U">Up</option><option value="D">Down</option>'
@@ -506,7 +507,7 @@
       var $this = $(this),
           key = $this.attr("name"),
           val = $this.val();
-      if($this.attr("type") == "number") {
+      if($this.attr("type") == "number" || $this.attr("type") == "hidden") {
         val = +val;
       }
       d.data[key] = val;

@@ -418,7 +418,6 @@ function setSlider(linkinfo, CDATE, CTIME) {
       }
     });
     mySlider.on('slideStop', function(e) {
-      debugger
         getLinkspeed_map(linkinfo, CDATE, CTIME, datetime[e.value].PDATE, datetime[e.value].PTIME);
     });
     getLinkspeed_map(linkinfo, CDATE, CTIME, datetime[datetime.length-1].PDATE, datetime[datetime.length-1].PTIME);
