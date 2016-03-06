@@ -663,5 +663,8 @@
     });
     // console.log(cons.data);
   });
+  $("#con-chart").click(function() {
+    control_chart.style.visibility = "visible";
+  });
 
 }());

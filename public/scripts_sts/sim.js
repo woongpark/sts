@@ -183,17 +183,18 @@ $(function() {
       dataTable.addColumn({ type: 'number', id: 'End' });
       var rowLabels = [];
       var rows = result.data.map(function(arr) {
-        if(!rowLabels[+arr[7]-1]) {
-          rowLabels[+arr[7]-1] = arr[2];
+        if(!rowLabels[+arr[8]-1]) {
+          rowLabels[+arr[8]-1] = arr[2];
         }
         return [
           arr[2],
-          arr[5],
+          arr[6],
           Math.min(+arr[3], +arr[4]) + "~" + Math.max(+arr[3], +arr[4]),
           Math.min(+arr[3], +arr[4]),
           Math.max(+arr[3], +arr[4])
         ];
       });
+      debugger
       dataTable.addRows(rows);
       chart.clearChart();
       chart.draw(dataTable, {
@@ -243,6 +244,42 @@ $(function() {
     });
     rowLabels.forEach(function(str) {
       $("<div class='row-label'>").text(str).appendTo("#traveltime .label-area");
+    });
+  });
+
+  $.getJSON("/sim_ramp", function(result) {
+    var container = $('#RAMP .chart-area');
+    var chart = new google.visualization.Timeline(container.get(0));
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: 'string', id: 'Routes' });
+    dataTable.addColumn({ type: 'string', id: 'dummy bar label' });
+    dataTable.addColumn({ type: 'string', role: 'tooltip' });
+    dataTable.addColumn({ type: 'date', id: 'Start' });
+    dataTable.addColumn({ type: 'date', id: 'End' });
+    var rowLabels = [];
+    var rows = result.data.map(function(arr) {
+      var hour = +arr[0].slice(0,2),
+          min = +arr[0].slice(2);
+      if(!rowLabels[+arr[4]-1]) {
+        rowLabels[+arr[4]-1] = arr[1];
+      }
+      return [
+        arr[1],
+        arr[2],
+        arr[2],
+        new Date(2015, 0, 1, hour, min),
+        new Date(2015, 0, 1, hour, min + 5)
+      ];
+    });
+    dataTable.addRows(rows);
+    chart.draw(dataTable, {
+      timeline: {
+        showRowLabels: false,
+        colorByRowLabel: true
+      }
+    });
+    rowLabels.forEach(function(str) {
+      $("<div class='row-label'>").text(str).appendTo("#RAMP .label-area");
     });
   });
 });
