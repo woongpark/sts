@@ -764,7 +764,6 @@
             Math.max(+arr[3], +arr[4])
           ];
         });
-        debugger
         dataTable.addRows(rows);
         chart.clearChart();
         chart.draw(dataTable, {
