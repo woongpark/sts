@@ -585,6 +585,10 @@
       $(".summary .number").text(number);
       window.ctime = ctime;
     });
+    document.getElementById("sim-run").className = "btn btn-primary active btn-lg btn-block";
+    document.getElementById("sim-traject").className = "btn btn-info btn-lg btn-block";
+    document.getElementById("sim-network").className = "btn btn-info btn-lg btn-block";
+    document.getElementById("sim-toll").className = "btn btn-info btn-lg btn-block";
     // console.log(sims.data);
   });
 
@@ -661,6 +665,8 @@
       $(".summary .number").text(number);
       window.ctime = ctime;
     });
+    document.getElementById("console-run").className = "btn btn-primary active btn-lg btn-block";
+    document.getElementById("con-control").className = "btn btn-info btn-lg btn-block";
     // console.log(cons.data);
   });
 
