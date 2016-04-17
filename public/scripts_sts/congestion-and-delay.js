@@ -70,10 +70,19 @@ VIZ.requiresData([
     .value();
   delay = delay.map(function(item) {
     var hour = +item[0].PTIME.slice(0, 2),
-        min = +item[0].PTIME.slice(2);
+        min = +item[0].PTIME.slice(2),
+        ins = {},
+        outs = {};
+    item.forEach(function(obj) {
+      var node = network.nodes[+obj.FROMIC.trim()-1];
+      ins[node.id] = +obj.DENSITY;
+      outs[node.id] = +obj.DENSITY;
+    });
     return {
       day: hour - 13,
       secOfDay: min * 60,
+      ins: ins,
+      outs: outs,
       ins_total: item.reduce(function(prev, current) {
         return prev + +current.DENSITY;
       }, 0) / item.length,
@@ -284,10 +293,13 @@ VIZ.requiresData([
   function mouseover() {
     var chartContainerDomNode = d3.select('.interaction-all .right').node();
     var x = d3.mouse(chartContainerDomNode)[0] - chartMargin.left;
-    var y = d3.mouse(chartContainerDomNode)[1] - 50;
+    var y = d3.mouse(chartContainerDomNode)[1] - 35;
     if (y < 0 || x < 0 || y > chartHeight || x > chartWidth) { return; }
     // var day = Math.max(1, d3.bisectLeft(dayRowYScale.range(), y)) % 7;
     var day = d3.bisectLeft(dayRowYScale.range(), y);
+    if(day > 5) {
+      day = 5;
+    }
     var theTime = timeScale.invert(x).getTime();
     if(0 <=day && day <= 5) {
       mouseoverTime(day, theTime);
@@ -306,9 +318,7 @@ VIZ.requiresData([
     var fullTime = moment(theTime + (13+day)*60*60*1000).utc().format('HH:mm a');
     timeDisplayBelowMapGlyph.text(fullTime);
     d3.select('.interaction-all .time').text(fullTime);
-    debugger
     var inputData = byDay[day];
-    delays = {};
     var idx = bisect(inputData, theTime / 1000 - 15 * 60) - 1;
     var ratio = ((theTime-1) % bucketSize) / bucketSize;
     var before = inputData[idx] || inputData[idx+1];
@@ -321,19 +331,20 @@ VIZ.requiresData([
     } else {
       relativeDelayText.text(d3.format('%')(delay) + " slow");
     }
-    var trainDataLeft = _.extend.apply(null, [{}].concat(_.pluck(before.lines, 'delay_actual')));
-    var trainDataRight = _.extend.apply(null, [{}].concat(_.pluck(after.lines, 'delay_actual')));
-    var trainDataMerged = d3.interpolate(trainDataLeft, trainDataRight)(ratio);
+    // var trainDataLeft = _.extend.apply(null, [{}].concat(_.pluck(before.lines, 'delay_actual')));
+    // var trainDataRight = _.extend.apply(null, [{}].concat(_.pluck(after.lines, 'delay_actual')));
+    // var trainDataMerged = d3.interpolate(trainDataLeft, trainDataRight)(ratio);
 
     function updateCachedDelayForSegment(FROM, TO) {
       var key = FROM + "|" + TO;
-      if (trainDataMerged.hasOwnProperty(key)) {
-        var diff = trainDataMerged[key];
-        // the range of collisionrisk is [0, 2]
-        var median = 1; // averageActualDelays[key];
-        var speed = median / diff;
-        delays[key] = speed;
-      }
+      delays[key] = (before.ins[FROM] + after.ins[TO]) / 2;
+      // if (trainDataMerged.hasOwnProperty(key)) {
+      //   var diff = trainDataMerged[key];
+      //   // the range of collisionrisk is [0, 2]
+      //   var median = 1; // averageActualDelays[key];
+      //   var speed = median / diff;
+      //   delays[key] = speed;
+      // }
     }
 
     network.links.forEach(function (link) {
@@ -382,12 +393,12 @@ VIZ.requiresData([
   var scale = Math.min(xScale, yScale);
   var endDotRadius = 0.3 * scale;
   var distScale = d3.scale.linear()
-    .domain([0, 100])
-    .range([0.15 * scale, 0.7 * scale]);
+    .domain([0, 200])
+    .range([5 * scale, 20 * scale]);
 
   var redGreenDelayColorScale = d3.scale.linear()
       .interpolate(d3.interpolateLab)
-      .domain([2, 1, 0.3])
+      .domain([0, 100, 200])
       .range(['rgb(0, 104, 55)', 'rgb(255, 255, 255)', 'rgb(165, 0, 38)']);
 
   function mapGlyphSegmentColor(d) {
@@ -708,8 +719,9 @@ VIZ.requiresData([
     });
 
   // Bootstrap the visualization, start by showing Monday at 5:30PM
-  var initalTime = moment('2/3/2014 5:30 PM -0500', 'M/D/YYYY hh:mm a Z').zone(5);
-  mouseoverTime(1, initalTime.diff(initalTime.clone().startOf('day')));
+  // var initalTime = moment('2/3/2014 5:30 PM -0500', 'M/D/YYYY hh:mm a Z').zone(5);
+  // mouseoverTime(1, initalTime.diff(initalTime.clone().startOf('day')));
+  mouseoverTime(0, 0);
 
 
 
@@ -778,6 +790,7 @@ VIZ.requiresData([
     var minAngle = Infinity;
     otherLines.forEach(function (other) {
       if (segmentsAreSame(other, thisLine)) { return; }
+      if(other.ids.split("|").reverse().join("|") === thisLine.ids) { return; }
       var thisAngle = angle(other.segment) + Math.PI;
       var diff = -normalize(thisAngle - origAngle);
       if (diff < minAngle) {
@@ -882,7 +895,6 @@ VIZ.requiresData([
     var p3 = offsets[1];
     var p4 = offsets[0];
     var first;
-
     first = closestClockwise(link, link.outgoing);
     if (first && link.outgoing.length > 1) {
       var outgoingPoints = offsetPoints(first);
@@ -890,6 +902,10 @@ VIZ.requiresData([
       if (newP3 && !isNaN(newP3[0]) && !isNaN(newP3[1])) { p3 = newP3; }
     }
     first = closestCounterClockwise(link, link.incoming);
+    // TODO: 몇몇 부분에서 이상한 값을 가져올때가 있음
+    if(link.ids == "HOBUBJC|MAJANG") {
+      first = link.incoming[1];
+    }
     if (first && link.incoming.length > 1) {
       var incomingPoints = offsetPoints(first);
       var newP4 = intersect(offsets, incomingPoints);
