@@ -26,8 +26,8 @@
 
 VIZ.requiresData([
   'json!data/delay.json',
-  'json!data/station-network.json',
-  'json!data/spider.json',
+  'json!newdata/station-network.json',
+  'json!newdata/spider.json',
   'json!data/average-actual-delays.json'
 ], true).progress(function (percent) {
   "use strict";
@@ -35,8 +35,63 @@ VIZ.requiresData([
 }).onerror(function () {
   "use strict";
   d3.select(".interaction-all .loading").text('Error loading delay data').style('text-align', 'center');
-}).done(function (delay, network, spider, averageActualDelays) {
+}).done(function (org_delay, network, spider, averageActualDelays) {
   "use strict";
+  var delay;
+  jQuery.ajax({
+    url: '/sim_density',
+    async: false,
+    success: function (result) {
+      delay = result;
+    }
+  });
+  jQuery.ajax({
+    url: '/sim_collisionrisk',
+    async: false,
+    success: function (result) {
+      result.forEach(function(item) {
+        for(var idx = 0; idx < delay.length; idx++) {
+          if( delay[idx].PTIME.trim() == item.PTIME.trim() &&
+              delay[idx].LINE.trim() == item.LINE.trim() &&
+              delay[idx].FROMIC.trim() == item.FROMIC.trim() &&
+              delay[idx].TOIC.trim() == item.TOIC.trim()) {
+            delay[idx].COLLISIONRISK = item.COLLISIONRISK;
+            break;
+          }
+        }
+      });
+    }
+  });
+
+  delay = _.chain(delay)
+    .groupBy('PTIME')
+    .toArray()
+    .sortBy(function (d) { return +d[0].PTIME; })
+    .value();
+  delay = delay.map(function(item) {
+    var hour = +item[0].PTIME.slice(0, 2),
+        min = +item[0].PTIME.slice(2),
+        ins = {},
+        outs = {};
+    item.forEach(function(obj) {
+      var node = network.nodes[+obj.FROMIC.trim()-1];
+      ins[node.id] = +obj.DENSITY;
+      outs[node.id] = +obj.DENSITY;
+    });
+    return {
+      day: hour - 13,
+      secOfDay: min * 60,
+      ins: ins,
+      outs: outs,
+      ins_total: item.reduce(function(prev, current) {
+        return prev + +current.DENSITY;
+      }, 0) / item.length,
+      delay_actual: item.reduce(function(prev, current) {
+        return prev + +current.COLLISIONRISK;
+      }, 0) / item.length
+    };
+  });
+
   d3.select(".interaction-all .loading").remove();
 
   var delays = {};
@@ -81,9 +136,9 @@ VIZ.requiresData([
     .append('g')
       .attr('transform', 'translate(' + 0 + ',' + (chartMargin.top) + ')');
 
-  var days = d3.range(0, 7);
+  var days = d3.range(0, 6);
   var dayRowYScale = d3.scale.ordinal()
-      .domain([1, 2, 3, 4, 5, 6, 0])
+      .domain(days)
       .rangeRoundBands([0, chartHeight], 0.3);
 
   // dayRowContainer is a container for the congestion and delay timeline.  Each row is
@@ -106,12 +161,12 @@ VIZ.requiresData([
     .attr('class', 'daylabel')
     .attr('dy', dayRowYScale.rangeBand() - 15)
     .attr('text-anchor', 'middle')
-    .text(function (d) { return moment.weekdaysShort()[d]; });
-  dayRowLabels.append('text')
-    .attr('class', 'dayofmonthlabel')
-    .attr('dy', dayRowYScale.rangeBand() - 2)
-    .attr('text-anchor', 'middle')
-    .text(function (d) { return 'Feb ' + (2 + (d === 0 ? 7 : d)); });
+    .text(function (d) { return moment(d+13, "HH").format("HH a"); });
+  // dayRowLabels.append('text')
+  //   .attr('class', 'dayofmonthlabel')
+  //   .attr('dy', dayRowYScale.rangeBand() - 2)
+  //   .attr('text-anchor', 'middle')
+  //   .text(function (d) { return 'Feb ' + (2 + (d === 0 ? 7 : d)); });
 
   // horizon chart with entrances data.  'ins_total' is the field we are plotting and
   // represents the total number of entrances for that time chunk.  Switching this to
@@ -124,14 +179,14 @@ VIZ.requiresData([
 
   // draw the time scale across the top
   var timeScale = d3.time.scale()
-      .domain([0, 24 * 60 * 60 * 1000])
+      .domain([0, 60 * 60 * 1000])
       .range([0, horizonWidth])
       .clamp(true);
    var timeAxis = d3.svg.axis()
       .scale(timeScale)
-      .tickFormat(d3.time.format.utc("%-I%p"))
+      .tickFormat(d3.time.format.utc("%-M"))
       .orient('top')
-      .ticks(d3.time.hours, 2);
+      .ticks(d3.time.minutes, 5);
    chart.append('g')
       .attr('class', 'x axis')
       .attr('transform', 'translate(' + chartMargin.left + ',0)')
@@ -191,20 +246,26 @@ VIZ.requiresData([
       .attr("y2", "0%")
       .attr("spreadMethod", "pad");
 
+  var delay_arr = delay.map(function(item) {return item.delay_actual;}),
+      delay_min = d3.min(delay_arr),
+      delay_max = d3.max(delay_arr);
   var delayMapColorScale = d3.scale.linear()
       .interpolate(d3.interpolateLab)
-      .domain([-0.2, 0, 0.4])
+      // .domain([-0.2, 0, 0.4])
+      .domain([delay_min, (delay_min + delay_max) / 2, delay_max])
       .range(['rgb(0, 104, 55)', 'rgb(255, 255, 255)', 'rgb(165, 0, 38)']);
 
+  var sec_len = byDay[0].length,
+      max_sec = byDay[0][sec_len - 1].secOfDay;
   var delayMapXScale = d3.scale.linear()
-      .domain([0, 24 * 60 * 60])
+      .domain([-max_sec / (sec_len - 1), max_sec])
       .range(["0%", "100%"]);
 
   gradient.selectAll('stop')
       .data(function (d) { return d; })
       .enter()
     .append("svg:stop")
-      .attr("offset", function (d) { return delayMapXScale(d.secOfDay + 60 * 7.5); })
+      .attr("offset", function (d) { return delayMapXScale(d.secOfDay); })
       .attr("stop-color", function (d) { return delayMapColorScale(d.delay_actual); })
       .attr("stop-opacity", 1);
 
@@ -232,11 +293,17 @@ VIZ.requiresData([
   function mouseover() {
     var chartContainerDomNode = d3.select('.interaction-all .right').node();
     var x = d3.mouse(chartContainerDomNode)[0] - chartMargin.left;
-    var y = d3.mouse(chartContainerDomNode)[1] - 14;
+    var y = d3.mouse(chartContainerDomNode)[1] - 35;
     if (y < 0 || x < 0 || y > chartHeight || x > chartWidth) { return; }
-    var day = Math.max(1, d3.bisectLeft(dayRowYScale.range(), y)) % 7;
+    // var day = Math.max(1, d3.bisectLeft(dayRowYScale.range(), y)) % 7;
+    var day = d3.bisectLeft(dayRowYScale.range(), y);
+    if(day > 5) {
+      day = 5;
+    }
     var theTime = timeScale.invert(x).getTime();
-    mouseoverTime(day, theTime);
+    if(0 <=day && day <= 5) {
+      mouseoverTime(day, theTime);
+    }
     if (d3.event) {
       d3.event.preventDefault();
     }
@@ -247,12 +314,11 @@ VIZ.requiresData([
     var x = timeScale(theTime);
     var y = dayRowYScale(day);
     timeHoverBar.attr('transform', 'translate(' + (x+chartMargin.left) + ',' + y + ')');
-    timeDisplay.text(moment(theTime).utc().format('h:mm a'));
-    var fullTime = moment(theTime).utc().format('h:mm a') + ' on ' + moment.weekdaysShort()[day] + ' Feb ' + (day ? day + 2 : 9);
+    timeDisplay.text(moment(theTime + (13+day)*60*60*1000).utc().format('HH:mm a'));
+    var fullTime = moment(theTime + (13+day)*60*60*1000).utc().format('HH:mm a');
     timeDisplayBelowMapGlyph.text(fullTime);
     d3.select('.interaction-all .time').text(fullTime);
     var inputData = byDay[day];
-    delays = {};
     var idx = bisect(inputData, theTime / 1000 - 15 * 60) - 1;
     var ratio = ((theTime-1) % bucketSize) / bucketSize;
     var before = inputData[idx] || inputData[idx+1];
@@ -265,18 +331,20 @@ VIZ.requiresData([
     } else {
       relativeDelayText.text(d3.format('%')(delay) + " slow");
     }
-    var trainDataLeft = _.extend.apply(null, [{}].concat(_.pluck(before.lines, 'delay_actual')));
-    var trainDataRight = _.extend.apply(null, [{}].concat(_.pluck(after.lines, 'delay_actual')));
-    var trainDataMerged = d3.interpolate(trainDataLeft, trainDataRight)(ratio);
+    // var trainDataLeft = _.extend.apply(null, [{}].concat(_.pluck(before.lines, 'delay_actual')));
+    // var trainDataRight = _.extend.apply(null, [{}].concat(_.pluck(after.lines, 'delay_actual')));
+    // var trainDataMerged = d3.interpolate(trainDataLeft, trainDataRight)(ratio);
 
     function updateCachedDelayForSegment(FROM, TO) {
       var key = FROM + "|" + TO;
-      if (trainDataMerged.hasOwnProperty(key)) {
-        var diff = trainDataMerged[key];
-        var median = averageActualDelays[key];
-        var speed = median / diff;
-        delays[key] = speed;
-      }
+      delays[key] = (before.ins[FROM] + after.ins[TO]) / 2;
+      // if (trainDataMerged.hasOwnProperty(key)) {
+      //   var diff = trainDataMerged[key];
+      //   // the range of collisionrisk is [0, 2]
+      //   var median = 1; // averageActualDelays[key];
+      //   var speed = median / diff;
+      //   delays[key] = speed;
+      // }
     }
 
     network.links.forEach(function (link) {
@@ -325,12 +393,12 @@ VIZ.requiresData([
   var scale = Math.min(xScale, yScale);
   var endDotRadius = 0.3 * scale;
   var distScale = d3.scale.linear()
-    .domain([0, 100])
-    .range([0.15 * scale, 0.7 * scale]);
+    .domain([0, 200])
+    .range([5 * scale, 20 * scale]);
 
   var redGreenDelayColorScale = d3.scale.linear()
       .interpolate(d3.interpolateLab)
-      .domain([2, 1, 0.3])
+      .domain([0, 100, 200])
       .range(['rgb(0, 104, 55)', 'rgb(255, 255, 255)', 'rgb(165, 0, 38)']);
 
   function mapGlyphSegmentColor(d) {
@@ -396,13 +464,13 @@ VIZ.requiresData([
       .on('mouseout.tip', tip.hide);
 
   // Draw a colored dot at the end of each line
-  drawLineEndDot('place-asmnl', "#E12D27");
-  drawLineEndDot('place-alfcl', "#E12D27");
-  drawLineEndDot('place-brntn', "#E12D27");
-  drawLineEndDot('place-wondl', "#2F5DA6");
-  drawLineEndDot('place-bomnl', "#2F5DA6");
-  drawLineEndDot('place-forhl', "#E87200");
-  drawLineEndDot('place-ogmnl', "#E87200");
+  // drawLineEndDot('place-asmnl', "#E12D27");
+  // drawLineEndDot('place-alfcl', "#E12D27");
+  // drawLineEndDot('place-brntn', "#E12D27");
+  // drawLineEndDot('place-wondl', "#2F5DA6");
+  // drawLineEndDot('place-bomnl', "#2F5DA6");
+  // drawLineEndDot('place-forhl', "#E87200");
+  // drawLineEndDot('place-ogmnl', "#E87200");
 
 
 
@@ -651,8 +719,9 @@ VIZ.requiresData([
     });
 
   // Bootstrap the visualization, start by showing Monday at 5:30PM
-  var initalTime = moment('2/3/2014 5:30 PM -0500', 'M/D/YYYY hh:mm a Z').zone(5);
-  mouseoverTime(1, initalTime.diff(initalTime.clone().startOf('day')));
+  // var initalTime = moment('2/3/2014 5:30 PM -0500', 'M/D/YYYY hh:mm a Z').zone(5);
+  // mouseoverTime(1, initalTime.diff(initalTime.clone().startOf('day')));
+  mouseoverTime(0, 0);
 
 
 
@@ -721,6 +790,7 @@ VIZ.requiresData([
     var minAngle = Infinity;
     otherLines.forEach(function (other) {
       if (segmentsAreSame(other, thisLine)) { return; }
+      if(other.ids.split("|").reverse().join("|") === thisLine.ids) { return; }
       var thisAngle = angle(other.segment) + Math.PI;
       var diff = -normalize(thisAngle - origAngle);
       if (diff < minAngle) {
@@ -825,18 +895,21 @@ VIZ.requiresData([
     var p3 = offsets[1];
     var p4 = offsets[0];
     var first;
-
     first = closestClockwise(link, link.outgoing);
     if (first && link.outgoing.length > 1) {
       var outgoingPoints = offsetPoints(first);
       var newP3 = intersect(offsets, outgoingPoints);
-      if (newP3) { p3 = newP3; }
+      if (newP3 && !isNaN(newP3[0]) && !isNaN(newP3[1])) { p3 = newP3; }
     }
     first = closestCounterClockwise(link, link.incoming);
+    // TODO: 몇몇 부분에서 이상한 값을 가져올때가 있음
+    if(link.ids == "HOBUBJC|MAJANG") {
+      first = link.incoming[1];
+    }
     if (first && link.incoming.length > 1) {
       var incomingPoints = offsetPoints(first);
       var newP4 = intersect(offsets, incomingPoints);
-      if (newP4) { p4 = newP4; }
+      if (newP4 && !isNaN(newP4[0]) && !isNaN(newP4[1])) { p4 = newP4; }
     }
     return encodeSvgLine([p1, p2, p3, p4, p1]);
   }

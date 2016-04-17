@@ -326,4 +326,14 @@ router.get('/sim_traveltime', function(req, res, next) {
   queryArray(str, res);
 });
 
+router.get('/sim_collisionrisk', function(req, res, next) {
+  var str = "SELECT * FROM SIMULATIONCOLLISIONRISK";
+  query(str, res);
+});
+
+router.get('/sim_density', function(req, res, next) {
+  var str = "SELECT * FROM SIMULATIONDENSITY";
+  query(str, res);
+});
+
 module.exports = router;
