@@ -324,13 +324,9 @@ VIZ.requiresData([
     var before = inputData[idx] || inputData[idx+1];
     var after = inputData[idx+1] || before;
     entrances = d3.interpolate(before.ins, after.ins)(ratio);
-    turnstileEntryText.text(d3.format('0f')(d3.interpolate(before.ins_total, after.ins_total)(ratio)) + " entries/min");
+    turnstileEntryText.text(d3.format('0f')(d3.interpolate(before.ins_total, after.ins_total)(ratio)) + " total population on the road");
     var delay = d3.interpolate(before.delay_actual, after.delay_actual)(ratio);
-    if (delay < 0) {
-      relativeDelayText.text(d3.format('%')(-delay) + " fast");
-    } else {
-      relativeDelayText.text(d3.format('%')(delay) + " slow");
-    }
+    relativeDelayText.text(Number((delay).toFixed(2)) + " collision risk (overall)");
     // var trainDataLeft = _.extend.apply(null, [{}].concat(_.pluck(before.lines, 'delay_actual')));
     // var trainDataRight = _.extend.apply(null, [{}].concat(_.pluck(after.lines, 'delay_actual')));
     // var trainDataMerged = d3.interpolate(trainDataLeft, trainDataRight)(ratio);
@@ -575,13 +571,12 @@ VIZ.requiresData([
     colorKeyContainer.append('text')
         .attr('text-anchor', 'middle')
         .attr('y', 6)
-        .text('Color shows delay');
+        .text('Color shows collision risk (overall)');
     colorKeyContainer.attr('transform', 'translate(' + (chartWidth * 0.15 + chartMargin.left) + ',' + (chartHeight+20) + ')');
 
     var xScale = d3.scale.linear()
         .domain(d3.extent(delayMapColorScale.domain()))
         .range([0, bandWidth]);
-
     VIZ.createColorScaleGradient(delayMapColorScale, 'delayGradient');
     var coloredPart = colorKeyContainer.append('g');
     coloredPart.append('rect')
@@ -590,14 +585,13 @@ VIZ.requiresData([
       .attr('width', bandWidth)
       .attr('height', 6)
       .attr('fill', 'url(#delayGradient)');
-
     var redGreenDelayColorScaleAxis = d3.svg.axis()
       .scale(xScale)
       .orient('bottom')
       .tickFormat(function (n) {
         var pct = d3.format('.0%')(n);
         var npct = d3.format('.0%')(-n);
-        return n < 0 ? (npct + " faster") : n > 0 ? (pct + " slower") : "on time";
+        return n < 0.9 ? ("0.0") : n > 0.9 ? ("2.0") : "on time";
       })
       .tickValues([d3.min(delayMapColorScale.domain()), 0, d3.max(delayMapColorScale.domain())])
       .tickSize(4);
@@ -610,7 +604,6 @@ VIZ.requiresData([
         .attr('text-anchor', 'start')
         .attr('x', bandWidth + 30)
         .attr('dy', 15)
-        .text('than normal');
   }());
 
 
@@ -629,13 +622,14 @@ VIZ.requiresData([
     horizonKeyContainer.append('text')
         .attr('text-anchor', 'middle')
         .attr('y', 6)
-        .text('Gray bars show entries to all stations');
+        .text('Gray bars show total population on the road');
     horizonKeyContainer.attr('transform', 'translate(' + (chartWidth*3/4 + chartMargin.left) + ',' + (chartHeight+20) + ')');
 
 
     // draw the small horizon chart
     var coloredPart = horizonKeyContainer.append('g');
     var max = d3.max(delay, function (t) { return t.ins_total; });
+    max = 200;
     var xScale = d3.scale.linear()
         .domain([0, 1].map(function (d) { return d * max; }))
         .range([0, bandWidth]);
@@ -674,7 +668,6 @@ VIZ.requiresData([
         .attr('text-anchor', 'start')
         .attr('x', bandWidth + 16)
         .attr('dy', 14)
-        .text('people per minute');
   }());
 
 
