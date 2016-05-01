@@ -127,13 +127,13 @@ router.get('/linkinfo', function(req, res, next) {
 });
 
 router.get('/latest_time', function(req, res, next) {
-  query("SELECT DISTINCT TOP 1 CDATE, CTIME FROM LINKSPEED ORDER BY CDATE DESC, CTIME;", res);//가장 처음의 CTIME 뽑기
-  //query("SELECT DISTINCT TOP 1 CDATE, CTIME FROM LINKSPEED ORDER BY CDATE , CTIME;", res);//가장 최신의 CTIME 뽑기
+  // query("SELECT DISTINCT TOP 1 CDATE, CTIME FROM LINKSPEED ORDER BY CDATE DESC, CTIME;", res);//가장 처음의 CTIME 뽑기
+  query("SELECT DISTINCT TOP 1 CDATE, CTIME FROM LINKSPEED ORDER BY CDATE , CTIME;", res);//가장 최신의 CTIME 뽑기
 });
 
 router.get('/latest_time_rou', function(req, res, next) {
-  query("SELECT DISTINCT TOP 1 CDATE, CTIME FROM ROUTETRAVELTIME ORDER BY CDATE DESC, CTIME;", res);//가장 처음의 CTIME 뽑기
-//  query("SELECT DISTINCT TOP 1 CDATE, CTIME FROM ROUTETRAVELTIME ORDER BY CDATE, CTIME;", res);//가장 최신의 CTIME 뽑기
+  // query("SELECT DISTINCT TOP 1 CDATE, CTIME FROM ROUTETRAVELTIME ORDER BY CDATE DESC, CTIME;", res);//가장 처음의 CTIME 뽑기
+  query("SELECT DISTINCT TOP 1 CDATE, CTIME FROM ROUTETRAVELTIME ORDER BY CDATE, CTIME;", res);//가장 최신의 CTIME 뽑기
 });
 
 router.get('/event_test', function(req, res, next) {
