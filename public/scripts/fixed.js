@@ -57,7 +57,7 @@
 
   function renderSplitScreen() {
     showingMap = true;
-    x1 = x0 + vizWidth / 3;
+    x1 = x0 + vizWidth / 3 - 200;
     fixedRight.style("margin-left", x1 + "px");
     fixedLeftWidth = vizWidth / 3 - GUTTER;
     fixedLeftHeight = pageHeight;
@@ -79,7 +79,7 @@
   function resized(width, height) {
     pageWidth = width;
     vizWidth = Math.max(Math.min(pageWidth, MAX_WIDTH), MIN_WIDTH) - GUTTER * 2;
-    x0 = (pageWidth - vizWidth) * 0.5;
+    x0 = (pageWidth - vizWidth) * 0.5 + 200;
     pageHeight = height;
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(render, 10);
