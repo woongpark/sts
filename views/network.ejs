@@ -6,99 +6,112 @@
   </head>
   <body>
     <%- include("header") -%>
-    <!-- Congestions and Delay -->
-    <div class="full-width section-people-trains">
-
-      <div class="interaction-all">
-
-        <div class="loading"></div>
-
-        <!-- The congestion and delay visualization - glyph on the left, horizon/color bands on the right -->
-        <div class="viz clearfix">
-          <div class="left clearfix">
-            <div class="glyph clearfix"></div>
-            <div class="key clearfix"></div>
-          </div>
-          <div class="right clearfix">
-          </div>
-        </div>
-
-        <!--div class="container">
-          <p>
-            This visualization shows congestion and delay on the red, blue, and orange lines for the first full week in February. The <a href="#" class="hover-link highlight" data-highlight=".horizon">gray bands</a> show the total number of entries into the all stations per minute over time for each day of the week.  The <a href="#" class="hover-link highlight" data-highlight=".delay-rect">colored bands</a> below indicate whether the trains are running <span class="legend-fast">faster</span> or <span class="legend-slow">slower</span> than normal.
-          </p>
-          <p>
-            The <a href="#" class="hover-link highlight" data-highlight=".breathing-glyph">map</a> shows the congestion and delay across the system at a time when you hover over the chart on the right.  The thickness of each line at a stop indicates number of entries per minute at that stop, and the color on the right-hand side of a track indicates delay in that direction using the same scale as the <a href="#" class="hover-link highlight" data-highlight=".delay-rect">colored bands</a>.
-          </p>
-          <p>
-            You can see basketball games letting out on
-            <a href="#" class="hover-link set-time" data-day="1" data-time="11:16 pm">Monday</a>,
-            <a href="#" class="hover-link set-time" data-day="2" data-time="10:04 pm">Tuesday</a>,
-            <a href="#" class="hover-link set-time" data-day="5" data-time="10:10 pm">Friday</a>, and
-            <a href="#" class="hover-link set-time" data-day="0" data-time="8:34 pm">Sunday</a>.
-            You can also tell that it snowed on
-            <a href="#" class="hover-link highlight" data-highlight=".day-3">Wednesday</a>
-            and people stayed home, especially when you compare how light
-            <a href="#" class="hover-link set-time" data-day="3" data-time="5:24 pm">Wednesday evening's rush hour</a>
-            was compared to
-            <a href="#" class="hover-link set-time" data-day="4" data-time="5:24 pm">Thursday evening's rush hour</a>.
-          </p>
-        </div-->
-      </div>
-    </div>
-    <!-- Pick Two Stops -->
-    <div class="full-width section-pick-two">
-
-      <div class="viz clearfix">
-        <div class="left picker clearfix">
-          <div class="map dimmable clearfix"></div>
-          <div class="details dimmable clearfix"></div>
-          <div class="loading clearfix"></div>
-          <div class="key dimmable clearfix">
-            <span class="hide-on-ios">Drag from a starting station to an ending station to see how long the trip takes over time in the chart.</span>
-            <span class="only-ios">Click on a starting station then an ending station to see how long the trip takes over time in the chart.</span>
-          </div>
-        </div>
-        <div class="right pick-two clearfix">
-          <div class="inner-viz">
-          </div>
-          <div class="key dimmable clearfix">
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <!--div class="container">
+    <div class="container">
       <div class="row">
         <div class="col-md-2">
-          <div class="panel panel-primary">
-            <div class="panel-heading" style="font-size:200%">Simulation</div>
-            <div class="panel-body">
-              <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Simulation Run</button>
-              <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Control Run</button>
-              <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Clear All</button>
-              <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Trajectory</button>
-              <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Network Analysis</button>
-              <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Toll Analysis</button>
-            </div>
-          </div>
+          <%- include("nav") -%>
         </div>
         <div class="col-md-10">
           <div class="row">
-            <div class="col-md-6 header">
-              <div class="graphic">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-12">
+            <div class="col-md-8 header">
+              <!-- Congestions and Delay -->
+              <div class="full-width section-people-trains">
+
+                <div class="interaction-all">
+
+                  <div class="loading"></div>
+
+                  <!-- The congestion and delay visualization - glyph on the left, horizon/color bands on the right -->
+                  <div class="viz clearfix">
+                    <div class="left clearfix">
+                      <div class="glyph clearfix"></div>
+                      <div class="key clearfix"></div>
+                    </div>
+                    <div class="right clearfix">
+                    </div>
+                  </div>
+
+                  <!--div class="container">
+                    <p>
+                      This visualization shows congestion and delay on the red, blue, and orange lines for the first full week in February. The <a href="#" class="hover-link highlight" data-highlight=".horizon">gray bands</a> show the total number of entries into the all stations per minute over time for each day of the week.  The <a href="#" class="hover-link highlight" data-highlight=".delay-rect">colored bands</a> below indicate whether the trains are running <span class="legend-fast">faster</span> or <span class="legend-slow">slower</span> than normal.
+                    </p>
+                    <p>
+                      The <a href="#" class="hover-link highlight" data-highlight=".breathing-glyph">map</a> shows the congestion and delay across the system at a time when you hover over the chart on the right.  The thickness of each line at a stop indicates number of entries per minute at that stop, and the color on the right-hand side of a track indicates delay in that direction using the same scale as the <a href="#" class="hover-link highlight" data-highlight=".delay-rect">colored bands</a>.
+                    </p>
+                    <p>
+                      You can see basketball games letting out on
+                      <a href="#" class="hover-link set-time" data-day="1" data-time="11:16 pm">Monday</a>,
+                      <a href="#" class="hover-link set-time" data-day="2" data-time="10:04 pm">Tuesday</a>,
+                      <a href="#" class="hover-link set-time" data-day="5" data-time="10:10 pm">Friday</a>, and
+                      <a href="#" class="hover-link set-time" data-day="0" data-time="8:34 pm">Sunday</a>.
+                      You can also tell that it snowed on
+                      <a href="#" class="hover-link highlight" data-highlight=".day-3">Wednesday</a>
+                      and people stayed home, especially when you compare how light
+                      <a href="#" class="hover-link set-time" data-day="3" data-time="5:24 pm">Wednesday evening's rush hour</a>
+                      was compared to
+                      <a href="#" class="hover-link set-time" data-day="4" data-time="5:24 pm">Thursday evening's rush hour</a>.
+                    </p>
+                  </div-->
                 </div>
               </div>
+              <!-- Pick Two Stops -->
+              <div class="full-width section-pick-two">
+
+                <div class="viz clearfix">
+                  <div class="left picker clearfix">
+                    <div class="map dimmable clearfix"></div>
+                    <div class="details dimmable clearfix"></div>
+                    <div class="loading clearfix"></div>
+                    <div class="key dimmable clearfix">
+                      <span class="hide-on-ios">Drag from a starting station to an ending station to see how long the trip takes over time in the chart.</span>
+                      <span class="only-ios">Click on a starting station then an ending station to see how long the trip takes over time in the chart.</span>
+                    </div>
+                  </div>
+                  <div class="right pick-two clearfix">
+                    <div class="inner-viz">
+                    </div>
+                    <div class="key dimmable clearfix">
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <!--div class="container">
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="panel panel-primary">
+                      <div class="panel-heading" style="font-size:200%">Simulation</div>
+                      <div class="panel-body">
+                        <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Simulation Run</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Control Run</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Clear All</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Trajectory</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Network Analysis</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Toll Analysis</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-10">
+                    <div class="row">
+                      <div class="col-md-6 header">
+                        <div class="graphic">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-12">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div-->
             </div>
           </div>
         </div>
       </div>
-    </div-->
+    </div>
 
     <!-- 3rd Party Dependencies -->
     <script src="bower_components/es6-shim/es6-shim.js"></script>

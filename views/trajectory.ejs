@@ -6,78 +6,91 @@
   </head>
   <body>
     <%- include("header") -%>
-    <!-- The Trains -->
-    <div class="full-width section-trains">
-      <!-- Marey -->
-      <div class="full-width marey-container loading">
-        <!-- The map and description on the left side -->
-        <div class="fixed-container">
-          <div class="fixed-left" data-top="100">
-            <div class="side-map">
-            </div>
-          </div>
-          <!-- The multi-page Marey diagram -->
-          <div class="fixed-right">
-            <div class="inner">
-              <div class="marey"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Lined-up Marey diagram -->
-      <div class="full-width lined-up-marey-container">
-        <div class="container">
-          <!--p>
-            To better compare the individual trips on this day, the visualization below shows all of the trips from the above diagram juxtaposed with the the starting points lined up so you can see the range of fastest to slowest trips, as well as variation in trip times based on the time of day.
-            The trains slow down a little bit during the
-            <a href="#" data-lo="7" data-hi="10" class="hover-link lined-up-highlight">morning rush-hour</a>,
-            primarily on the outbound blue line.  The
-            <a href="#" data-lo="16" data-hi="19" class="hover-link lined-up-highlight">afternoon rush-hour</a>
-            is by-far the worst time of day for the red line.  The
-            <a href="#" data-lo="10" data-hi="16" class="hover-link lined-up-highlight">midday lull</a>
-            and
-            <a href="#" data-lo="19" data-hi="24" class="hover-link lined-up-highlight">evening lull</a>
-            are both fairly consistent.  Hover over the time scale on the left to highlight trips during different parts of the day.  Click on a line to see all at what time the train was at each stop.
-          </p-->
-
-          <!-- Lined-up Marey -->
-          <!--div class="lined-up-marey"></div-->
-
-        </div>
-      </div>
-    </div>
-    <!--div class="container">
+    <div class="container">
       <div class="row">
         <div class="col-md-2">
-          <div class="panel panel-primary">
-            <div class="panel-heading" style="font-size:200%">Simulation</div>
-            <div class="panel-body">
-              <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Simulation Run</button>
-              <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Control Run</button>
-              <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Clear All</button>
-              <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Trajectory</button>
-              <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Network Analysis</button>
-              <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Toll Analysis</button>
-            </div>
-          </div>
+          <%- include("nav") -%>
         </div>
         <div class="col-md-10">
           <div class="row">
-            <div class="col-md-6 header">
-              <div class="graphic">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-12">
+            <div class="col-md-8 header">
+              <!-- The Trains -->
+              <div class="full-width section-trains">
+                <!-- Marey -->
+                <div class="full-width marey-container loading">
+                  <!-- The map and description on the left side -->
+                  <div class="fixed-container">
+                    <div class="fixed-left" data-top="100">
+                      <div class="side-map">
+                      </div>
+                    </div>
+                    <!-- The multi-page Marey diagram -->
+                    <div class="fixed-right">
+                      <div class="inner">
+                        <div class="marey"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Lined-up Marey diagram -->
+                <div class="lined-up-marey-container">
+                  <div class="container">
+                    <!--p>
+                      To better compare the individual trips on this day, the visualization below shows all of the trips from the above diagram juxtaposed with the the starting points lined up so you can see the range of fastest to slowest trips, as well as variation in trip times based on the time of day.
+                      The trains slow down a little bit during the
+                      <a href="#" data-lo="7" data-hi="10" class="hover-link lined-up-highlight">morning rush-hour</a>,
+                      primarily on the outbound blue line.  The
+                      <a href="#" data-lo="16" data-hi="19" class="hover-link lined-up-highlight">afternoon rush-hour</a>
+                      is by-far the worst time of day for the red line.  The
+                      <a href="#" data-lo="10" data-hi="16" class="hover-link lined-up-highlight">midday lull</a>
+                      and
+                      <a href="#" data-lo="19" data-hi="24" class="hover-link lined-up-highlight">evening lull</a>
+                      are both fairly consistent.  Hover over the time scale on the left to highlight trips during different parts of the day.  Click on a line to see all at what time the train was at each stop.
+                    </p-->
+
+                    <!-- Lined-up Marey -->
+                    <!--div class="lined-up-marey"></div-->
+
+                  </div>
                 </div>
               </div>
+              <!--div class="container">
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="panel panel-primary">
+                      <div class="panel-heading" style="font-size:200%">Simulation</div>
+                      <div class="panel-body">
+                        <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Simulation Run</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Control Run</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block" style="font-size:50%">Clear All</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Trajectory</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Network Analysis</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block disabled" style="font-size:50%">Toll Analysis</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-10">
+                    <div class="row">
+                      <div class="col-md-6 header">
+                        <div class="graphic">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-12">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div-->
             </div>
           </div>
         </div>
       </div>
-    </div-->
+    </div>
 
     <!-- 3rd Party Dependencies -->
     <script src="bower_components/es6-shim/es6-shim.js"></script>
