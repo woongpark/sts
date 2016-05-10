@@ -64,25 +64,14 @@ $.when( def1, def2, def3 ).done(function ( v1, v2 ) {
     setChart1_risk(data);
   });
 
-  $.getJSON( "/herr_graph", {
-    CDATE: CDATE,
-    LINDE: "1",
-    LINKID: "1001001",
-    DIRECTION: "U"
-  }, function(data) {
-    if(data != "lineNull"){
-      setChart2(data);
-    }
-  });
   $.getJSON( "/aerr_graph", {
     CDATE: CDATE,
     LINDE: "1",
     LINKID: "1001001",
     DIRECTION: "U"
   }, function(data) {
-    if(data != "lineNull"){
-      setChart3(data);
-    }
+    setChart2(data);
+    setChart3(data);
   });
 });
 
@@ -101,9 +90,10 @@ function getChart1() {
         tickInterval: 12
       },
       yAxis: {
+        min: 0,
+        max: 120,
         title: {
-          text: "PSPEED",
-          min: 0.0
+          text: "PSPEED"
         }
       },
       legend: {
@@ -152,10 +142,10 @@ function getChart1_risk() {
         tickInterval: 12
       },
       yAxis: {
+        min: 0,
+        max: 1.5,
         title: {
-          text: "Collision Risk",
-          min: 0.0,
-          max: 2.0
+          text: "Collision Risk"
         }
       },
       legend: {
@@ -207,6 +197,11 @@ function getChart1_risk() {
 }
 
 function setChart1_risk(data) {
+  if(data["error"]=="lineNull"){
+    document.getElementById("chartDiv1_risk").style.display = "none";
+  }else{
+    document.getElementById("chartDiv1_risk").style.display = "inline";
+  }
   var chart = $('#chartDiv1_risk').highcharts();
   var categories = $.map(data, function(obj) {
     return obj.PTIME;
@@ -295,6 +290,12 @@ function getChart2() {
 }
 
 function setChart2(data){
+
+  if(data["error"]=="lineNull"){
+    document.getElementById("chartDiv2").style.display = "none";
+  }else{
+    document.getElementById("chartDiv2").style.display = "inline";
+  }
   var chart = $('#chartDiv2').highcharts();
   var categories = [];
   var baskets = {};
@@ -311,6 +312,8 @@ function setChart2(data){
     array[idx] = arr;
   });
   var bValue = getBoxVaule(array);
+  categories.reverse();
+  bValue.reverse();
   chart.xAxis[0].setCategories(categories);
   chart.series[0].setData(bValue);
 }
@@ -359,6 +362,12 @@ function getChart3() {
 }
 
 function setChart3(data){
+
+  if(data["error"]=="lineNull"){
+    document.getElementById("chartDiv3").style.display = "none";
+  }else{
+    document.getElementById("chartDiv3").style.display = "inline";
+  }
   var chart = $('#chartDiv3').highcharts();
   var categories = [];
   var baskets = {};
@@ -375,6 +384,8 @@ function setChart3(data){
     array[idx] = arr;
   });
   var bValue = getBoxVaule(array);
+  categories.reverse();
+  bValue.reverse();
   chart.xAxis[0].setCategories(categories);
   chart.series[0].setData(bValue);
 }
@@ -552,6 +563,7 @@ function resetLink(){
 
 function onClickHandler(e) {
   if (e.targetType == "polygon") {
+    var cLineNo = e.target.LINE;
     $.getJSON( "/linkspeed_graph", {
       CDATE: e.target.CDATE,
       CTIME: e.target.CTIME,
@@ -567,28 +579,26 @@ function onClickHandler(e) {
       LINKID: e.target.LINKNO,
       DIRECTION: e.target.DIRECTION
     }, function(data) {
-      if(data != "lineNull"){
+      if(cLineNo!="1000" && cLineNo!="2000" && cLineNo!="3000")
+      {
         setChart1_risk(data);
+      }else {
+        setChart1_risk({error: "lineNull"});
       }
     });
-    $.getJSON( "/herr_graph", {
-      CDATE: e.target.CDATE,
-      LINE: e.target.LINE,
-      LINKID: e.target.LINKNO,
-      DIRECTION: e.target.DIRECTION
-    }, function(data) {
-      if(data != "lineNull"){
-        setChart2(data);
-      }
-    });
+
     $.getJSON( "/aerr_graph", {
       CDATE: e.target.CDATE,
       LINE: e.target.LINE,
       LINKID: e.target.LINKNO,
       DIRECTION: e.target.DIRECTION
     }, function(data) {
-      if(data != "lineNull"){
+      if(cLineNo=="1000" || cLineNo=="2000" || cLineNo=="3000"){
         setChart3(data);
+        setChart2({error: "lineNull"});
+      }else{
+        setChart3({error: "lineNull"});
+        setChart2(data);
       }
     });
   }

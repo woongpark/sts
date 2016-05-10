@@ -165,35 +165,15 @@ router.get('/linkspeed_graph', function(req, res, next) {
 });
 
 router.get('/linkrisk_graph', function(req, res, next) {
-  if(req.query.LINE!=1000 || req.query.LINE!=2000 || req.query.LINE!=3000){
     var str = "SELECT PTIME, COLLISIONRISKMEAN FROM LINKCOLLISIONRISK WHERE CDATE='" + req.query.CDATE + "' AND CTIME='" + req.query.CTIME + "' AND LINKID='" + req.query.LINKID + "' AND DIRECTION='" + req.query.DIRECTION + "';";
     console.log(str);
     query(str, res);
-  }
-  else {
-    res.json({error: "lineNull"});
-  }
-});
-
-router.get('/herr_graph', function(req, res, next) {
-  if(req.query.LINE==1000 && req.query.LINE==2000 && req.query.LINE==3000){
-    var str = "SELECT CTIME, PSPEED, ASPEED FROM LINKSPEED WHERE CDATE='" + req.query.CDATE + "' AND LINKID='" + req.query.LINKID + "' AND DIRECTION='" + req.query.DIRECTION + "';";
-    console.log(str);
-    query(str, res);
-  }
-  else {
-    res.json({error: "lineNull"});
-  }
 });
 
 router.get('/aerr_graph', function(req, res, next) {
-  if(req.query.LINE!=1000 || req.query.LINE!=2000 || req.query.LINE!=3000){
     var str = "SELECT CTIME, PSPEED, ASPEED FROM LINKSPEED WHERE CDATE='" + req.query.CDATE + "' AND LINKID='" + req.query.LINKID + "' AND DIRECTION='" + req.query.DIRECTION + "';";
     console.log(str);
     query(str, res);
-  }
-  else {
-    res.json({error: "lineNull"});  }
 });
 
 router.get('/getLinkIDRoute', function(req, res, next) {

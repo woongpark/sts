@@ -693,6 +693,8 @@ function getChart3_risk(){
         },
 
         yAxis: {
+          min: 0.0,
+          max: 2.0,
             title: {
                 text: 'Collision Risk'
             }
@@ -889,16 +891,16 @@ function setChart4_origin(pdate, ptime){
   }else{
     from_tc = 101;
   }
+  debugger
   $.getJSON( "/getOriginDemand", {
-    /*
     CDATE: CDATE,
     CTIME: CTIME,
     PDATE: pdate,
-    PTIME: ptime,*/ //이렇게 해야하나 데이터가 없어서 ptime 강제로 선택
+    PTIME: ptime, /*//이렇게 해야하나 데이터가 없어서 ptime 강제로 선택
     CDATE: 20130816,
     CTIME: 1434,
     PDATE: 20130816,
-    PTIME: 20,
+    PTIME: 20,*/
     FROM_TCS_CODE: from_tc
   }, function( data ) {
     data.sort(function(a,b){
@@ -984,15 +986,15 @@ function setChart4_destination(pdate, ptime){
     to_tc = 115;
   }
   $.getJSON( "/getDestinationDemand", {
-    /*
+
     CDATE: CDATE,
     CTIME: CTIME,
     PDATE: pdate,
-    PTIME: ptime,*/ //이렇게 해야하나 데이터가 없어서 ptime 강제로 선택
+    PTIME: ptime, /*//이렇게 해야하나 데이터가 없어서 ptime 강제로 선택
     CDATE: 20130816,
     CTIME: 1434,
     PDATE: 20130816,
-    PTIME: 20,
+    PTIME: 20,*/
     TO_TCS_CODE: to_tc
   }, function( data ) {
     data.sort(function(a,b){
