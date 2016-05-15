@@ -13,44 +13,49 @@
           <div id='mapDiv' style="position:relative; width:100%; height:400px;"></div>
           <ul class="breadcrumb">
             <li>
-              <label class="control-label">Origin</label>
+              <label class="control-label" style="font-size: 10px;">Origin</label>
               <select id="originSelect">
                 <option value="National Assembly">National Assembly</option>
                 <option value="Olympic Park">Olympic Park</option>
                 <option value="KAIST">KAIST</option>
               </select>
-              <label class="control-label">Destination</label>
+              <br>
+              <label class="control-label" style="font-size: 10px;">Destination</label>
               <select id="destinatioSelect">
                 <option value="KAIST">KAIST</option>
                 <option value="National Assembly">National Assembly</option>
                 <option value="Olympic Park">Olympic Park</option>
               </select>
-              <button type="submit" class="btn"  onclick="findNewRoute()">Search</button>
+              <button type="submit" class="btn"  onclick="findNewRoute()" style="font-size: 10px;">Search</button>
             </li>
           </ul>
         </div>
         <div class="col-md-8">
-          <ul class="breadcrumb">
-            <li>
-              From  <label class="control-label" id="originText">National Assembly</label> to <label class="control-label" id="destinationText">KAIST</label>
-            </li>
-          </ul>
+          <div class="col-md-3">
+            <select id="sel_ptime" onchange="selPtime()">
+              <option value="KAIST">KAIST</option>
+              <option value="National Assembly">National Assembly</option>
+              <option value="Olympic Park">Olympic Park</option>
+            </select>
+            <div style="vertical-align:bottom;">Departure Time</div>
+          </div>
+          <div class="col-md-9">
+            <ul class="breadcrumb">
+              <li>
+                From  <label class="control-label" id="originText">National Assembly</label> to <label class="control-label" id="destinationText">KAIST</label>
+              </li>
+            </ul>
+          </div>
+          <br><br><br>
           <div class="row">
             <center><h4>Delay and Safety Comparison</h4></center>
-            <div class="col-md-3">
-              <select id="sel_ptime" onchange="selPtime()">
-                <option value="KAIST">KAIST</option>
-                <option value="National Assembly">National Assembly</option>
-                <option value="Olympic Park">Olympic Park</option>
-              </select>
-              <div style="vertical-align:bottom;">Departure Time</div>
-            </div>
-            <div class="col-md-9">
+            <div class="col-md-12">
               <div class="row">
                 <ul class="breadcrumb" style="background:red">
                   <p align="right" style="color:white">Route 1</p>
                 </ul>
                 <div class="col-md-2">
+                  <center>Arrival Time</center>
                   <b><font size="3"><p id="depart_time1">120분</p></font></b>
                   <p id="tra_time1">120분</p>
                 </div>
@@ -67,6 +72,7 @@
                   <p align="right" style="color:white">Route 2</p>
                 </ul>
                 <div class="col-md-2">
+                  <center>Arrival Time</center>
                   <b><font size="3"><p id="depart_time2">120분</p></font></b>
                   <p id="tra_time2">120분</p>
                 </div>
@@ -80,7 +86,7 @@
               </div>
               <div class="row">
                 <div class="col-md-2">
-                  <center>Arrival Time</center>
+                  <center></center>
                 </div>
                 <div class="col-md-5">
                   <center>Traffic Delay</center>
@@ -91,6 +97,7 @@
               </div>
             </div>
           </div>
+          <br><br>
           <div class="row">
             <center><h4>Time Series Comparison</h4></center>
             <div id="chart3_time" style="height: 300px; width: 100%"></div>
