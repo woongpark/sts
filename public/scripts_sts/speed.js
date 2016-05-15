@@ -275,13 +275,7 @@ function getChart2() {
 
     series: [{
         name: 'DIFFERENCE PSPEED TO ASPEED',
-        data: [
-            [760, 801, 848, 895, 965],
-            [733, 853, 939, 980, 1080],
-            [714, 762, 817, 870, 918],
-            [724, 802, 806, 871, 950],
-            [834, 836, 864, 882, 910]
-        ],
+        data: [],
         tooltip: {
             headerFormat: 'CTIME : {point.key}<br/>'
         }
@@ -293,6 +287,7 @@ function setChart2(data){
 
   if(data["error"]=="lineNull"){
     document.getElementById("chartDiv2").style.display = "none";
+    return;
   }else{
     document.getElementById("chartDiv2").style.display = "inline";
   }
@@ -312,8 +307,20 @@ function setChart2(data){
     array[idx] = arr;
   });
   var bValue = getBoxVaule(array);
-  categories.reverse();
-  bValue.reverse();
+  var result = categories.map(function(category, index) {
+    return {
+      category: category,
+      bValue: bValue[index]
+    }
+  }).sort(function(a, b) {
+    return +a.category - +b.category;
+  });
+  categories = result.map(function(item) {
+    return item.category;
+  });
+  bValue = result.map(function(item) {
+    return item.bValue;
+  });
   chart.xAxis[0].setCategories(categories);
   chart.series[0].setData(bValue);
 }
@@ -348,11 +355,6 @@ function getChart3() {
     series: [{
         name: 'DIFFERENCE PSPEED TO ASPEED',
         data: [
-            [760, 801, 848, 895, 965],
-            [733, 853, 939, 980, 1080],
-            [714, 762, 817, 870, 918],
-            [724, 802, 806, 871, 950],
-            [834, 836, 864, 882, 910]
         ],
         tooltip: {
             headerFormat: 'CTIME : {point.key}<br/>'
@@ -365,6 +367,7 @@ function setChart3(data){
 
   if(data["error"]=="lineNull"){
     document.getElementById("chartDiv3").style.display = "none";
+    return;
   }else{
     document.getElementById("chartDiv3").style.display = "inline";
   }
@@ -384,8 +387,20 @@ function setChart3(data){
     array[idx] = arr;
   });
   var bValue = getBoxVaule(array);
-  categories.reverse();
-  bValue.reverse();
+  var result = categories.map(function(category, index) {
+    return {
+      category: category,
+      bValue: bValue[index]
+    }
+  }).sort(function(a, b) {
+    return +a.category - +b.category;
+  });
+  categories = result.map(function(item) {
+    return item.category;
+  });
+  bValue = result.map(function(item) {
+    return item.bValue;
+  });
   chart.xAxis[0].setCategories(categories);
   chart.series[0].setData(bValue);
 }
