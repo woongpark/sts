@@ -366,8 +366,8 @@ VIZ.requiresData([
     .defined(function (d) { return !!d; })
     .interpolate("linear");
   var glyphMargin = {top: 20,right: 20, bottom: 25,left: 20};
-  var glyphOuterHeight = 300;
-  var glyphOuterWidth = 300;
+  var glyphOuterHeight = 400;
+  var glyphOuterWidth = 400;
   var glyphWidth = glyphOuterWidth - glyphMargin.left - glyphMargin.right,
       glyphHeight = glyphOuterHeight - glyphMargin.top - glyphMargin.bottom;
 
@@ -408,7 +408,7 @@ VIZ.requiresData([
     return color;
   }
   network.nodes.forEach(function (data) {
-    data.pos = [data.x * scale, data.y * scale];
+    data.pos = [(data.x-xRange[0]) * scale, (data.y-yRange[0]) * scale];
   });
 
   var tip = d3.tip()
@@ -513,7 +513,7 @@ VIZ.requiresData([
           ];
         })
         .style('stroke', 'none')
-        .style('fill', delayMapColorScale(-0.01))
+        .style('fill', delayMapColorScale(1))
         .attr('d', encodeSvgLine);
 
     // draw outlines for key shapes
