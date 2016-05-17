@@ -9,7 +9,7 @@
 (function () {
   "use strict";
   var svg = d3.select('.header .graphic').append("svg").attr('width', 283).attr('height', 283);
-  var margin = {top: 10, right: 10, bottom: 10, left: 100};
+  var margin = {top: 10, right: 40, bottom: 10, left: 200};
 
   // Render the station map first, then load the train data and start animating trains
   VIZ.requiresData([
@@ -76,6 +76,9 @@
       var stations = svg.selectAll('.station')
           .data(network.nodes, function (d) { return d.name; });
 
+      var station_names = svg.selectAll('.station-name')
+          .data(network.nodes, function (d) { return d.name; });
+
       var connections = svg.selectAll('.connect')
           .data(network.links, function (d) { return (d.source && d.source.id) + '-' + (d.target && d.target.id); });
 
@@ -105,6 +108,14 @@
             tip.show(d);
           })
           .on('mouseout', tip.hide);
+
+      station_names
+        .enter()
+        .append("text")
+          .classed('station-name', true)
+          .attr("x", function(d) {return d.pos[0] + 10;})
+          .attr("y", function(d) {return d.pos[1];})
+          .text(function(d) {return d.name;});
 
       stations.attr('cx', function (d) { return d.pos[0]; })
           .attr('cy', function (d) { return d.pos[1]; })
