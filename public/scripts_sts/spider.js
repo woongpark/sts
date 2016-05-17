@@ -78,7 +78,7 @@
           .data(network.nodes, function (d) { return d.name; });
 
       var station_names = svg.selectAll('.station-name')
-          .data(network.nodes, function (d) { return d.name; });
+          .data(network.nodes, function (d) { return d.id; });
 
       var connections = svg.selectAll('.connect')
           .data(network.links, function (d) { return (d.source && d.source.id) + '-' + (d.target && d.target.id); });
