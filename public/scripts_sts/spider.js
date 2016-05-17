@@ -10,6 +10,7 @@
   "use strict";
   var svg = d3.select('.header .graphic').append("svg").attr('width', 283).attr('height', 283);
   var margin = {top: 10, right: 40, bottom: 10, left: 200};
+  var sim_no = moment().format("HHmm");
 
   // Render the station map first, then load the train data and start animating trains
   VIZ.requiresData([
@@ -525,7 +526,51 @@
       d.data[key] = val;
     });
     $(".popup").hide();
+
+    $(".event.summary").html("");
+    $(".control.summary").html("");
+
+    var sims = getSims();
+    sims.forEach(function(sim) {
+      var typetext = "";
+      if(sim.data.EVENTTYPE=='1'){
+        typetext = 'Accident';
+      }else if(sim.data.EVENTTYPE=='2'){
+        typetext = 'Road Work';
+      }else{
+        typetext = 'Weather';
+      }
+
+      var text = "";
+      text += "<label>EVENT" + sim.data.EVENTNO + "</label> : ";
+      text += "<span>"+typetext+"<br>Between " + sim.link_data.source.id + " TG and "+sim.link_data.target.id+" TG<br>";
+      text += " Direction : "+sim.data.DIRECTION+", Time : "+sim.data.STARTTIME.slice(0,2)+":"+sim.data.STARTTIME.slice(2,4)+ " - "+sim.data.ENDTIME.slice(0,2)+":"+sim.data.ENDTIME.slice(2,4)+", Severity : "+sim.data.SEVERITY+"</span>" + "<br/>";
+      $("<li>").html(text).appendTo(".event.summary");
+    });
+    var cons = getCons();
+    cons.forEach(function(con) {
+      var typetext = "";
+      if(con.data.CONTROLTYPE=='1'){
+        typetext = 'Ramp Metering';
+      }else if(con.data.CONTROLTYPE=='2'){
+        typetext = 'Travel Time Information';
+      }else if(con.data.CONTROLTYPE=='3'){
+        typetext = 'Variable Speed Limit';
+      }else{
+        typetext = 'New Control';
+      }
+      var text = "";
+      text += "<label>Control" + con.data.CONTROLNO + "</label> : ";
+      if(typetext == 'Ramp Metering'){
+        text += "<span>"+typetext+" in " + con.data.LINKID + " <br>";
+      }else{
+        text += "<span>"+typetext+"<br>Between " + con.link_data.source.id + " TG and "+con.link_data.target.id+" TG<br>";
+      }
+      text += " Direction : "+con.data.DIRECTION+", Time : "+con.data.STARTTIME.slice(0,2)+":"+con.data.STARTTIME.slice(2,4)+ " - "+con.data.ENDTIME.slice(0,2)+":"+con.data.ENDTIME.slice(2,4)+", Setting : "+con.data.SETTING+"</span>" + "<br/>";
+      $("<li>").html(text).appendTo(".control.summary");
+    });
   });
+
   $(".popup .delete").click(function(e) {
     e.preventDefault();
     removeMarker();
@@ -545,8 +590,22 @@
     }).remove();
   }
 
-  $("#sim-run").click(function() {
-    var sim_no = moment().format("HHmm");
+  $("#clear-all").click(function() {
+    sim_no = moment().format("HHmm");
+    $(".popup").hide();
+    for(var i = 0; i < markers.length; i++) {
+      if(markers[i].fixed) {
+        svg.selectAll("g").filter(function(obj) {
+          return obj === markers[i];
+        }).remove();
+      }
+    }
+    markers = [];
+    $(".event.summary").html("");
+    $(".control.summary").html("");
+  });
+
+  function getSims() {
     var sims = markers.filter(function(sim) {
       var isSim = {"accident":1, "roadwork":1, "weather":1}[sim.type];
       return sim.fixed && isSim;
@@ -555,56 +614,10 @@
       sim.data.EVENTNO = index + 1;
       return sim;
     });
-    sims.forEach(function(sim) {
-      // sim.data : 서버로 전송할 데이터
-      // sim.link_data : 마커가 위치한 링크의 정보
-      // sim.node_data : 마커가 위치한 노드의 정보
-      $.getJSON( "/sim_input", sim.data, function() {//확인
-      });
+    return sims;
+  }
 
-      var typetext = "";
-      if(sim.data.EVENTTYPE=='1'){
-        typetext = 'Accident';
-      }else if(sim.data.EVENTTYPE=='2'){
-        typetext = 'Road Work';
-      }else{
-        typetext = 'Weather';
-      }
-
-      var text = "";
-      text += "<label>EVENT" + sim.data.EVENTNO + "</label> : ";
-      text += "<span>"+typetext+"<br>Between " + sim.link_data.source.id + " TG and "+sim.link_data.target.id+" TG<br>";
-      text += " Direction : "+sim.data.DIRECTION+", Time : "+sim.data.STARTTIME.slice(0,2)+":"+sim.data.STARTTIME.slice(2,4)+ " - "+sim.data.ENDTIME.slice(0,2)+":"+sim.data.ENDTIME.slice(2,4)+", Severity : "+sim.data.SEVERITY+"</span>" + "<br/>";
-      $("<li>").html(text).appendTo(".event.summary")
-    });
-    event_summay.style.visibility = "visible";
-    // TODO: SIMULATIONNO의 length가 3자리라 부득이하게 3자리로 잘랐음
-    $.getJSON( "/sim_run", sim_no.slice(-3), function() {//확인
-    });
-
-    $.getJSON("/sim_summary", function(summary) {
-      sim_summay.style.visibility = "visible";
-      var hours = summary[0].HORIZON.trim() + " hours";
-      var ctime = summary[0].CTIME.trim();
-      var number = summary[0].NUMBER.trim();
-      ctime = ctime.slice(0, 2) + ":" + ctime.slice(2) + " PM";
-      if(number.length > 3) {
-        number = number.slice(0, -3) + "," + number.slice(-3);
-      }
-      $(".summary .horizon").text(hours);
-      $(".summary .ctime").text(ctime);
-      $(".summary .number").text(number);
-      window.ctime = ctime;
-    });
-    document.getElementById("sim-run").className = "btn btn-primary active btn-lg btn-block";
-    document.getElementById("sim-traject").className = "btn btn-info btn-lg btn-block";
-    document.getElementById("sim-network").className = "btn btn-info btn-lg btn-block";
-    document.getElementById("sim-toll").className = "btn btn-info btn-lg btn-block";
-    // console.log(sims.data);
-  });
-
-  $("#con-run").click(function() {
-    var sim_no = moment().format("HHmm");
+  function getCons() {
     var cons = markers.filter(function(con) {
       var isCon = {"ramp":1, "travel":1, "variable":1, "newcontrol":1}[con.type];
       return con.fixed && isCon;
@@ -628,56 +641,62 @@
         }
       });
     });
+    return cons;
+  }
+
+  $("#sim-run").click(function() {
+    var sims = getSims();
+    sims.forEach(function(sim) {
+      // sim.data : 서버로 전송할 데이터
+      // sim.link_data : 마커가 위치한 링크의 정보
+      // sim.node_data : 마커가 위치한 노드의 정보
+      $.ajax({
+        url: "/sim_input",
+        data: sim.data,
+        async: false,
+        success: function (result) {
+          // do nothing
+        }
+      });
+    });
+    // TODO: SIMULATIONNO의 length가 3자리라 부득이하게 3자리로 잘랐음
+    $.get( "/sim_run", {
+      SIMULATIONNO: sim_no.slice(-3)
+    }, function() {
+      location.href = "/result";
+    });
+
+    // document.getElementById("sim-run").className = "btn btn-primary active btn-lg btn-block";
+    // document.getElementById("sim-traject").className = "btn btn-info btn-lg btn-block";
+    // document.getElementById("sim-network").className = "btn btn-info btn-lg btn-block";
+    // document.getElementById("sim-toll").className = "btn btn-info btn-lg btn-block";
+    // console.log(sims.data);
+  });
+
+  $("#con-run").click(function() {
+    var cons = getCons();
     cons.forEach(function(con) {
       // con.data : 서버로 전송할 데이터
       // con.link_data : 마커가 위치한 링크의 정보
       // con.node_data : 마커가 위치한 노드의 정보
-      $.getJSON( "/con_input", con.data, function() {
+      $.ajax({
+        url: "/con_input",
+        data: con.data,
+        async: false,
+        success: function (result) {
+          // do nothing
+        }
       });
-
-      var typetext = "";
-      if(con.data.CONTROLTYPE=='1'){
-        typetext = 'Ramp Metering';
-      }else if(con.data.CONTROLTYPE=='2'){
-        typetext = 'Travel Time Information';
-      }else if(con.data.CONTROLTYPE=='3'){
-        typetext = 'Variable Speed Limit';
-      }else{
-        typetext = 'New Control';
-      }
-      debugger
-      var text = "";
-      text += "<label>Control" + con.data.CONTROLNO + "</label> : ";
-      if(typetext == 'Ramp Metering'){
-        text += "<span>"+typetext+" in " + con.data.LINKID + " <br>";
-      }else{
-        text += "<span>"+typetext+"<br>Between " + con.link_data.source.id + " TG and "+con.link_data.target.id+" TG<br>";
-      }
-      text += " Direction : "+con.data.DIRECTION+", Time : "+con.data.STARTTIME.slice(0,2)+":"+con.data.STARTTIME.slice(2,4)+ " - "+con.data.ENDTIME.slice(0,2)+":"+con.data.ENDTIME.slice(2,4)+", Setting : "+con.data.SETTING+"</span>" + "<br/>";
-      $("<li>").html(text).appendTo(".control.summary")
-
     });
-    control_summay.style.visibility = "visible";
     // TODO: SIMULATIONNO의 length가 3자리라 부득이하게 3자리로 잘랐음
-    $.getJSON( "/con_run", sim_no.slice(-3), function() {//확인
+    $.getJSON( "/con_run", {
+      SIMULATIONNO: sim_no.slice(-3)
+    }, function() {
+      location.href = "/result";
     });
 
-    $.getJSON("/sim_summary", function(summary) {
-      sim_summay.style.visibility = "visible";
-      var hours = summary[0].HORIZON.trim() + " hours";
-      var ctime = summary[0].CTIME.trim();
-      var number = summary[0].NUMBER.trim();
-      ctime = ctime.slice(0, 2) + ":" + ctime.slice(2) + " PM";
-      if(number.length > 3) {
-        number = number.slice(0, -3) + "," + number.slice(-3);
-      }
-      $(".summary .horizon").text(hours);
-      $(".summary .ctime").text(ctime);
-      $(".summary .number").text(number);
-      window.ctime = ctime;
-    });
-    document.getElementById("con-run").className = "btn btn-primary active btn-lg btn-block";
-    document.getElementById("con-control").className = "btn btn-info btn-lg btn-block";
+    // document.getElementById("con-run").className = "btn btn-primary active btn-lg btn-block";
+    // document.getElementById("con-control").className = "btn btn-info btn-lg btn-block";
     // console.log(cons.data);
   });
   $("#con-control").click(function() {

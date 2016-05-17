@@ -33,6 +33,10 @@ router.get('/sim', function(req, res, next) {
   res.render('sim', { title: 'Simulation and Control' });
 });
 
+router.get('/result', function(req, res, next) {
+  res.render('result', { title: 'Result' });
+});
+
 router.get('/trajectory', function(req, res, next) {
   res.render('trajectory', { title: 'Simulation and Control' });
 });
