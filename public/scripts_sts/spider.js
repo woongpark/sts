@@ -78,7 +78,7 @@
           .data(network.nodes, function (d) { return d.name; });
 
       var station_names = svg.selectAll('.station-name')
-          .data(network.nodes, function (d) { return d.id; });
+          .data(network.nodes, function (d) { return d.name; });
 
       var connections = svg.selectAll('.connect')
           .data(network.links, function (d) { return (d.source && d.source.id) + '-' + (d.target && d.target.id); });
@@ -116,7 +116,7 @@
           .classed('station-name', true)
           .attr("x", function(d) {return d.pos[0] + 10;})
           .attr("y", function(d) {return d.pos[1];})
-          .text(function(d) {return d.name;});
+          .text(function(d) {return d.id;});
 
       stations.attr('cx', function (d) { return d.pos[0]; })
           .attr('cy', function (d) { return d.pos[1]; })
