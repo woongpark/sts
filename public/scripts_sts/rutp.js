@@ -896,7 +896,7 @@ function setChart4_origin(pdate, ptime){
     CDATE: CDATE,
     CTIME: CTIME,
     PDATE: pdate,
-    PTIME: ptime, /*//이렇게 해야하나 데이터가 없어서 ptime 강제로 선택
+    PTIME: ptime.slice(0, 2), /*//이렇게 해야하나 데이터가 없어서 ptime 강제로 선택
     CDATE: 20130816,
     CTIME: 1434,
     PDATE: 20130816,
@@ -990,7 +990,7 @@ function setChart4_destination(pdate, ptime){
     CDATE: CDATE,
     CTIME: CTIME,
     PDATE: pdate,
-    PTIME: ptime, /*//이렇게 해야하나 데이터가 없어서 ptime 강제로 선택
+    PTIME: ptime.slice(0, 2), /*//이렇게 해야하나 데이터가 없어서 ptime 강제로 선택
     CDATE: 20130816,
     CTIME: 1434,
     PDATE: 20130816,
