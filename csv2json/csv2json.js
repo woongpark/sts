@@ -65,7 +65,8 @@ var restructers = {
     for(var i = 0; i < node_json.length; i++) {
       nodes[node_json[i].num - 1] = {
         id: node_json[i].id,
-        name: node_json[i].name
+        name: node_json[i].name,
+        abb: node_json[i].abb
       };
       lineMatch[node_json[i].linecode] = node_json[i].linename;
     }

@@ -116,7 +116,7 @@
           .classed('station-name', true)
           .attr("x", function(d) {return d.pos[0] + 10;})
           .attr("y", function(d) {return d.pos[1];})
-          .text(function(d) {return d.id;});
+          .text(function(d) {return d.abb;});
 
       stations.attr('cx', function (d) { return d.pos[0]; })
           .attr('cy', function (d) { return d.pos[1]; })
