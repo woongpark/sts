@@ -2,299 +2,373 @@
   "nodes": [
     {
       "id": "DONGSEOUL",
-      "name": "동서울"
+      "name": "동서울",
+      "abb": "D.S.U."
     },
     {
       "id": "SANGOK",
-      "name": "산곡"
+      "name": "산곡",
+      "abb": "S.G."
     },
     {
       "id": "GYEONGGIGWANGJU",
-      "name": "경기광주"
+      "name": "경기광주",
+      "abb": "G.G.J."
     },
     {
       "id": "GONJIAM",
-      "name": "곤지암"
+      "name": "곤지암",
+      "abb": "G.J.A."
     },
     {
       "id": "SEOICHEON",
-      "name": "서이천"
+      "name": "서이천",
+      "abb": "S.C."
     },
     {
       "id": "MAJANG",
-      "name": "마장"
+      "name": "마장",
+      "abb": "M.J."
     },
     {
       "id": "HOBUBJC",
-      "name": "호법jc"
+      "name": "호법jc",
+      "abb": "H.B.JC"
     },
     {
       "id": "ILJUK",
-      "name": "일죽"
+      "name": "일죽",
+      "abb": "I.J."
     },
     {
       "id": "DAESO",
-      "name": "대소"
+      "name": "대소",
+      "abb": "D.S."
     },
     {
       "id": "DAESOJC",
-      "name": "대소jc"
+      "name": "대소jc",
+      "abb": "D.S.JC"
     },
     {
       "id": "JINCHEON",
-      "name": "진천"
+      "name": "진천",
+      "abb": "J.C."
     },
     {
       "id": "JEUNGPYEONG",
-      "name": "증평"
+      "name": "증평",
+      "abb": "J.P."
     },
     {
       "id": "OCHANG",
-      "name": "오창"
+      "name": "오창",
+      "abb": "O.C."
     },
     {
       "id": "SEOCHEONGJU",
-      "name": "서청주"
+      "name": "서청주",
+      "abb": "S.C.J."
     },
     {
       "id": "NAMIJC",
-      "name": "남이jc"
+      "name": "남이jc",
+      "abb": "N.M.JC"
     },
     {
       "id": "CHEONGWONJC",
-      "name": "청원jc"
+      "name": "청원jc",
+      "abb": "C.W.JC"
     },
     {
       "id": "CHEONGWON",
-      "name": "청원"
+      "name": "청원",
+      "abb": "C.W."
     },
     {
       "id": "SINTANJIN",
-      "name": "신탄진"
+      "name": "신탄진",
+      "abb": "S.T.J."
     },
     {
       "id": "HOIDUKJC",
-      "name": "회덕jc"
+      "name": "회덕jc",
+      "abb": "H.D.JC"
     },
     {
       "id": "ANSAN",
-      "name": "안산jc"
+      "name": "안산jc",
+      "abb": "A.S."
     },
     {
       "id": "DUNDAE",
-      "name": "둔대"
+      "name": "둔대",
+      "abb": "D.D"
     },
     {
       "id": "GUNPO",
-      "name": "군포"
+      "name": "군포",
+      "abb": "G.P"
     },
     {
       "id": "DONGGUNPO",
-      "name": "동군포"
+      "name": "동군포",
+      "abb": "D.G.P"
     },
     {
       "id": "BUGOK",
-      "name": "부곡"
+      "name": "부곡",
+      "abb": "B.G."
     },
     {
       "id": "BUKSUWON",
-      "name": "북수원"
+      "name": "북수원",
+      "abb": "B.S.W."
     },
     {
       "id": "DONGSUWON",
-      "name": "동수원"
+      "name": "동수원",
+      "abb": "D.S.W."
     },
     {
       "id": "GWANGYO",
-      "name": "광교"
+      "name": "광교",
+      "abb": "G.G."
     },
     {
       "id": "SHINGALJC",
-      "name": "신갈jc"
+      "name": "신갈jc",
+      "abb": "S.G.JC"
     },
     {
       "id": "MASUNG",
-      "name": "마성"
+      "name": "마성",
+      "abb": "M.Su."
     },
     {
       "id": "YONGIN",
-      "name": "용인"
+      "name": "용인",
+      "abb": "Y.I."
     },
     {
       "id": "YANGJI",
-      "name": "양지"
+      "name": "양지",
+      "abb": "Y.J."
     },
     {
       "id": "DUKPYEONG",
-      "name": "덕평"
+      "name": "덕평",
+      "abb": "D.P."
     },
     {
       "id": "SEOSEOUL",
-      "name": "서서울"
+      "name": "서서울",
+      "abb": "S.S.U"
     },
     {
       "id": "PALGOKJC",
-      "name": "팔곡jc"
+      "name": "팔곡jc",
+      "abb": "P.G.JC"
     },
     {
       "id": "MAESONG",
-      "name": "매송"
+      "name": "매송",
+      "abb": "M.So."
     },
     {
       "id": "BIBONG",
-      "name": "비봉"
+      "name": "비봉",
+      "abb": "B.B."
     },
     {
       "id": "BALAN",
-      "name": "발안"
+      "name": "발안",
+      "abb": "B.A."
     },
     {
       "id": "SEOPYONGTAEKJC",
-      "name": "서평택jc"
+      "name": "서평택jc",
+      "abb": "S.P.T.JC"
     },
     {
       "id": "SEOPYONGTAEK",
-      "name": "서평택"
+      "name": "서평택",
+      "abb": "S.P.T."
     },
     {
       "id": "SONGAK",
-      "name": "송악"
+      "name": "송악",
+      "abb": "S.A."
     },
     {
       "id": "DANGJIN",
-      "name": "당진"
+      "name": "당진",
+      "abb": "D.J."
     },
     {
       "id": "DANGJINJC",
-      "name": "당진jc"
+      "name": "당진jc",
+      "abb": "D.J.JC"
     },
     {
       "id": "SEOUL",
-      "name": "서울"
+      "name": "서울",
+      "abb": "S.U."
     },
     {
       "id": "SUWON",
-      "name": "수원"
+      "name": "수원",
+      "abb": "S.W."
     },
     {
       "id": "GIHEUNG",
-      "name": "기흥"
+      "name": "기흥",
+      "abb": "G.H"
     },
     {
       "id": "GIHEUNGDONGTAN",
-      "name": "기흥(동탄)"
+      "name": "기흥(동탄)",
+      "abb": "GH.DT."
     },
     {
       "id": "DONGTAN",
-      "name": "동탄jc"
+      "name": "동탄jc",
+      "abb": "D.T"
     },
     {
       "id": "OSAN",
-      "name": "오산"
+      "name": "오산",
+      "abb": "O.S."
     },
     {
       "id": "ANSUNGJC",
-      "name": "안성jc"
+      "name": "안성jc",
+      "abb": "A.S.JC"
     },
     {
       "id": "ANSUNGJC",
-      "name": "안성jc"
+      "name": "안성jc",
+      "abb": "A.S.JC"
     },
     {
       "id": "BUKCHEONAN",
-      "name": "북천안"
+      "name": "북천안",
+      "abb": "B.C.A."
     },
     {
       "id": "CHEONAN",
-      "name": "천안"
+      "name": "천안",
+      "abb": "C.A."
     },
     {
       "id": "CHEONANJC",
-      "name": "천안jc"
+      "name": "천안jc",
+      "abb": "C.A.JC"
     },
     {
       "id": "MOKCHEON",
-      "name": "목천"
+      "name": "목천",
+      "abb": "Mo.C."
     },
     {
       "id": "CHEONGJU",
-      "name": "청주"
+      "name": "청주",
+      "abb": "C.J"
     },
     {
       "id": "CHEONGBUK",
-      "name": "청북"
+      "name": "청북",
+      "abb": "C.B."
     },
     {
       "id": "SONGTANG",
-      "name": "송탄"
+      "name": "송탄",
+      "abb": "S.T."
     },
     {
       "id": "SEOANSUNG",
-      "name": "서안성"
+      "name": "서안성",
+      "abb": "S.A.S"
     },
     {
       "id": "NAMANSUNG",
-      "name": "남안성"
+      "name": "남안성",
+      "abb": "N.A.S"
     },
     {
       "id": "NAMCHEONAN",
-      "name": "남천안"
+      "name": "남천안",
+      "abb": "N.CA."
     },
     {
       "id": "PUNGSE",
-      "name": "풍세"
+      "name": "풍세",
+      "abb": "P.S."
     },
     {
       "id": "JUNGAN",
-      "name": "정안"
+      "name": "정안",
+      "abb": "J.A."
     },
     {
       "id": "GONGJUJC",
-      "name": "공주jc"
+      "name": "공주jc",
+      "abb": "G.J.JC"
     },
     {
       "id": "MYEONCHEON",
-      "name": "면천"
+      "name": "면천",
+      "abb": "My.C."
     },
     {
       "id": "GODEOK",
-      "name": "고덕"
+      "name": "고덕",
+      "abb": "G.D."
     },
     {
       "id": "YESANSUDUKSA",
-      "name": "예산수덕사"
+      "name": "예산수덕사",
+      "abb": "Y.S.S."
     },
     {
       "id": "SINYANG",
-      "name": "신양"
+      "name": "신양",
+      "abb": "S.Y."
     },
     {
       "id": "YOOGU",
-      "name": "유구"
+      "name": "유구",
+      "abb": "Y.G."
     },
     {
       "id": "MAGOKSA",
-      "name": "마곡사"
+      "name": "마곡사",
+      "abb": "M.G.S."
     },
     {
       "id": "SEOGONGJUJC",
-      "name": "서공주jc"
+      "name": "서공주jc",
+      "abb": "S.G.J.JC"
     },
     {
       "id": "GONGJU",
-      "name": "공주"
+      "name": "공주",
+      "abb": "G.J."
     },
     {
       "id": "SEOSEJONG",
-      "name": "서세종"
+      "name": "서세종",
+      "abb": "S.S.J."
     },
     {
       "id": "NAMSEJONG",
-      "name": "남세종"
+      "name": "남세종",
+      "abb": "N.S.J."
     },
     {
       "id": "YUSEONG",
-      "name": "유성jc"
+      "name": "유성jc",
+      "abb": "Y.S."
     }
   ],
   "links": [
