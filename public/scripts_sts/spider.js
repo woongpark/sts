@@ -116,7 +116,33 @@
           .classed('station-name', true)
           .attr("x", function(d) {return d.pos[0] + 10;})
           .attr("y", function(d) {return d.pos[1];})
-          .text(function(d) {return d.abb;});
+          .text(function(d) {return d.abb;})
+          .on('mouseover', function (d) {
+            if (d.pos[1] < 30) {
+              tip.direction('e')
+                .offset([0, 10]);
+            } else {
+              tip.direction('n')
+                .offset([-10, 0]);
+            }
+            tip.show(d);
+          })
+          .on('mouseout', tip.hide);
+
+      for(var i = 0; i < network.nodes.length; i += 3) {
+        var row = [network.nodes[i], network.nodes[i+1], network.nodes[i+2]];
+        row = row.filter(function(x) {return x})
+                 .map(function(x) {
+                   return "<td>" + x.name + "</td><td>" + x.abb + "</td>";
+                 })
+                 .join("");
+        $(".table-wrap tbody").append("<tr>" + row + "</tr>");
+      }
+      network.nodes.forEach(function(node, idx) {
+        $(".table-wrap tbody")
+
+        debugger
+      });
 
       stations.attr('cx', function (d) { return d.pos[0]; })
           .attr('cy', function (d) { return d.pos[1]; })
