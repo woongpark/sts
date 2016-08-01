@@ -138,11 +138,6 @@
                  .join("");
         $(".table-wrap tbody").append("<tr>" + row + "</tr>");
       }
-      network.nodes.forEach(function(node, idx) {
-        $(".table-wrap tbody")
-
-        debugger
-      });
 
       stations.attr('cx', function (d) { return d.pos[0]; })
           .attr('cy', function (d) { return d.pos[1]; })
