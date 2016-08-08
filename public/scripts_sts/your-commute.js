@@ -21,9 +21,9 @@
 /* 1. Load the map and station data and do some pre-processing
  *************************************************************/
 VIZ.requiresData([
-  'json!data/station-network.json',
-  'json!data/spider.json',
-  'json!data/station-paths.json',
+  'json!newdata/station-network.json',
+  'json!newdata/spider.json',
+  'json!newdata/station-paths.json',
 ], true).done(function (network, spider, paths) {
   "use strict";
   var idToNode = {};
@@ -35,9 +35,10 @@ VIZ.requiresData([
     link.target.links.splice(0, 0, link);
     link.source.links.splice(0, 0, link);
   });
-  network.nodes.forEach(function (data) {
+  network.nodes.forEach(function (data, idx) {
     data.x = spider[data.id][0];
     data.y = spider[data.id][1];
+    data.idx = idx + 1;
     idToNode[data.id] = data;
   });
 
@@ -66,7 +67,7 @@ VIZ.requiresData([
     var yScale = height / (yRange[1] - yRange[0]);
     var scale = Math.min(xScale, yScale);
     network.nodes.forEach(function (data) {
-      data.pos = [data.x * scale, data.y * scale];
+      data.pos = [(data.x-xRange[0]) * scale, (data.y-yRange[0]) * scale];
     });
     var endDotRadius = 0.2 * scale;
     var mapGlyph = mapGlyphSvg
@@ -199,7 +200,7 @@ VIZ.requiresData([
       mapGlyphSvg.selectAll('.hover').classed('hover', false);
       mapGlyphSvg.selectAll('.active').classed('active', false);
       // pre-load file as they are dragging, hopefully it loads and gets cached when they finish dragging
-      VIZ.requiresData(['json!data/upick2-weekday-rollup-' + draggingFrom.id + '.json']);
+      // VIZ.requiresData(['json!data/upick2-weekday-rollup-' + draggingFrom.id + '.json']);
       d3.select(this).select('circle').classed('start', true);
       arrow.attr('transform', 'scale(0)');
       var stations = _.unique(_.flatten(paths.filter(function (d) {
@@ -227,13 +228,20 @@ VIZ.requiresData([
         .classed('middle', false)
         .attr('r', Math.max(endDotRadius, 5));
     }
-    dot('place-asmnl', "red");
-    dot('place-alfcl', "red");
-    dot('place-brntn', "red");
-    dot('place-wondl', "blue");
-    dot('place-bomnl', "blue");
-    dot('place-forhl', "orange");
-    dot('place-ogmnl', "orange");
+    dot('SEOUL', "green");
+    dot('NAMIJC', "green");
+    dot('SEOSEOUL', "yellow");
+    dot('DANGJINJC', "yellow");
+    dot('NAMCHEONAN', "orange");
+    dot('GONGJUJC', "orange");
+    dot('MYEONCHEON', "blue");
+    dot('YUSEONG', "blue");
+    dot('DONGSEOUL', "red");
+    dot('HOIDUKJC', "red");
+    dot('CHEONGBUK', "navy");
+    dot('NAMANSUNG', "navy");
+    dot('DUNDAE', "purple");
+    dot('DUKPYEONG', "purple");
   }());
 
   var lines = mapGlyphSvg.selectAll('line');
@@ -399,7 +407,7 @@ VIZ.requiresData([
   var bottomKeyPath = sideKey.append('path').attr('class', 'key-marker');
   var topKeyPath = sideKey.append('path').attr('class', 'key-marker');
 
-  x.domain([5, 24]);
+  x.domain([13, 19]);
 
   layerBelowTheData.append("g")
       .attr("class", "x axis")
@@ -452,21 +460,39 @@ VIZ.requiresData([
     idx = idx + 1;
     var myIdx = idx;
     d3.select('.pick-two').classed('loading-data', true);
-    VIZ.requiresData([
-      'json!data/upick2-weekday-rollup-' + from + '.json'
-    ]).progress(function (percent) {
-      if (idx !== myIdx) { return; } // another request went out that supersedes this one
-      d3.selectAll(".section-pick-two .loading").text('Loading... ' + percent + '%').classed('err', false);
-    }).onerror(function () {
-      if (idx !== myIdx) { return; } // another request went out that supersedes this one
-      d3.selectAll(".section-pick-two .loading").text('Error loading data').classed('err', true);
-    }).done(function (weekdayRollup) {
+    var collisionrisk;
+    jQuery.ajax({
+      url: '/sim_collisionrisk/' + idToNode[from].idx,
+      async: false,
+      success: function (result) {
+        collisionrisk = result;
+      }
+    });
+    $.getJSON("/sim_speed/" + idToNode[from].idx, function(speedData) {
+    // VIZ.requiresData([
+    //   'json!data/upick2-weekday-rollup-' + from + '.json'
+    // ]).progress(function (percent) {
+    //   if (idx !== myIdx) { return; } // another request went out that supersedes this one
+    //   d3.selectAll(".section-pick-two .loading").text('Loading... ' + percent + '%').classed('err', false);
+    // }).onerror(function () {
+    //   if (idx !== myIdx) { return; } // another request went out that supersedes this one
+    //   d3.selectAll(".section-pick-two .loading").text('Error loading data').classed('err', true);
+    // }).done(function (weekdayRollup) {
+      var scatterplotData = [];
+      speedData.data.forEach(function(item) {
+        var t = +item[0],
+            h = parseInt(item[0] / 100, 10),
+            m = item[0] % 100 / 60;
+        scatterplotData.push([h+m, +item[4]]);
+      });
+      collisionrisk.data.forEach(function(item, idx) {
+        scatterplotData[idx].push(+item[4]);
+      });
       if (idx !== myIdx) { return; } // another request went out that supersedes this one
       d3.select('.pick-two').classed('loading-data', false);
       d3.selectAll(".section-pick-two .loading").html('&nbsp;');
-
-      var percentileBandData = weekdayRollup[to].result;
-      var scatterplotData = weekdayRollup[to].actuals;
+      // var percentileBandData = weekdayRollup[to].result;
+      // var scatterplotData = weekdayRollup[to].actuals;
       // on iOS don't show as many points to improve performance
       if (VIZ.ios && scatterplotData.length > 1000) {
         scatterplotData = _.sortBy(_.sample(scatterplotData, 1000), 0);
@@ -509,87 +535,87 @@ VIZ.requiresData([
           .duration(1000)
           .style('opacity', 0.8);
 
-      // update the colored bands
-      topRange.datum(percentileBandData).transition().attr("d", area(1, 0, 2));
-      topMedian.datum(percentileBandData).transition().attr("d", line(1, 1));
-      bottomRange.datum(percentileBandData).transition().attr("d", area(2, 0, 2, true));
-      bottomMedian.datum(percentileBandData).transition().attr("d", line(2, 1, true));
-      bottomUnder
-          .datum(percentileBandData)
-          .transition()
-          .attr("d", d3.svg.area()
-            .x(function(d) { return x(d[0]); })
-            .interpolate('basis')
-            .defined(defined)
-            .y0(function() { return y(0); })
-            .y1(function(d) { return y(-d[2][0]); }));
-      topUnder
-          .datum(percentileBandData)
-          .transition()
-          .attr("d", d3.svg.area()
-            .x(function(d) { return x(d[0]); })
-            .interpolate('basis')
-            .defined(defined)
-            .y0(function(d) { return y(d[1][0]); })
-            .y1(function() { return y(0); }));
-
-      var lastPercentileDatapoint = _.max(percentileBandData.filter(function (d) { return d[0] <= 24; }), function (d) { return d[0]; });
-      var top = {
-        bottom: y(lastPercentileDatapoint[1][0]),
-        median: y(lastPercentileDatapoint[1][1]),
-        top: Math.max(0, y(lastPercentileDatapoint[1][2])),
-      };
-      var bottom = {
-        bottom: Math.min(height - 10, y(-lastPercentileDatapoint[2][2])),
-        median: y(-lastPercentileDatapoint[2][1]),
-        top: y(-lastPercentileDatapoint[2][0]),
-      };
-
-      // update the colored band key on the right
-      sideKey
-        .transition()
-        .style('opacity', 1);
-
-      topKey
-        .transition()
-        .attr('y', top.top);
-      topKeyMedian
-        .transition()
-        .attr('y', top.median);
-      bottomKey
-        .transition()
-        .attr('y', bottom.bottom);
-      bottomKeyMedian
-        .transition()
-        .attr('y', bottom.median);
-
-      topKeyPath
-        .transition()
-        .attr('d', "M" + [
-          [width + 1, top.top],
-          [width + 4, top.top],
-          [width + 4, top.bottom],
-          [width + 1, top.bottom]
-        ].map(round).join(",") + "M" + [
-          [width + 1, top.median],
-          [width + 8, top.median]
-        ].map(round).join(","));
-
-      bottomKeyPath
-        .transition()
-        .attr('d', "M" + [
-          [width + 1, bottom.top],
-          [width + 4, bottom.top],
-          [width + 4, bottom.bottom],
-          [width + 1, bottom.bottom]
-        ].map(round).join(",") + "M" + [
-          [width + 1, bottom.median],
-          [width + 8, bottom.median]
-        ].map(round).join(","));
-
-      yAxisG.transition().call(yAxis);
-      yAxisG2.transition().call(yAxis2);
-      zeroMinutesLine.transition().call(placeMidpointLine);
+      // // update the colored bands
+      // topRange.datum(percentileBandData).transition().attr("d", area(1, 0, 2));
+      // topMedian.datum(percentileBandData).transition().attr("d", line(1, 1));
+      // bottomRange.datum(percentileBandData).transition().attr("d", area(2, 0, 2, true));
+      // bottomMedian.datum(percentileBandData).transition().attr("d", line(2, 1, true));
+      // bottomUnder
+      //     .datum(percentileBandData)
+      //     .transition()
+      //     .attr("d", d3.svg.area()
+      //       .x(function(d) { return x(d[0]); })
+      //       .interpolate('basis')
+      //       .defined(defined)
+      //       .y0(function() { return y(0); })
+      //       .y1(function(d) { return y(-d[2][0]); }));
+      // topUnder
+      //     .datum(percentileBandData)
+      //     .transition()
+      //     .attr("d", d3.svg.area()
+      //       .x(function(d) { return x(d[0]); })
+      //       .interpolate('basis')
+      //       .defined(defined)
+      //       .y0(function(d) { return y(d[1][0]); })
+      //       .y1(function() { return y(0); }));
+      //
+      // var lastPercentileDatapoint = _.max(percentileBandData.filter(function (d) { return d[0] <= 24; }), function (d) { return d[0]; });
+      // var top = {
+      //   bottom: y(lastPercentileDatapoint[1][0]),
+      //   median: y(lastPercentileDatapoint[1][1]),
+      //   top: Math.max(0, y(lastPercentileDatapoint[1][2])),
+      // };
+      // var bottom = {
+      //   bottom: Math.min(height - 10, y(-lastPercentileDatapoint[2][2])),
+      //   median: y(-lastPercentileDatapoint[2][1]),
+      //   top: y(-lastPercentileDatapoint[2][0]),
+      // };
+      //
+      // // update the colored band key on the right
+      // sideKey
+      //   .transition()
+      //   .style('opacity', 1);
+      //
+      // topKey
+      //   .transition()
+      //   .attr('y', top.top);
+      // topKeyMedian
+      //   .transition()
+      //   .attr('y', top.median);
+      // bottomKey
+      //   .transition()
+      //   .attr('y', bottom.bottom);
+      // bottomKeyMedian
+      //   .transition()
+      //   .attr('y', bottom.median);
+      //
+      // topKeyPath
+      //   .transition()
+      //   .attr('d', "M" + [
+      //     [width + 1, top.top],
+      //     [width + 4, top.top],
+      //     [width + 4, top.bottom],
+      //     [width + 1, top.bottom]
+      //   ].map(round).join(",") + "M" + [
+      //     [width + 1, top.median],
+      //     [width + 8, top.median]
+      //   ].map(round).join(","));
+      //
+      // bottomKeyPath
+      //   .transition()
+      //   .attr('d', "M" + [
+      //     [width + 1, bottom.top],
+      //     [width + 4, bottom.top],
+      //     [width + 4, bottom.bottom],
+      //     [width + 1, bottom.bottom]
+      //   ].map(round).join(",") + "M" + [
+      //     [width + 1, bottom.median],
+      //     [width + 8, bottom.median]
+      //   ].map(round).join(","));
+      //
+      // yAxisG.transition().call(yAxis);
+      // yAxisG2.transition().call(yAxis2);
+      // zeroMinutesLine.transition().call(placeMidpointLine);
 
       // The first time this is drawn, add the vertical bar when you hover over the scatterplot
       var highlighter = dataLayer.appendOnce('line', 'highlighter dimmable')
@@ -602,7 +628,7 @@ VIZ.requiresData([
         .attr('x', '-100')
         .attr('y', 10);
 
-      var extent = d3.scale.linear().domain([5, 24]).range([5, 24]).clamp(true);
+      var extent = d3.scale.linear().domain([13, 19]).range([13, 19]).clamp(true);
       layerAboveTheData
         .on('mousemove', handleHover)
         .on('touchstart', handleHover)
@@ -684,7 +710,7 @@ VIZ.requiresData([
   } else {
     // if no specific station pair is selected, then start by showing Kendall/MIT to South Station
     // because that is the route that Mike rides at 5:30PM
-    render('place-knncl', 'place-sstat');
+    render('SEOUL', 'NAMIJC');
   }
 
   // Listen for URL hash changes and update the data if that changes after the page is loaded
@@ -727,7 +753,7 @@ VIZ.requiresData([
     .on('mouseover', function () {
       // start downloading file as soon as user is thinking about clicking the link
       var start = d3.select(this).attr('data-start');
-      VIZ.requiresData(['json!data/upick2-weekday-rollup-' + start + '.json']);
+      // VIZ.requiresData(['json!data/upick2-weekday-rollup-' + start + '.json']);
     });
 
 

@@ -238,6 +238,10 @@ router.get('/goToSpeed_route', function(req, res, next) {
 });
 
 
+router.get('/sim_speed/:FROMIC', function(req, res, next) {
+  var str = "SELECT * FROM SIMULATIONSPEED WHERE FROMIC='" + req.params.FROMIC + "';";
+  queryArray(str, res);
+});
 router.get('/sim_speed', function(req, res, next) {
   var str = "SELECT * FROM SIMULATIONSPEED;";
   queryArray(str, res);
@@ -310,6 +314,10 @@ router.get('/sim_traveltime', function(req, res, next) {
   queryArray(str, res);
 });
 
+router.get('/sim_collisionrisk/:FROMIC', function(req, res, next) {
+  var str = "SELECT * FROM SIMULATIONCOLLISIONRISK WHERE FROMIC='" + req.params.FROMIC + "';";
+  queryArray(str, res);
+});
 router.get('/sim_collisionrisk', function(req, res, next) {
   var str = "SELECT * FROM SIMULATIONCOLLISIONRISK";
   query(str, res);
